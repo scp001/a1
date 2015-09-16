@@ -9,7 +9,7 @@ splat.Header = Backbone.View.extend({
 
 	initialize: function () {
 		this.render();
-	},
+	}
 
     // render the View
     render: function () {
