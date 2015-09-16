@@ -5,7 +5,11 @@
 var splat =  splat || {};
 
 // note View-name (Home) matches name of template file Home.html
-splat.Home = Backbone.View.extend({
+splat.Header = Backbone.View.extend({
+
+	initialize: function () {
+		this.render();
+	},
 
     // render the View
     render: function () {
