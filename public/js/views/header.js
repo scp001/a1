@@ -4,7 +4,7 @@
 // declare splat-app namespace if it doesn't already exist
 var splat =  splat || {};
 
-// note View-name (Home) matches name of template file Home.html
+// note View-name (Header) matches name of template file Header.html
 splat.Header = Backbone.View.extend({
 
 	initialize: function () {
@@ -17,5 +17,12 @@ splat.Header = Backbone.View.extend({
 	this.$el.html(this.template());
 	return this;    // support method chaining
     }
+	
+	selectMenuItem: function(menuItem){
+		$(".nav li").removeClass('active');
+		if(menuItem){
+			$('.'+menuItem).addClass('active');
+		}
+	}
 
 });

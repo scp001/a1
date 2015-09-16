@@ -13,9 +13,9 @@ routes: {
 initialize: function() {
 
 // instantiate a Header view
-// this.headerView = new splat.Header();
+this.headerView = new splat.Header();
 // insert the rendered Header view element into the document DOM
-// $('.header').html(this.headerView.render().el);
+$('.header').html(this.headerView.render().el);
 },
 home: function() {
 // If the Home view doesn't exist, instantiate one
@@ -30,7 +30,7 @@ $('#content').html(this.homeView.render().el);
 // Load HTML templates for Home, Header, About views, and when
 // template loading is complete, instantiate a Backbone router
 // with history.
-splat.utils.loadTemplates(['Home'], function() {
+splat.utils.loadTemplates(['Home', 'Header'], function() {
 splat.app = new splat.AppRouter();
 Backbone.history.start();
 });
