@@ -9,9 +9,9 @@ splat.Home = Backbone.View.extend({
 
     // render the View
     render: function () {
-	// set the view element ($el) HTML content using its template
-	this.$el.html(this.template());
-	return this;    // support method chaining
+		// set the view element ($el) HTML content using its template
+		this.$el.html(this.template());
+		return this;    // support method chaining
     }
 
 });
