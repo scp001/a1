@@ -10,6 +10,12 @@ body{
 	padding-top: 70px;
 }
 
+.home-middle {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+}
+
 .footer {
     position:fixed;
 	left:0px;
