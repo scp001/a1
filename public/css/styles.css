@@ -3,9 +3,11 @@
 }
 
 .home-middle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%, -50%) 
+position: relative;
+  top: 20%;
+  transform: translateY(-50%);
+}
+
+#content {
+    color: #FFF;
 }
