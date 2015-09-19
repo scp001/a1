@@ -2,6 +2,12 @@
   font-size: 125%;
 }
 
+.home-middle {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+}
+
 #content {
     color: #FFF;
 }
@@ -16,3 +22,4 @@
 .copyright {
     text-align: right;
     padding-right: 15px;
+}
