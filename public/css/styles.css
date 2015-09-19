@@ -2,11 +2,11 @@
   font-size: 125%;
 }
 
-/*.home-middle {
-	position: relative;
-	top: 20%;
-	transform: translateY(-50%);
-}*/
+.home-middle {
+	position: absolute;
+ 	top: 30%;
+    width: 100%;
+}
 
 #content {
     color: #FFF;
