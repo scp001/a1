@@ -4,6 +4,9 @@
 
 #content {
     color: #FFF;
+    text-shadow: black 1px;
+    font-family: Verdana, Geneva, Helvetica; 
+    font-size: 36px;
 }
 
 body{
