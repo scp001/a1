@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
 <head>
 <!-- set charset to interpret file contents -->
 <meta charset="UTF-8">
@@ -37,13 +38,54 @@
 <script src="js/lib/backbone-min.js"></script>
 <script src="js/lib/backbone.localStorage.js"></script>
 <script src="js/lib/bootstrap-min.js"></script>
+=======
+	<head>
+		<!-- set charset to interpret file contents -->
+		<meta charset="UTF-8">
+		<!-- title displayed when browser tab is moused over -->
+		<title>Splat</title>
+		<!-- ensure proper rendering and touch zooming -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Bootstrap CSS definitions -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<!-- optional stylesheet theme included with Bootstrap -->
+		<link href="css/bootstrap-theme.css" rel="stylesheet">
+		<!-- your own customized style rules -->
+		<link href="css/styles.css" rel="stylesheet">
+		<!-- icon -->
+		<link rel="icon" type="image/ico" href="img/favicon.ico" />
+	</head>
+	
+	<body>
+		<!-- HTML5 markup for view content, labelled with Bootstrap class names -->
+		<header class="header"></header>
+		
+		<!-- full-width content container, spanning entire viewport -->
+		<main class="container-fluid">
+			<!-- row for use in Bootstrap grid layout -->
+			<div class="row" id="mainrow">
+				<div id="content"> <!-- implicitly a single column within row -->
+				</div>
+			</div> <!-- row -->
+		</main> <!-- container-fluid -->
+		
+		<footer class="footer"></footer>
+		
+		<!-- load scripts last for better UI performance -->
+		<!-- library scripts you use -->
+		<script src="js/lib/jquery-min.js"></script>
+		<script src="js/lib/underscore-min.js"></script>
+		<script src="js/lib/backbone-min.js"></script>
+		<script src="js/lib/backbone.localStorage.js"></script>
+		<script src="js/lib/bootstrap-min.js"></script>
+>>>>>>> 8c5c24a4813fb4f179fc4e826f9f7b273e76adb9
 
-<!-- scripts you define -->
-<script src="js/views/header.js"></script>
-<script src="js/views/home.js"></script>
-<script src="js/views/about.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/main.js"></script>
-</body>
+		<!-- scripts you define -->
+		<script src="js/views/header.js"></script>
+		<script src="js/views/home.js"></script>
+		<script src="js/views/about.js"></script>
+		<script src="js/utils.js"></script>
+		<script src="js/main.js"></script>
+	</body>
 </html>
 
