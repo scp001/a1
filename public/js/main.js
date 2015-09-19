@@ -30,7 +30,7 @@ splat.AppRouter = Backbone.Router.extend({
 
 		$('#content').html(this.homeView.render().el);
 		document.body.style.backgroundSize = "100%";
-		document.body.style.backgroundImage = "url('img/HomeView.jpg')";
+		document.body.style.backgroundImage = "url('img/splash.jpg')";
 		this.headerView.selectMenuItem()
 
 	},
