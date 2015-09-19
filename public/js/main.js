@@ -29,7 +29,9 @@ splat.AppRouter = Backbone.Router.extend({
 		// insert the rendered Home view element into the document DOM
 
 		$('#content').html(this.homeView.render().el);
-		document.body.style.background = "url('img/HomeView.jpg')";
+		document.body.style.backgroundSize = "100%";
+		document.body.style.backgroundImage = "url('img/HomeView.jpg')";
+		this.headerView.selectMenuItem()
 
 	},
 	
@@ -41,6 +43,9 @@ splat.AppRouter = Backbone.Router.extend({
 		// insert the rendered About view element into the document DOM
 
 		$('#content').html(this.aboutView.render().el);
+		this.headerView.selectMenuItem("about-menu")
+		document.body.style.backgroundImage = "none";
+		document.body.style.backgroundColor = "black";
 	}
 });
 
