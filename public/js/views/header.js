@@ -14,8 +14,11 @@ splat.Header = Backbone.View.extend({
 		return this;    // support method chaining
     },
 	
+	// set menu item active
 	selectMenuItem: function (menuItem){
+		// clear active status by default
 		$(".nav li").removeClass('active');
+		// set input menuItem to active
 		if(menuItem){
 			$('.'+menuItem).addClass('active');
 		}
