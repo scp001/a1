@@ -4,7 +4,9 @@
 
 #content {
     color: #FFF;
-    
+    text-shadow: black 1px;
+    font-family: Verdana, Geneva, Helvetica; 
+    font-size: 36px;
 }
 
 body{
@@ -17,9 +19,6 @@ body{
     position: absolute;
     top: 30%;
     width: 100%;
-    text-shadow: black 1px;
-    font-family: Verdana, Geneva, Helvetica; 
-    font-size: 36px;
 }
 
 .footer {
