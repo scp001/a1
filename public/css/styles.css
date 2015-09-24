@@ -3,8 +3,7 @@
 }
 
 #content {
-    color: #FFF;
-    
+    color: #FFF;   
 }
 
 body{
@@ -34,4 +33,20 @@ body{
     text-align: right;
     padding-right: 15px;
 	color: #FFF;
+}
+
+.trans-button{
+	background-color: black;	
+	border-radius: 4px;
+	color: #FFF;
+	white-space: normal;
+	vertical-align: middle;
+	opacity: 0.5;
+	font: Arvo;
+	max-width: 200px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 6px;
+	margin-left: 6px;
+	font-size: 17px;
 }
