@@ -9,7 +9,8 @@ splat.AppRouter = Backbone.Router.extend({
 	// Map "URL paths" to "router functions"
 	routes: {
 		"": "home",
-		"About": "about"
+		"About": "about",
+		"movies/add": "details",
 	},
 
 	// When an instance of an AppRouter is declared, create a Header view
@@ -31,7 +32,7 @@ splat.AppRouter = Backbone.Router.extend({
 		$('#content').html(this.homeView.render().el);
 		document.body.style.backgroundSize = "100%";
 		document.body.style.backgroundImage = "url('img/splash.jpg')";
-		this.headerView.selectMenuItem()
+		this.headerView.selectMenuItem();
 
 	},
 	
@@ -43,16 +44,29 @@ splat.AppRouter = Backbone.Router.extend({
 		// insert the rendered About view element into the document DOM
 
 		$('#content').html(this.aboutView.render().el);
-		this.headerView.selectMenuItem("about-menu")
+		this.headerView.selectMenuItem("about-menu");
 		document.body.style.backgroundImage = "none";
 		document.body.style.backgroundColor = "black";
-	}
+	},
+		
+	details: function() {
+		// If the Details view doesn't exist, instantiate one
+		if(!this.detailsView) {
+			this.detailsView = new splat.Details();
+		};
+		
+		// insert the rendered Details view element into document DOM
+		$('#content').html(this.detailsView.render().el);
+		this.headerView.selectMenuItem("add-menu");
+		document.body.style.backgroundImage = "none";
+		document.body.style.backgroundColor = "black";
+	},
 });
 
 // Load HTML templates for Home, Header, About views, and when
 // template loading is complete, instantiate a Backbone router
 // with history.
-splat.utils.loadTemplates(['Home', 'Header', 'About'], function() {
+splat.utils.loadTemplates(['Home', 'Header', 'About', 'Details'], function() {
 	splat.app = new splat.AppRouter();
 	Backbone.history.start();
 });
