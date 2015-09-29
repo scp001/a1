@@ -1,4 +1,0 @@
-AuthUserFile /courses/courses/cscc09f15/songzhi/a1/public/.htpasswd
-AuthName "Password Protected Files"
-AuthType Basic
-Require user songzhi
