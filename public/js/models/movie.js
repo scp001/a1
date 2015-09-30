@@ -9,7 +9,7 @@ splat.MovieModel = Backbone.Model.extend({
 
     // default value
 	defaults: {
-		title: "",  // movie title
+	  title: "",  // movie title
       released: null,  // release year
       director: "",  // movie's director
       starring: [],  // array principal actors

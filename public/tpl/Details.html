@@ -1,38 +1,42 @@
 <br>
-<form class="form-horizontal detail-form">
+<div class="row">
+    <div class="col-xs-6">
+	
+	<form class="form-horizontal" id="detail-form">
+	
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-6">
-			<button type="button" class="btn btn-primary">Save Changes</button>
+			<button type="button" class="btn btn-primary" id="saveButton">Save Changes</button>
 			<button type="button" class="btn btn-danger">Delete Movie</button>
 		</div>
 	</div>
 
 	<div class="form-group">
-	    	<label class="col-sm-2 control-label" for="title">Title</label>
-    		<div class="col-sm-6">
-      			<input class="form-control" type="text" id="title" name="title" placeholder="e.g. Day of the Jackal" value="<%=title%>">
-    		</div>
+	    <label class="col-sm-2 control-label" for="title">Title</label>
+    	<div class="col-sm-6">
+      		<input class="form-control" type="text" id="title" name="title" placeholder="e.g. Day of the Jackal" value="<%=title%>">
+    	</div>
   	</div>
 
   	<div class="form-group form-group-sm">
-	    	<label class="col-sm-2 control-label" for="released">Released</label>
-    		<div class="col-sm-6">
-      			<input class="form-control" type="date" id="released" name="released" value="<%=released%>" >
-    		</div>
+    	<label class="col-sm-2 control-label" for="released">Released</label>
+		<div class="col-sm-6">
+  			<input class="form-control" type="date" id="released" name="released" value="<%=released%>" >
+		</div>
   	</div>
 
   	<div class="form-group form-group-sm">
-	    	<label class="col-sm-2 control-label" for="director">Director</label>
-    		<div class="col-sm-6">
-      			<input class="form-control" type="text" id="director" name="director" placeholder="e.g. Steven Spielberg" value="<%=director%>">
-    		</div>
+    	<label class="col-sm-2 control-label" for="director">Director</label>
+		<div class="col-sm-6">
+  			<input class="form-control" type="text" id="director" name="director" placeholder="e.g. Steven Spielberg" value="<%=director%>">
+		</div>
   	</div>
 
   	<div class="form-group form-group-sm">
-	    	<label class="col-sm-2 control-label" for="rating">Rating</label>
-    		<div class="col-sm-6">
-      			<input class="form-control" type="text" id="rating" name="rating" placeholder="e.g. G, PG, PG.13, R"  value="<%=rating%>">
-    		</div>
+    	<label class="col-sm-2 control-label" for="rating">Rating</label>
+		<div class="col-sm-6">
+  			<input class="form-control" type="text" id="rating" name="rating" placeholder="e.g. G, PG, PG.13, R"  value="<%=rating%>">
+   		</div>
   	</div>
   	
   	<div class="form-group form-group-sm">
@@ -69,5 +73,12 @@
       		<input class="form-control" type="text" id="trailer" name="trailer" placeholder="e.g. https://www.archieve.org/..." value="<%=trailer%>">
     	</div>
   	</div>
-  	<br>
-</form>
+	</form>
+
+    </div>  <!-- end column 1 -->
+
+    <div class="col-xs-6">  <!-- col 2 -->
+        <div id="movieimg">
+        </div>
+    </div>   <!-- end column 2 -->
+</div> <!-- row -->

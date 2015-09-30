@@ -6,8 +6,8 @@ var splat = splat || {};
 
 splat.Movies = Backbone.Collection.extend({
 
-    // identify collectionâ€™s model
-    model: splat.Movie,
+    // identify collections model
+    model: splat.MovieModel,
 
     // save movie models under "splat" namespace,
     // since localStorage uses a flat namespace shared by all apps

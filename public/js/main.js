@@ -15,6 +15,10 @@ splat.AppRouter = Backbone.Router.extend({
 		"movies/:id": "editMovie",
 		
 	},
+	
+	events: {
+		"click #saveButton" : "addHandler",
+	},
 
 	// When an instance of an AppRouter is declared, create a Header view
 	initialize: function() {
@@ -77,6 +81,10 @@ splat.AppRouter = Backbone.Router.extend({
 		document.body.style.backgroundImage = "none";
 		document.body.style.backgroundColor = "black";
 	},
+	
+	addHandler: function() {
+		collection.create();
+	}
 });
 
 // Load HTML templates for Home, Header, About views, and when
