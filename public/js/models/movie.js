@@ -25,6 +25,6 @@ splat.MovieModel = Backbone.Model.extend({
 	},
 	
 	idAttribute: "_id", //model id in server side
-	trailer: "", // 
+	trailer: "https://archive.org/details/movies", // trailer URL
 
 });

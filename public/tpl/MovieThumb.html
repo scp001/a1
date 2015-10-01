@@ -1,14 +1,18 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-xs-2 col-sm-3 col-md-4 col-lg-6">
-			<div class="thumbnail">
-				<img src="..." alt="...">
-					<div class="caption">
-						<h3>Thumbnail label</h3>
-						<p>...</p>
-						<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-					</div>
-			</div>
-		</div>
-	</div>
+<div class="thumbnails col-lg-2 col-md-3 col-sm-4 col-xs-6">
+  <div class="thumbnail plain" title="some message">
+    <div class="some_class">
+      <a href="#movies/<%= _id %>" class="plain">
+        <video class="img-responsive" controls poster="<%= ADD-CODE %>" >
+            <source src="<%= ADD-CODE %>" type="video/mp4"/>
+            <!-- fallback -->
+            ADD-TEXT
+        </video>
+
+        <div class="some_class_2">
+          <%= ADD-CODE %> <br/>
+          <!-- ADD-CODE -->
+        </div>
+      </a>
+    </div>
+  </div>
 </div>

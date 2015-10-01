@@ -54,9 +54,3 @@ body{
 #detail-form{
 	font-family: Andika;
 }
-
-.notification{
-    display:none; 
-    margin-top: 30px;
-    font-size:80%;
-}
