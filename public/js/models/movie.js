@@ -6,7 +6,8 @@ var splat =  splat || {};
 
 // note View-name (About) matches name of template file About.html
 splat.MovieModel = Backbone.Model.extend({
-
+	idAttribute: "_id", //model id in server side	
+	
     // default value
 	defaults: {
 	  title: "",  // movie title
@@ -24,7 +25,7 @@ splat.MovieModel = Backbone.Model.extend({
       dated: new Date(),  // date of movie posting
 	},
 	
-	idAttribute: "_id", //model id in server side
+	
 	trailer: "https://archive.org/details/movies", // trailer URL
 
 });

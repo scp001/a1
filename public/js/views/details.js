@@ -20,11 +20,35 @@ splat.Details = Backbone.View.extend({
 	},
 
 	addHandler: function() {
-		this.collection.create();
+		this.collection.create({
+			wait: true,  // don't destroy client model until server responds
+    		success: function(model, response) {
+				// later, we'll navigate to the browse view upon success
+        		splat.app.navigate('movies/_id', {replace:true, trigger:true});
+				// notification panel, defined in section 2.6
+        		splat.utils.showAlert('Success', "Movie added", 'alert-success')
+    		},
+    		error: function(model, response) {
+    			// display the error response from the server
+        		splat.utils.requestFailed(response);
+        		splat.utils.showAlert('Fail', "Movie was not sucessfully added", 'alert-error')	
+    		}
+		});
 	},
 	
 	deleteHandler: function() {
-		splat.utils.showNotice("lol", "alert-danger");
-		// this.model.destory();
+		this.model.destory({
+			wait: true,  // don't destroy client model until server responds
+    		success: function(model, response) {
+				// later, we'll navigate to the browse view upon success
+        		splat.app.navigate('#', {replace:true, trigger:true});
+				// notification panel, defined in section 2.6
+        		splat.utils.showAlert('Success', "Movie deleted", 'alert-success')
+    		},
+    		error: function(model, response) {
+				// display the error response from the server
+        		splat.utils.requestFailed(response);
+    		}
+    	});
 	},
 });

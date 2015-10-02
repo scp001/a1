@@ -50,10 +50,10 @@ splat.utils = {
         $.when.apply(null, deferreds).done(callback);
     },
 
-    showNotice: function(text, alerttype) {
+    showNotice: function(title, text, type) {
         $('.alert').removeClass("alert-error alert-warning alert-success alert-info alert-danger");
-        $('.alert').addClass(alerttype);
-        $('.alert').html('<strong> Note! </strong> ' + text);
+        $('.alert').addClass(type);
+        $('.alert').html('<strong> ' + title +'! </strong> ' + text);
         $('.alert').show();
     },
 
