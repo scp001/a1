@@ -55,9 +55,12 @@ splat.AppRouter = Backbone.Router.extend({
 	addMovie: function() {
 		// instantiate a details model
 		var detailsModel = new splat.MovieModel();
+		
+		// instantiate a movie collection
 		if (!this.movieCollection){
 			this.movieCollection = new splat.Movies();
-		}		
+		}
+		
 		// instantiate a details view
 		this.detailsView = new splat.Details({model:detailsModel, collection: this.movieCollection});
 		
@@ -69,6 +72,11 @@ splat.AppRouter = Backbone.Router.extend({
 	},
 	
 	borwseMovie: function() {
+		// instantiate a movie collection
+		if (!this.movieCollection){
+			this.movieCollection = new splat.Movies();
+		}
+		
 		// If the Browse view doesn't exist, instantiate one
 		this.browseView = new splat.MovieThumb({collection: this.movieCollection});
 
@@ -78,6 +86,33 @@ splat.AppRouter = Backbone.Router.extend({
 		document.body.style.backgroundImage = "none";
 		document.body.style.backgroundColor = "black";
 	},
+	
+	editMovie: function(id) {
+		// instantiate a movie collection
+		if (!this.movieCollection){
+			this.movieCollection = new splat.Movies();
+		}
+		
+		var self = this;
+		// reinitialize storage if necessary
+		var moviesFetch = this.movieCollection.fetch();
+		moviesFetch.done(function(collection, response){
+			// retrieve a details model
+			var detailsModel = self.movieCollection.get(id);
+			// instantiate a details view
+			self.detailsView = new splat.Details({model:detailsModel, collection: this.movieCollection});
+		
+			// insert the rendered Details view element into document DOM
+			$('#content').html(self.detailsView.render().el);
+			self.headerView.selectMenuItem("add-menu");
+			document.body.style.backgroundImage = "none";
+			document.body.style.backgroundColor = "black";
+		}).fail(function(collection, response){
+			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-error")
+		})
+		
+		
+	}
 });
 
 // Load HTML templates for Home, Header, About views, and when

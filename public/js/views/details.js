@@ -20,30 +20,31 @@ splat.Details = Backbone.View.extend({
 	},
 
 	addHandler: function() {
-		this.collection.create({
+		var newModel = this.collection.create(this.model, {
 			wait: true,  // don't destroy client model until server responds
+		},{
     		success: function(model, response) {
 				// later, we'll navigate to the browse view upon success
-        		splat.app.navigate('movies/_id', {replace:true, trigger:true});
+        		splat.app.navigate('#movies/' + newModel.get("idAttribute"), {replace:true, trigger:true});
 				// notification panel, defined in section 2.6
-        		splat.utils.showAlert('Success', "Movie added", 'alert-success')
+        		splat.utils.showNotice('Success', "Movie added", 'alert-success')
     		},
     		error: function(model, response) {
     			// display the error response from the server
         		splat.utils.requestFailed(response);
-        		splat.utils.showAlert('Fail', "Movie was not sucessfully added", 'alert-error')	
-    		}
+        		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-error')	
+    		},
 		});
 	},
 	
 	deleteHandler: function() {
-		this.model.destory({
+		this.model.destroy({
 			wait: true,  // don't destroy client model until server responds
     		success: function(model, response) {
 				// later, we'll navigate to the browse view upon success
         		splat.app.navigate('#', {replace:true, trigger:true});
 				// notification panel, defined in section 2.6
-        		splat.utils.showAlert('Success', "Movie deleted", 'alert-success')
+        		splat.utils.showNotice('Success', "Movie deleted", 'alert-success')
     		},
     		error: function(model, response) {
 				// display the error response from the server
