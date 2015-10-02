@@ -55,8 +55,11 @@ splat.AppRouter = Backbone.Router.extend({
 	addMovie: function() {
 		// instantiate a details model
 		var detailsModel = new splat.MovieModel();
+		if (!this.movieCollection){
+			this.movieCollection = new splat.Movies();
+		}		
 		// instantiate a details view
-		this.detailsView = new splat.Details({model:detailsModel});
+		this.detailsView = new splat.Details({model:detailsModel, collection: this.movieCollection});
 		
 		// insert the rendered Details view element into document DOM
 		$('#content').html(this.detailsView.render().el);
@@ -67,10 +70,8 @@ splat.AppRouter = Backbone.Router.extend({
 	
 	borwseMovie: function() {
 		// If the Browse view doesn't exist, instantiate one
-		if (!this.browseView) {
-			this.browseView = new splat.MovieThumb();
-		};
-		
+		this.browseView = new splat.MovieThumb({collection: this.movieCollection});
+
 		// insert the rendered Details view element into document DOM
 		$('#content').html(this.browseView.render().el);
 		this.headerView.selectMenuItem("browse-menu");

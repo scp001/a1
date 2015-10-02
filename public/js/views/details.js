@@ -20,7 +20,7 @@ splat.Details = Backbone.View.extend({
 	},
 
 	addHandler: function() {
-		splat.utils.showNotice("lol", "alert-info");
+		this.collection.create();
 	},
 	
 	deleteHandler: function() {
