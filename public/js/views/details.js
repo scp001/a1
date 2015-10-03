@@ -15,8 +15,8 @@ splat.Details = Backbone.View.extend({
     },
 	
 	events: {
-		"click #saveButton" : "addHandler",
-		"click #deleteButton" : "deleteHandler",
+		"click #moviesave" : "addHandler",
+		"click #moviedel" : "deleteHandler",
 	},
 
 	addHandler: function() {
