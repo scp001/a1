@@ -100,7 +100,7 @@ splat.AppRouter = Backbone.Router.extend({
 			// retrieve a details model
 			var detailsModel = self.movieCollection.get(id);
 			// instantiate a details view
-			self.detailsView = new splat.Details({model:detailsModel, collection: this.movieCollection});
+			self.detailsView = new splat.Details({model:detailsModel, collection: self.movieCollection});
 		
 			// insert the rendered Details view element into document DOM
 			$('#content').html(self.detailsView.render().el);
