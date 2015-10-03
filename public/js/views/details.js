@@ -20,7 +20,7 @@ splat.Details = Backbone.View.extend({
 	},
 
 	addHandler: function() {
-		var newModel = this.collection.create(this.model, {
+		var newModel = this.collection.create(JSON.stringify(self.model), {
 			wait: true,  // don't destroy client model until server responds
 		},{
     		success: function(model, response) {
