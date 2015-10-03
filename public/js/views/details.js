@@ -25,13 +25,11 @@ splat.Details = Backbone.View.extend({
     		success: function(response) {
         		console.log(response);
 				// later, we'll navigate to the browse view upon success
-        		splat.app.navigate('movies/' + response._id, false);
+        		splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true});
 				// notification panel, defined in section 2.6
         		splat.utils.showNotice('Success', "Movie added", 'alert-success')
     		},
     		error: function(response) {
-    			console.log('error');
-        		console.log(response);
     			// display the error response from the server
         		splat.utils.requestFailed(response);
         		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-error')	
