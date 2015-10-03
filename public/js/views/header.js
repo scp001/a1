@@ -7,6 +7,7 @@ var splat =  splat || {};
 // note View-name (Header) matches name of template file Header.html
 splat.Header = Backbone.View.extend({
 
+
     // render the View
     render: function () {
 		// set the view element ($el) HTML content using its template

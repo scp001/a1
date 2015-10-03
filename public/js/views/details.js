@@ -37,11 +37,13 @@ splat.Details = Backbone.View.extend({
         		splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true});
 				// notification panel, defined in section 2.6
         		splat.utils.showNotice('Success', "Movie added", 'alert-success')
+        		splat.utils.hideNotice()
     		},
     		error: function(response) {
     			// display the error response from the server
         		splat.utils.requestFailed(response);
-        		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-error')	
+        		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-error')
+        		splat.utils.hideNotice()        			
     		},
 		});
 	},
@@ -54,10 +56,12 @@ splat.Details = Backbone.View.extend({
         		splat.app.navigate('#', {replace:true, trigger:true});
 				// notification panel, defined in section 2.6
         		splat.utils.showNotice('Success', "Movie deleted", 'alert-success')
+         		splat.utils.hideNotice()       		
     		},
     		error: function(model, response) {
 				// display the error response from the server
         		splat.utils.requestFailed(response);
+         		splat.utils.hideNotice()       		
     		}
     	});
 	},
