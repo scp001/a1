@@ -20,10 +20,19 @@ splat.Details = Backbone.View.extend({
 	},
 
 	addHandler: function() {
-		var newModel = this.collection.create(this.model, {
+		var newModel = this.collection.create({
+				title: $("#title").val(),
+				released: $("#released").val(),
+				director: $("#director").val(),
+				rating: $("#rating").val(),
+				starring: $("#starring").val(),
+				duration: $("#duration").val(),
+				genre: $("#genre").val(),
+				synopsis: $("#synopsis").val(),
+				trailer: $("#trailer").val(),
+			}, {
 			wait: true,  // don't destroy client model until server responds
-    		success: function(response) {
-        		console.log(response);
+    		success: function(response) {   		
 				// later, we'll navigate to the browse view upon success
         		splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true});
 				// notification panel, defined in section 2.6
