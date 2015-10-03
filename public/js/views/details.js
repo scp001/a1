@@ -20,16 +20,18 @@ splat.Details = Backbone.View.extend({
 	},
 
 	addHandler: function() {
-		var newModel = this.collection.create(JSON.stringify(self.model), {
+		var newModel = this.collection.create(this.model, {
 			wait: true,  // don't destroy client model until server responds
-		},{
-    		success: function(model, response) {
+    		success: function(response) {
+        		console.log(response);
 				// later, we'll navigate to the browse view upon success
-        		splat.app.navigate('#movies/' + newModel.get("idAttribute"), {replace:true, trigger:true});
+        		splat.app.navigate('movies/' + response._id, false);
 				// notification panel, defined in section 2.6
         		splat.utils.showNotice('Success', "Movie added", 'alert-success')
     		},
-    		error: function(model, response) {
+    		error: function(response) {
+    			console.log('error');
+        		console.log(response);
     			// display the error response from the server
         		splat.utils.requestFailed(response);
         		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-error')	
