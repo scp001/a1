@@ -21,9 +21,8 @@ splat.Details = Backbone.View.extend({
 
 	addHandler: function() {
 		if(this.model.id){
-			console.log(this.model.id);
 			var model = this.collection.get(this.model.id);
-			model.set({
+			model.save({
 				title: $("#title").val(),
 				released: $("#released").val(),
 				director: $("#director").val(),
@@ -33,10 +32,7 @@ splat.Details = Backbone.View.extend({
 				genre: $("#genre").val(),
 				synopsis: $("#synopsis").val(),
 				trailer: $("#trailer").val(),
-				});
-			console.log(model);
-			this.collection.set({model},
-				{
+			  },{
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {   		
 					// later, we'll navigate to the browse view upon success
@@ -54,7 +50,7 @@ splat.Details = Backbone.View.extend({
     		});
 		}
 		else{
-		var newModel = this.collection.create({
+			var newModel = this.collection.create({
 				title: $("#title").val(),
 				released: $("#released").val(),
 				director: $("#director").val(),
