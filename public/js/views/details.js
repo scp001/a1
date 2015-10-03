@@ -33,12 +33,14 @@ splat.Details = Backbone.View.extend({
 				genre: $("#genre").val(),
 				synopsis: $("#synopsis").val(),
 				trailer: $("#trailer").val(),
-				},
+				});
+			console.log(model);
+			this.collection.set({model},
 				{
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {   		
 					// later, we'll navigate to the browse view upon success
-        			splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true});
+        			splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true, remove:false});
 					// notification panel, defined in section 2.6
         			splat.utils.showNotice('Success', "Movie updated", 'alert-success')
         			splat.utils.hideNotice()
