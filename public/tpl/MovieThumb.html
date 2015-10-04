@@ -1,9 +1,9 @@
-<li>
+<li class='liststyle'>
 <div class="thumbnails col-lg-2 col-md-3 col-sm-4 col-xs-6">
-  <div class="thumbnail plain thumnailstyle moviethumb" title="some message">
+  <div class="thumbnail plain thumnailstyle moviethumb" title="Browse Movies">
     <div class="">
       <a href="#movies/<%= _id %>" class="plain">
-        <video class="img-responsive" controls poster="<%= poster %>" >
+        <video class="img-responsive" controls preload="none" poster="<%= poster %>" >
             <source src="<%= trailer %>" type="video/mp4"/>
             <!-- fallback -->
             ADD-TEXT
@@ -19,4 +19,4 @@
     </div>
   </div>
 </div>
-<li>
+</li>

@@ -36,7 +36,7 @@ splat.MovieThumb = Backbone.View.extend({
 		});
 		
 		// set the view element ($el) HTML content using its template
-		this.$el.html("<div class='container-fluid'><ul class='liststyle'>" + moviesMarkup + "</ul></div>");
+		this.$el.html("<div class='container-fluid'><ul>" + moviesMarkup + "</ul></div>");
 		return this;    // support method chaining
     }
 
