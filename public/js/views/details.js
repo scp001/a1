@@ -15,6 +15,7 @@ splat.Details = Backbone.View.extend({
     },
 	
 	events: {
+		"change .form-control" : "change",
 		"click #moviesave" : "addHandler",
 		"click #moviedel" : "deleteHandler",
 	},
@@ -78,6 +79,11 @@ splat.Details = Backbone.View.extend({
 		});
 		}
 	},
+	change: function (event) {
+        // Remove any existing alert message
+        splat.utils.showNotice('Info', 'Your changes will not be saved unless the save button is clicked', 'alert-info');
+        splat.utils.hideNotice()  
+    },
 	
 	deleteHandler: function() {
 		this.model.destroy({
