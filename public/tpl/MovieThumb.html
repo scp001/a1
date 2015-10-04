@@ -1,6 +1,6 @@
 <div class="thumbnails col-lg-2 col-md-3 col-sm-4 col-xs-6">
   <div class="thumbnail plain" title="some message">
-    <div class="">
+    <div class="moviethumb">
       <a href="#movies/<%= _id %>" class="plain">
         <video class="img-responsive" controls poster="<%= poster %>" >
             <source src="<%= trailer %>" type="video/mp4"/>
@@ -9,7 +9,7 @@
         </video>
 
         <div class="">
-          <h5><%= title %> (<%= released %>)<h5>
+          <h4><%= title %> (<%= released %>)</h4>
             <p>Directed by: <%= director %><br/>
             Starring: <%= starring %><br/>
            Genres: <%= genre %> Rating: <%= starring %></p>

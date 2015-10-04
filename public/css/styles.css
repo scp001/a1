@@ -62,3 +62,10 @@ body{
 .btn{
 margin-top:5px;
 }
+
+.moviethumb{
+	background-color: black;
+}
+.moviethumb h4,p{
+  color: white;
+}
