@@ -12,8 +12,7 @@ splat.AppRouter = Backbone.Router.extend({
 		"About": "about",
 		"movies" : "borwseMovie",
 		"movies/add": "addMovie",
-		"movies/:id": "editMovie",
-		
+		"movies/:id": "editMovie",		
 	},
 	
 	// When an instance of an AppRouter is declared, create a Header view
@@ -77,14 +76,22 @@ splat.AppRouter = Backbone.Router.extend({
 			this.movieCollection = new splat.Movies();
 		}
 		
-		// If the Browse view doesn't exist, instantiate one
-		this.browseView = new splat.MovieThumb({collection: this.movieCollection});
-
-		// insert the rendered Details view element into document DOM
-		$('#content').html(this.browseView.render().el);
-		this.headerView.selectMenuItem("browse-menu");
-		document.body.style.backgroundImage = "none";
-		document.body.style.backgroundColor = "black";
+		var self = this;
+		// reinitialize storage if necessary
+		var moviesFetch = this.movieCollection.fetch();
+		moviesFetch.done(function(collection, response){
+			// instantiate a browse view
+			self.browseView = new splat.MovieThumb({collection: self.movieCollection});
+		
+			// insert the rendered Details view element into document DOM
+			$('#content').html(self.browseView.render().el);
+			self.headerView.selectMenuItem("browse-menu");
+			document.body.style.backgroundImage = "none";
+			document.body.style.backgroundColor = "black";
+		}).fail(function(collection, response){
+			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-error")
+			spalt.utils.hideNotice();
+		});
 	},
 	
 	editMovie: function(id) {
@@ -109,6 +116,7 @@ splat.AppRouter = Backbone.Router.extend({
 			document.body.style.backgroundColor = "black";
 		}).fail(function(collection, response){
 			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-error")
+			spalt.utils.hideNotice();
 		})
 		
 		

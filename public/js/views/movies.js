@@ -20,23 +20,23 @@ splat.MovieThumb = Backbone.View.extend({
 
     // render the View
     render: function () {
-		var markup;
+		var self = this;
 		this.movieThumbLoad.done(function(markup) {
 		// Now "markup" contains the response to the $.get() request.
 		// Turn this markup into a function using Underscore's
 		// template() // function.
 		// Finally apply the moviesTemplate shown below to your
 		// movies collection and the template function you just created.
-			
+			self.template = _.template(markup);
 		});
 		
-		var self = this;
-		markup = this.moviesTemplate({
-			movies: self.collection, movieTemplate: self.template,
+
+		var moviesMarkup = this.moviesTemplate({
+			movies: this.collection, movieTemplate: this.template,
 		});
 		
 		// set the view element ($el) HTML content using its template
-		this.$el.html(this.template(markup));
+		this.$el.html(moviesMarkup);
 		return this;    // support method chaining
     }
 
