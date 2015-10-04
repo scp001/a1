@@ -66,6 +66,17 @@ margin-top:5px;
 .moviethumb{
 	background-color: black;
 }
+
 .moviethumb h4,p{
   color: white;
+  text-align: right;
+}
+
+.thumnailstyle{
+	border-width: 1px;
+	border-radius: 4px;
+	border-color: #25383C;
+	margin-right: 5px;
+	font-size: 80%;
+	position: relative;
 }
