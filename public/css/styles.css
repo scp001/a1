@@ -81,8 +81,13 @@ margin-top:5px;
 	position: relative;
 	font-family: Andika;
 }
+
 .liststyle{
 	list-style-type: none;
 	margin-left: 0px;
 	margin-right: 15px;
+}
+
+.infostyle{
+	word-break: break-all;
 }
