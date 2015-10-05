@@ -4,7 +4,7 @@
 // declare splat-app namespace if it doesn't already exist
 var splat =  splat || {};
 
-// note View-name (About) matches name of template file About.html
+// note model for movie
 splat.MovieModel = Backbone.Model.extend({
 	idAttribute: "_id", //model id in server side	
 	

@@ -4,13 +4,13 @@
 // declare splat-app namespace if it doesn't already exist
 var splat = splat || {};
 
-// note collection for movie model
-splat.Movies = Backbone.Collection.extend({
+// note collection for review model
+splat.Reviews = Backbone.Collection.extend({
 
     // identify collections model
-    model: splat.MovieModel,
+    model: splat.ReviewModel,
 
-    // save movie models under "splat" namespace,
+    // save review models under "splat" namespace,
     // since localStorage uses a flat namespace shared by all apps
     localStorage: new Backbone.LocalStorage('splat')
 

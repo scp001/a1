@@ -7,12 +7,14 @@ var splat =  splat || {};
 // note View-name (MovieThumb) matches name of template file MovieThumb.html
 splat.MovieThumb = Backbone.View.extend({
 	
+	// template function for the html
 	moviesTemplate: _.template([
 		"<% movies.each(function(movie) { %>",
 	    "<%= movieTemplate(movie.toJSON()) %>",
 		"<% }); %>",
     ].join('')),
-	
+
+	// initialize the view	
 	initialize: function() {
 		// initiates a request to retrieve the tempalte
 		this.movieThumbLoad = $.get('tpl/MovieThumb.html');
@@ -21,11 +23,13 @@ splat.MovieThumb = Backbone.View.extend({
     // render the View
     render: function () {
 		var self = this;
+		
+		// if the bind is done
 		this.movieThumbLoad.done(function(markup) {
 			self.template = _.template(markup);
 		});
-		
 
+		// define the template function with variables		
 		var moviesMarkup = this.moviesTemplate({
 			movies: this.collection, movieTemplate: this.template,
 		});

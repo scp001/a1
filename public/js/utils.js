@@ -59,5 +59,16 @@ splat.utils = {
 
     hideNotice: function() {
         $('.alert').stop().delay(5000).fadeOut();
+    },
+    
+    addValidationError: function(field, message){
+    		// use jQuery to address input field by its name attribute
+    		var controlGroup = field.parent();
+    		controlGroup.addClass('error');
+    		$('.help-block', controlGroup).html(message);
+    },
+    	
+    removeValidationError: function (field){
+    	// similiar to above
     }
 };
