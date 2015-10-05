@@ -63,16 +63,12 @@ body{
 margin-top:5px;
 }
 
-.moviethumb{
-	background-color: black;
+.thumbtext h4, .thumbtext p{
+	color: white;
+	text-align: right;
 }
 
-.moviethumb h4,p{
-  color: white;
-  text-align: right;
-}
-
-.thumnailstyle{
+.thumbnailstyle{
 	border-width: 1px;
 	border-radius: 4px;
 	border-color: #25383C;
@@ -80,7 +76,7 @@ margin-top:5px;
 	font-size: 80%;
 	position: relative;
 	font-family: Andika;
-	
+	background-color: black;
 }
 
 .liststyle{

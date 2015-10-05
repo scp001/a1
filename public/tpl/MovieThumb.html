@@ -1,7 +1,7 @@
 <li class='liststyle'>
 <div class="thumbnails row-fluid col-lg-2 col-md-3 col-sm-4 col-xs-6">
-  <div class="thumbnail plain thumnailstyle moviethumb" title="Browse Movies">
-    <div class="">
+  <div class="thumbnail plain thumbnailstyle" title="Browse Movies">
+    <div class="thumbtext">
       <a href="#movies/<%= _id %>" class="plain">
         <video class="img-responsive" controls preload="none" poster="<%= poster %>" >
             <source src="<%= trailer %>" type="video/mp4"/>
@@ -13,7 +13,8 @@
           <h4><%= title %> (<%= released %>)</h4>
             <p>Directed by: <%= director %><br/>
             Starring: <%= starring %><br/>
-           Genres: <%= genre %> Rating: <%= starring %></p>
+            Genres: <%= genre %> Rating: <%= rating %>
+			</p>
          </div>
       </a>
     </div>
