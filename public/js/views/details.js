@@ -79,7 +79,19 @@ splat.Details = Backbone.View.extend({
 		});
 		}
 	},
+	
 	change: function (event) {
+		this.model.set({
+				title: $("#title").val(),
+				released: $("#released").val(),
+				director: $("#director").val(),
+				rating: $("#rating").val(),
+				starring: $("#starring").val(),
+				duration: $("#duration").val(),
+				genre: $("#genre").val(),
+				synopsis: $("#synopsis").val(),
+				trailer: $("#trailer").val(),
+		});
         // Remove any existing alert message
         splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanet, click "Save Changes" button', 'alert-info');
         splat.utils.hideNotice()  
