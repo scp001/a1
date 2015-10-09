@@ -17,6 +17,11 @@ splat.Details = Backbone.View.extend({
 		$.get('tpl/MovieForm.html', function(data){
 			var template = _.template(data);
 			self.$('#movieform').append(template(self.model.toJSON()));
+		});	
+
+		$.get('tpl/MovieImg.html', function(data){
+			var template = _.template(data);
+			self.$('#movieimg').append(template(self.model.toJSON()));
 		});		
 				
 		return this;    // support method chaining
