@@ -11,8 +11,15 @@ splat.Review = Backbone.View.extend({
     render: function () {
 
 		// set the view element ($el) HTML content using its template
-		this.$el.html(this.tempalte);
-		return this;    // support method chaining
+		this.$el.html(this.template(this.model.toJSON()));
+		
+		var self = this;
+		// instantiate a MovieForm subview and append its markup to designated tag in self
+		$.get('tpl/Reviewer.html', function(data){
+			var template = _.template(data);
+			self.$('#reviewer').append(template(self.model.toJSON()));
+		});	
+
     }
 
 });

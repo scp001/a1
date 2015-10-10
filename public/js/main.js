@@ -12,7 +12,9 @@ splat.AppRouter = Backbone.Router.extend({
 		"About": "about",
 		"movies" : "borwseMovie",
 		"movies/add": "addMovie",
-		"movies/:id": "editMovie",		
+		"movies/:id": "editMovie",
+		"movies/:id/reviews": "addReview",
+
 	},
 	
 	// When an instance of an AppRouter is declared, create a Header view
@@ -118,10 +120,30 @@ splat.AppRouter = Backbone.Router.extend({
 		}).fail(function(collection, response){
 			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-error")
 			spalt.utils.hideNotice();
-		})
+		})			
+	},
+
+	addReview: function(id) {
+
+		// instantiate a movie collection
+		if (!this.reviewCollection){
+			this.reviewCollection = new splat.Reviews();
+		}
+
+		var reviewsModel = new splat.ReviewModel();
+
 		
+		// instantiate a reviews view
+		this.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection});
 		
-	}
+		// insert the rendered Details view element into document DOM
+		$('#content').html(this.reviewsView.render().el);
+		this.headerView.selectMenuItem("add-menu");
+		document.body.style.backgroundImage = "none";
+		document.body.style.backgroundColor = "black";
+
+	},
+
 });
 
 // Load HTML templates for Home, Header, About views, and when
