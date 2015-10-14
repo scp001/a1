@@ -33,6 +33,8 @@ splat.Details = Backbone.View.extend({
 		"change .form-control" : "change",
 		"click #moviesave" : "addHandler",
 		"click #moviedel" : "deleteHandler",
+		"dragover #detailsImage" : "dragoverHandler",
+		"drop #detailsImage" : "dropHandler",
 	},
 
 	// add handler event
@@ -53,7 +55,6 @@ splat.Details = Backbone.View.extend({
 				genre: $("#genre").val(),
 				synopsis: $("#synopsis").val(),
 				trailer: $("#trailer").val(),
-				poster: $("#detailsImg").src(),
 			  },{
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {   		
@@ -82,7 +83,6 @@ splat.Details = Backbone.View.extend({
 				genre: $("#genre").val(),
 				synopsis: $("#synopsis").val(),
 				trailer: $("#trailer").val(),
-				poster: $("detailsImg").src(),
 			}, {
 			wait: true,  // don't create client model until server responds
     		success: function(response) {   		
