@@ -53,6 +53,7 @@ splat.Details = Backbone.View.extend({
 				genre: $("#genre").val(),
 				synopsis: $("#synopsis").val(),
 				trailer: $("#trailer").val(),
+				poster: $("#detailsImg").src(),
 			  },{
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {   		
@@ -81,6 +82,7 @@ splat.Details = Backbone.View.extend({
 				genre: $("#genre").val(),
 				synopsis: $("#synopsis").val(),
 				trailer: $("#trailer").val(),
+				poster: $("detailsImg").src(),
 			}, {
 			wait: true,  // don't create client model until server responds
     		success: function(response) {   		
@@ -147,5 +149,75 @@ splat.Details = Backbone.View.extend({
          		splat.utils.hideNotice();
     		}
     	});
+	},
+
+	// avoid multi-upload cost if user reselects image
+	selectImg: function(event){
+		// set object attribute for image uploader
+		this.pictureFile = event.target.files[0];
+		// if the file is image, read it
+		if (this.pictureFile.type.match(/^\.(jpg|jpeg|png|gif)$/)){
+			this.imageRead(this.pictureFile, this.pictureFile.type);
+		}else{
+			console.log("The file is not a picture");
+		}
+	},
+
+	// Read pictureFile from file system
+	imageRead: function(pictureFile, type){
+		var self = this;
+		var reader = new FileReader();
+		// callback for when read operation is ready
+		reader.onload = function(event){
+			var targetImgElt = $("#detailsImage")[0];
+			targetImgElt.src = reader.result;
+			self.model.set('poster', reader.result);
+		};
+		// read image File
+		reader.readAsDataURL(pictureFile);	
+	},
+	
+	// Handle drag-and-drop event
+	dragoverHandler: function(event){
+		// don't let parent event catch event
+		event.stopPropagation();
+		// prevent default to enable drop event
+		event.preventDefault();
+		// use origion event
+		event.origionEvent.dataTransfer.dropEffect = 'copy';
+	},
+
+	dropHandler: function(event){
+		// don't let parent event catch event
+		event.stopPropagation();
+		// prevent default
+		event.preventDefault();
+		var ev = event.origionEvent;
+		// set object attribute for use by 
+		this.pictureFile = ev.dataTransfer.files[0];
+		// only process image files
+		if(this.pictureFile.type.match(/^.(jpg|jpeg|png|gif)$/)){
+			// read image
+			this.imageRead(this.pictureFile, this.pictureFile.type);
+		}else{
+			console.log("The file is not a picture");
+		}
+	},
+
+	// Resize sourceImg, returning result as a DataURL value. Type,
+	// quality are optional params for image-type and quality setting
+	resize: function(sourceImg, type, quality) {
+		var type = type || "image/jpeg"; // default MIME image type
+		var quality = quality || "0.95"; // tradeoff quality vs size
+		var image = new Image(), MAX_HEIGHT = 300, MAX_WIDTH = 450;
+		image.src = sourceImg;
+		image.height = image.height // ADD CODE to scale height
+		image.width = image.width // ADD CODE to scale height
+		var canvas = document.createElement("canvas");
+		canvas.width = image.width; // scale canvas to match image
+		canvas.height = image.height;
+		var ctx = canvas.getContext("2d"); // get 2D rendering context
+		ctx.drawImage(image,0,0, image.width, image.height); // render
+		return canvas.toDataURL(type, quality);
 	},
 });
