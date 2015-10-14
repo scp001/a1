@@ -92,3 +92,11 @@ margin-top:5px;
 .inline { 
 display: inline-block; 
 }
+
+.error label, .error span{
+	color: red;
+}
+
+.error input{
+	border: 2px solid red;
+}
