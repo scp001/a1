@@ -24,8 +24,7 @@ splat.MovieModel = Backbone.Model.extend({
       poster: "img/placeholder.png",  // movie-poster image URL
       dated: new Date(),  // date of movie posting
 	},
-	
-	
+		
 	trailer: "https://archive.org/details/movies", // trailer URL
 
 	validators : {
@@ -60,7 +59,7 @@ splat.MovieModel = Backbone.Model.extend({
 		},
 		
 		synopsis: function(value){
-			var synopsisRegex = /^(\w)+$/;
+			var synopsisRegex = /^[\w ]+$/;
 			return (value && synopsisRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a non-empty word list"};
 		},
 		
@@ -74,9 +73,7 @@ splat.MovieModel = Backbone.Model.extend({
 	validateItem: function(key) {
 		// if a validator is defined on this key
 		// test it, else defaults to valid
-		return (this.validators[key]) ?
-		this.validators[key](this.get(key))
-		: {isValid: true};
+		return (this.validators[key]) ? this.validators[key](this.get(key)) : {isValid: true};
 	},
 
 });
