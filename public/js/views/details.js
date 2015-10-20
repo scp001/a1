@@ -44,30 +44,34 @@ splat.Details = Backbone.View.extend({
 	addHandler: function() {
 		// Remove any existing alert message
 		splat.utils.removeNotice();
-		
-		var pass = true;	
-		for (var element in this.model.defaults){
-			console.log(element);	
+
+		// Pass if there is no validation error
+		var pass = true;
+		// loop through all defaults
+		for (var element in this.model.defaults){	
 			// Run validation rule on changed item
 			var check = this.model.validateItem(element);		
 			// check is tuple <isValid: Boolean, message: String>
 			if (check.isValid) {
-        			splat.utils.hideNotice();
+        		splat.utils.removeValidationError(element);
         	}
 			else{
 				pass = false;
 				splat.utils.addValidationError(element, check.message);
 			}
 		}
-		
+
+		// return if there is at least one error and show error message
 		if(!pass){
-			spalt.utils.showNotice('Fail','Errors','alert-danger' );
+			splat.utils.showNotice('Fail','Errors need to be fixed!','alert-danger' );
+			splat.utils.hideNotice();
 			return;
 		}
 
 		// if the model is already created
 		if(this.model.id){
 			var oldModel = this.collection.get(this.model.id);
+			// save model to collection
 			oldModel.save(this.model,{
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {   		
@@ -111,10 +115,9 @@ splat.Details = Backbone.View.extend({
 		splat.utils.removeNotice();
 		// object to hold form-field name:value pairs
 		var changeObj = {};
-		// Remove any existing alert message
+		
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
-		splat.utils.hideNotice();
 		changeObj[event.target.name] = event.target.value;
         this.model.set(changeObj);
         splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
