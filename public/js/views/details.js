@@ -38,29 +38,33 @@ splat.Details = Backbone.View.extend({
 		"change #uploadPic" : "selectImg",
 	},
 
+	
+
 	// add handler event
 	addHandler: function() {
 		// Remove any existing alert message
 		splat.utils.removeNotice();
-		var key = ["title", "released"];
-		var i;
-		var flag = true;
-		for (i = 0; i < key.length; i++) { 
-    		var check = this.model.validateItem($('#' + key[i]).val());
-    		console.log($('#' + key[i]).val());
-    		if (check.isValid) {
-        		splat.utils.hideNotice();
+		
+		var pass = true;	
+		for (var element in this.model.defaults){
+			console.log(element);	
+			// Run validation rule on changed item
+			var check = this.model.validateItem(element);		
+			// check is tuple <isValid: Boolean, message: String>
+			if (check.isValid) {
+        			splat.utils.hideNotice();
 			}
 			else{
-				splat.utils.addValidationError(key[i], check.message);
-				flag = false;
+				pass = false;
+				splat.utils.addValidationError(element, check.message);
 			}
 		}
-		console.log(flag);
-		if (flag === false){
-			return false;
-		}
 		
+		if(!pass){
+			spalt.utils.showNotice('Fail','Errors','alert-danger' );
+			return;
+		}
+
 		// if the model is already created
 		if(this.model.id){
 			var oldModel = this.collection.get(this.model.id);
@@ -68,11 +72,11 @@ splat.Details = Backbone.View.extend({
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {   		
 					// later, we'll navigate to the browse view upon success
-        			splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true, remove:false});
+        			splat.app.navaigate('#movies/' + response.id, {replace:true, trigger:true, remove:false});
 					// notification panel, defined in section 2.6
-        			splat.utils.showNotice('Success', "Movie updated", 'alert-success')
+        			splat.utils.shwowNotice('Success', "Movie updated", 'alert-success')
         			splat.utils.hideNotice()
-    			},
+    			},	
     			error: function(response) {
     				// display the error response from the server
         			splat.utils.requestFailed(response);
@@ -120,7 +124,7 @@ splat.Details = Backbone.View.extend({
 		var check = this.model.validateItem(event.target.name);		
 		// check is tuple <isValid: Boolean, message: String>
 		if (check.isValid) {
-        	splat.utils.hideNotice();
+        		splat.utils.hideNotice();
 		}
 		else{
 			splat.utils.addValidationError(event.target.name, check.message);
