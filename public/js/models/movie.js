@@ -64,7 +64,7 @@ splat.MovieModel = Backbone.Model.extend({
 		},
 
 		rating: function(value){
-			var ratingRegex = /^G|PG|PG-13|R|NC-17|NR$/;
+			var ratingRegex = /^(G|PG|PG-13|R|NC-17|NR)$/;
 			return (value && ratingRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a valid rating"};
 		},
 		
