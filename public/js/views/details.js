@@ -42,6 +42,11 @@ splat.Details = Backbone.View.extend({
 	addHandler: function() {
 		// Remove any existing alert message
 		splat.utils.removeNotice();
+		var valid = this.model.validateAll();
+		if (!valid.isValid) {
+			splat.utils.addValidationError(event.target.name, valid.message);
+			return false;
+		}
 		
 		// if the model is already created
 		if(this.model.id){

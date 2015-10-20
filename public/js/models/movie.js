@@ -30,37 +30,37 @@ splat.MovieModel = Backbone.Model.extend({
 	validators : {
 		title: function(value){
 			var titleRegex = /^[a-zA-Z0-9 \,\.\!\?\-\'\*]+$/;
-			return (value.length > 0 && titleRegex.test(value)) ? {isValid: true} : {isValid: false, message: "Only 1 or more letters-digits-spaces allowed"};
+			return (value && titleRegex.test(value)) ? {isValid: true} : {isValid: false, message: "Only 1 or more letters-digits-spaces allowed"};
 		},
 		
 		released: function(value){
 			var releasedRegex = /^(19[1-9][0-9]|200[0-9]|201[0-6])$/;
-			return (value.length > 0 && releasedRegex.test(value)) ? {isValid: true} : {isValid: false, message: "Release Date must be between 1910 and 2016"};
+			return (value && releasedRegex.test(value)) ? {isValid: true} : {isValid: false, message: "Release Date must be between 1910 and 2016"};
 		},
 		
 		director: function(value){
 			var directorRegex = /^[a-zA-Z0-9 \,\.\!\?\-\'\*]+$/;
-			return (value.length > 0 && directorRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a director's name"};
+			return (value && directorRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a director's name"};
 		},
 		
 		starring: function(value){
 			var starringRegex = /^(([a-zA-Z \-\']+),?)+$/;
-			return (value.length > 0 && starringRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter names"};
+			return (value && starringRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter names"};
 		},
 		
 		genre: function(value){
 			var genreRegex = /^(([a-zA-Z \-\']+),?)+$/;
-			return (value.length > 0 && genreRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter string patterns"};
+			return (value && genreRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter string patterns"};
 		},
 		
 		duration: function(value){
 			var durationRegex = /^([0-9]|[1-9][0-9]|[1-9][0-9][0-9])$/;
-			return (value.length > 0 && durationRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter 0-999"};
+			return (value && durationRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter 0-999"};
 		},
 		
 		synopsis: function(value){
 			var synopsisRegex = /^[\w ]+$/;
-			return (value.length > 0 && synopsisRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a non-empty word list"};
+			return (value && synopsisRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a non-empty word list"};
 		},
 		
 		trailer: function(value){
@@ -76,4 +76,15 @@ splat.MovieModel = Backbone.Model.extend({
 		return (this.validators[key]) ? this.validators[key](this.get(key)) : {isValid: true};
 	},
 
+	// ValidationAll function
+	validateAll: function () {
+    var messages = {};
+	if (this.validators.title(this.get("title")).isValid === false) {
+		messages.title = this.validators.title(this.get("title")).message;
+	}
+	if (this.validators.released(this.get("released")).isValid === false) {
+		messages.released = this.validators.released(this.get("released")).message;
+	}
+	return _.size(messages) > 0 ? {isValid: false, messages: messages} : {isValid: true};
+	}
 });
