@@ -89,21 +89,20 @@ splat.Details = Backbone.View.extend({
 		splat.utils.removeNotice();
 		// object to hold form-field name:value pairs
 		var changeObj = {};
-		
+		// Remove any existing alert message
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
 		changeObj[event.target.name] = event.target.value;
-		// reflect changes back to the model
 		this.model.set(changeObj);
+		splat.utils.removeValidationError(event.target.name);	
+		// reflect changes back to the model
+		splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
 		
 		// Run validation rule on changed item
 		var check = this.model.validateItem(event.target.name);
 		
 		// check is tuple <isValid: Boolean, message: String>
 		if (check.isValid) {
-			splat.utils.removeValidationError(event.target.name);
-			// Remove any existing alert message
-        	splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
         	splat.utils.hideNotice();
 		}
 		else{
