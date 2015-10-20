@@ -75,16 +75,4 @@ splat.MovieModel = Backbone.Model.extend({
 		// test it, else defaults to valid
 		return (this.validators[key]) ? this.validators[key](this.get(key)) : {isValid: true};
 	},
-
-	// ValidationAll function
-	validateAll: function () {
-    var messages = {};
-	if (this.validators.title(this.get("title")).isValid === false) {
-		messages.title = this.validators.title(this.get("title")).message;
-	}
-	if (this.validators.released(this.get("released")).isValid === false) {
-		messages.released = this.validators.released(this.get("released")).message;
-	}
-	return _.size(messages) > 0 ? {isValid: false, messages: messages} : {isValid: true};
-	}
 });

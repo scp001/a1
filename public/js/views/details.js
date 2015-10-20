@@ -42,9 +42,22 @@ splat.Details = Backbone.View.extend({
 	addHandler: function() {
 		// Remove any existing alert message
 		splat.utils.removeNotice();
-		var valid = this.model.validateAll();
-		if (!valid.isValid) {
-			splat.utils.addValidationError(event.target.name, valid.message);
+		var key = ['title', 'released'];
+		var i;
+		var flag = true;
+		for (i = 0; i < key.length; i++) { 
+    		var check = this.model.validateItem($('#' + key[i]).val());
+    		console.log($('#' + key[i]).val());
+    		if (check.isValid) {
+        		splat.utils.hideNotice();
+			}
+			else{
+				splat.utils.addValidationError(key[i], check.message);
+				flag = false;
+			}
+		}
+		console.log(flag);
+		if (flag === false){
 			return false;
 		}
 		
