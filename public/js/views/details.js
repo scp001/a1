@@ -47,7 +47,7 @@ splat.Details = Backbone.View.extend({
 		var flag = true;
 		for (i = 0; i < key.length; i++) { 
     		var check = this.model.validateItem($('#' + key[i]).val());
-    		console.log($('#' + key[i]).val());
+    		console.log(check);
     		if (check.isValid) {
         		splat.utils.hideNotice();
 			}
@@ -111,16 +111,17 @@ splat.Details = Backbone.View.extend({
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
 		changeObj[event.target.name] = event.target.value;
-		this.model.set(changeObj);
+		
 		splat.utils.removeValidationError(event.target.name);	
 		// reflect changes back to the model
-		splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
 		
 		// Run validation rule on changed item
 		var check = this.model.validateItem(event.target.name);		
 		// check is tuple <isValid: Boolean, message: String>
 		if (check.isValid) {
         	splat.utils.hideNotice();
+        	this.model.set(changeObj);
+        	splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
 		}
 		else{
 			splat.utils.addValidationError(event.target.name, check.message);
