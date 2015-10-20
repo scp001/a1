@@ -121,6 +121,7 @@ splat.Details = Backbone.View.extend({
 		changeObj[event.target.name] = event.target.value;
         this.model.set(changeObj);
         splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
+		splat.utils.hideNotice();
 		// reflect changes back to the model
 		
 		// Run validation rule on changed item
