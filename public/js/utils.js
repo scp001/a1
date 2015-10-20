@@ -68,7 +68,7 @@ splat.utils = {
     addValidationError: function(field, message){
     	// use jQuery to address input field by its name attribute
     	var controlGroup = $('#' + field).parent().parent();
-    	controlGroup.addClass('error');
+    	controlGroup.addClass('has-error');
     	$('.help-block', controlGroup).html(message);
     },
     	

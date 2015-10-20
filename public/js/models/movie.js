@@ -20,12 +20,10 @@ splat.MovieModel = Backbone.Model.extend({
       synopsis: "",  // brief outline of the movie
       freshTotal: 0.0,   // cumulative total of review fresh (1.0) votes
       freshVotes: 0.0,   // number of review ratings
-      trailer: null,  // URL for trailer/movie-streaming
+      trailer: "",  // URL for trailer/movie-streaming
       poster: "img/placeholder.png",  // movie-poster image URL
       dated: new Date(),  // date of movie posting
 	},
-		
-	trailer: "https://archive.org/details/movies", // trailer URL
 
 	validators : {
 		title: function(value){
@@ -69,7 +67,7 @@ splat.MovieModel = Backbone.Model.extend({
 		},
 		
 		trailer: function(value){
-			var trailerRegex = /(^$|^(http|https):\/\/www\.[a-zA-Z0-9]+\.com$)/;
+			var trailerRegex = /(^$)|(^(http|https):\/\/www\.[a-zA-Z0-9]+\.(com|ca)$)/;
 			return (trailerRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a valid url"};
 		},
 	},
