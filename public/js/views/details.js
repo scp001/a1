@@ -42,7 +42,7 @@ splat.Details = Backbone.View.extend({
 	addHandler: function() {
 		// Remove any existing alert message
 		splat.utils.removeNotice();
-		var key = ['title', 'released'];
+		var key = ["title", "released"];
 		var i;
 		var flag = true;
 		for (i = 0; i < key.length; i++) { 
@@ -117,8 +117,7 @@ splat.Details = Backbone.View.extend({
 		splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
 		
 		// Run validation rule on changed item
-		var check = this.model.validateItem(event.target.name);
-		
+		var check = this.model.validateItem(event.target.name);		
 		// check is tuple <isValid: Boolean, message: String>
 		if (check.isValid) {
         	splat.utils.hideNotice();
