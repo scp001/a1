@@ -53,6 +53,7 @@ splat.Details = Backbone.View.extend({
 			// check is tuple <isValid: Boolean, message: String>
 			if (check.isValid) {
         			splat.utils.hideNotice();
+        	}
 			else{
 				pass = false;
 				splat.utils.addValidationError(element, check.message);
@@ -113,23 +114,18 @@ splat.Details = Backbone.View.extend({
 		// Remove any existing alert message
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
+		splat.utils.hideNotice();
 		changeObj[event.target.name] = event.target.value;
-		
-		splat.utils.removeValidationError(event.target.name);	
+        this.model.set(changeObj);
+        splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
 		// reflect changes back to the model
 		
 		// Run validation rule on changed item
 		var check = this.model.validateItem(event.target.name);		
 		// check is tuple <isValid: Boolean, message: String>
 		if (check.isValid) {
-<<<<<<< HEAD
-        		splat.utils.hideNotice();
-=======
-        	splat.utils.hideNotice();
-        	this.model.set(changeObj);
-        	splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
->>>>>>> 757802ecf9a2b3fbb127a7e330e5dc97931d24f2
-		}
+        	splat.utils.removeValidationError(event.target.name);
+        }
 		else{
 			splat.utils.addValidationError(event.target.name, check.message);
 		}
