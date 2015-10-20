@@ -62,10 +62,15 @@ splat.MovieModel = Backbone.Model.extend({
 			var synopsisRegex = /^[\w ]+$/;
 			return (value && synopsisRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a non-empty word list"};
 		},
+
+		rating: function(value){
+			var ratingRegex = /^G|PG|PG-13|R|NC-17|NR$/;
+			return (value && ratingRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a valid rating"};
+		},
 		
 		trailer: function(value){
 			var trailerRegex = /(^$|^(http|https):\/\/www\.[a-zA-Z0-9]+\.com$)/;
-			return (value.length > 0 && trailerRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a valid url"};
+			return (trailerRegex.test(value)) ? {isValid: true} : {isValid: false, message: "You must enter a valid url"};
 		},
 	},
 
