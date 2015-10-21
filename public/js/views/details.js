@@ -68,6 +68,7 @@ splat.Details = Backbone.View.extend({
 			return;
 		}
 
+		this.model.set("dated", new Date());
 		// if the model is already created
 		if(this.model.id){
 			var oldModel = this.collection.get(this.model.id);
