@@ -70,8 +70,6 @@ splat.Details = Backbone.View.extend({
 
 		// Remove any existing alert message
 		splat.utils.removeNotice();
-		// set new date before saving
-		this.model.set({"dated": new Date()});
 		// if the model is already created
 		if(this.model.id){
 			var oldModel = this.collection.get(this.model.id);
@@ -220,8 +218,8 @@ splat.Details = Backbone.View.extend({
 		var quality = quality || "0.95"; // tradeoff quality vs size
 		var image = new Image(), MAX_HEIGHT = 300, MAX_WIDTH = 450;
 		image.src = sourceImg;
-		image.height = MAX_HEIGHT;
-		image.width = MAX_WIDTH;
+		image.height = 282;
+		image.width = 375;
 		var canvas = document.createElement("canvas");
 		canvas.width = image.width; // scale canvas to match image
 		canvas.height = image.height;
