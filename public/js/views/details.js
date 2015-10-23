@@ -71,12 +71,12 @@ splat.Details = Backbone.View.extend({
 		// Remove any existing alert message
 		splat.utils.removeNotice();
 		// set new date before saving
-		this.model.set("dated", new Date());
+		this.model.set({"dated": new Date()});
 		// if the model is already created
 		if(this.model.id){
 			var oldModel = this.collection.get(this.model.id);
 			// save model to collection
-			oldModel.save(this.model,{
+			oldModel.save(this.model.attributes,{
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {
 					// notification panel, defined in section 2.6
@@ -85,8 +85,7 @@ splat.Details = Backbone.View.extend({
     			},	
     			error: function(response) {
     				// display the error response from the server
-					console.log(response);
-        			splat.utils.showNotice('Fail', "Movie was not sucessfully updated : " + response, 'alert-danger')
+        			splat.utils.showNotice('Fail', "Movie was not sucessfully updated", 'alert-danger')
         			splat.utils.hideNotice()        			
     			},
     		});
@@ -103,7 +102,7 @@ splat.Details = Backbone.View.extend({
     		},
     		error: function(response) {
     			// display the error response from the server
-        		splat.utils.showNotice('Fail', "Movie was not sucessfully added : " + response, 'alert-danger');
+        		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-danger');
         		splat.utils.hideNotice();
     		},
 		});

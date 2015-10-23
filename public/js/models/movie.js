@@ -29,7 +29,7 @@ splat.MovieModel = Backbone.Model.extend({
 	validators : {
 		// title regex
 		title: function(value){
-			var titleRegex = /^([a-zA-Z0-9]+[ \,\.\!\?\-\'\*]*)+$/;
+			var titleRegex = /^([ \,\.\!\?\-\'\*]*[a-zA-Z0-9]+[ \,\.\!\?\-\'\*]*)+$/;
 			return (value && titleRegex.test(value)) ? {isValid: true} : {isValid: false, message: "Only 1 or more letters-digits-spaces allowed"};
 		},
 		
