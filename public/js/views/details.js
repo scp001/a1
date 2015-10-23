@@ -68,6 +68,9 @@ splat.Details = Backbone.View.extend({
 			return;
 		}
 
+		// Remove any existing alert message
+		splat.utils.removeNotice();
+		// set new date before saving
 		this.model.set("dated", new Date());
 		// if the model is already created
 		if(this.model.id){
@@ -75,17 +78,15 @@ splat.Details = Backbone.View.extend({
 			// save model to collection
 			oldModel.save(this.model,{
 				wait: true,  // don't destroy client model until server responds
-    			success: function(response) {   		
-					// later, we'll navigate to the browse view upon success
-        			splat.app.navaigate('#movies/' + response.id, {replace:true, trigger:true, remove:false});
+    			success: function(response) {
 					// notification panel, defined in section 2.6
-        			splat.utils.shwowNotice('Success', "Movie updated", 'alert-success')
+        			splat.utils.showNotice('Success', "Movie updated", 'alert-success')
         			splat.utils.hideNotice()
     			},	
     			error: function(response) {
     				// display the error response from the server
-        			splat.utils.requestFailed(response);
-        			splat.utils.showNotice('Fail', "Movie was not sucessfully updated : " + response, 'alert-error')
+					console.log(response);
+        			splat.utils.showNotice('Fail', "Movie was not sucessfully updated : " + response, 'alert-danger')
         			splat.utils.hideNotice()        			
     			},
     		});
@@ -102,8 +103,7 @@ splat.Details = Backbone.View.extend({
     		},
     		error: function(response) {
     			// display the error response from the server
-        		splat.utils.requestFailed(response);
-        		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-error');
+        		splat.utils.showNotice('Fail', "Movie was not sucessfully added : " + response, 'alert-danger');
         		splat.utils.hideNotice();
     		},
 		});
@@ -153,7 +153,7 @@ splat.Details = Backbone.View.extend({
     		},
     		error: function(model, response) {
 				// display the error response from the server
-        		splat.utils.requestFailed(response);
+        		splat.utils.showNotice('Fail', 'Movie was not sucessfully deleted: ' + response, 'alert-danger');
          		splat.utils.hideNotice();
     		}
     	});

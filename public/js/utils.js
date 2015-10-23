@@ -50,6 +50,7 @@ splat.utils = {
         $.when.apply(null, deferreds).done(callback);
     },
 
+	// display notice on alert class
     showNotice: function(title, text, type) {
         $('.alert').removeClass("alert-error alert-warning alert-success alert-info alert-danger");
         $('.alert').addClass(type);
@@ -57,21 +58,25 @@ splat.utils = {
         $('.alert').show();
     },
 
+	// hide notice in 5 secs
     hideNotice: function() {
         $('.alert').stop().delay(5000).fadeOut();
     },
 	
+	// remove notive immediately
 	removeNotice: function() {
 		$('.alert').stop();
 	},
-    
+ 
+	// add error message to help-block
     addValidationError: function(field, message){
     	// use jQuery to address input field by its name attribute
     	var controlGroup = $('#' + field).parent().parent();
     	controlGroup.addClass('has-error');
     	$('.help-block', controlGroup).html(message);
     },
-    	
+    
+	// remove any error message
     removeValidationError: function (field){
     	// use jQuery to address input field by its name attribute
     	var controlGroup = $('#' + field).parent().parent();
