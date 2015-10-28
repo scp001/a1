@@ -23,7 +23,7 @@ var http = require('http'),   // ADD CODE
     methodOverride = require("method-override"),
     directory = require("serve-index"),
     errorHandler = require("errorhandler"),
-    //basicAuth = require("basic-auth-connect"),  // optional, for HTTP auth
+    basicAuth = require("basic-auth-connect"),  // optional, for HTTP auth
 
     // config is an object module, that defines app-config attribues,
     // such as "port", DB parameters
@@ -38,7 +38,7 @@ var app = express()  // Create Express app server
 app.set('port', process.env.PORT || config.port);
 
 // activate basic HTTP authentication (to protect your solution files)
-app.use(basicAuth('songzhi', 'cscc09'));  // REPLACE username/password
+app.use(basicAuth('songzhi', '12345'));  // REPLACE username/password
 
 // change param value to control level of logging  ... ADD CODE
 app.use(logger(config.env));  // 'default', 'short', 'tiny', 'dev'
@@ -58,6 +58,9 @@ app.use(multer({dest: __dirname + '/public/img/uploads/'}));
 // checks req.body for HTTP method overrides
 app.use(methodOverride());
 
+// load static html
+app.use(express.static(__dirname + ""));
+
 // App routes (RESTful API) - handler implementation resides in routes/splat.js
 
 // Perform route lookup based on HTTP method and URL.
@@ -71,6 +74,7 @@ app.get('/', splat.api);
 app.get('/movies/:id', splat.getMovie);
 
 // ADD CODE to support other routes listed on assignment handout
+
 
 // location of app's static content ... may need to ADD CODE
 app.use(express.static(__dirname + "/public"));

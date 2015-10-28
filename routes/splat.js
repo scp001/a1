@@ -13,7 +13,7 @@ var fs = require('fs'),
 
 // heartbeat response for server API
 exports.api = function(req, res){
-  res.status(200).send('<h3>Eatz API is running!</h3>');
+  res.status(200).send('<h3>Splat API is running!</h3>');
 };
 
 // retrieve an individual movie model, using it's id as a DB key
@@ -33,10 +33,10 @@ exports.getMovie = function(req, res){
 // upload an image file; returns image file-path on server
 exports.uploadImage = function(req, res) {
     // req.files is an object, attribute "file" is the HTML-input name attr
-    var filePath = req.files.src   // ADD CODE to get file path
-        fileType = req.files.type   // ADD CODE to get MIME type
+    var filePath = req.files.file.path,   // ADD CODE to get file path
+        fileType = req.files.file.mimetype,   // ADD CODE to get MIME type
         // extract the MIME suffix for the user-selected file
-        suffix = // ADD CODE
+        suffix = fileType.split(".")[1],
         // imageURL is used as the value of a movie-model poster field 
 	// id parameter is the movie's "id" attribute as a string value
         imageURL = 'img/uploads/' + req.params.id + suffix,
@@ -72,7 +72,7 @@ var MovieSchema = new mongoose.Schema({
 
 // Constraints
 // each title:director pair must be unique; duplicates are dropped
-MovieSchema.index(1);  // ADD CODE
+MovieSchema.index({"title":1, "director":1}, {unique:true, dropDups:true});  // ADD CODE
 
 // Models
 var movieModel = mongoose.model('Movie', MovieSchema);
