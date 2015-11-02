@@ -13,13 +13,22 @@ splat.Review = Backbone.View.extend({
 		// set the view element ($el) HTML content using its template
 		this.$el.html(this.template(this.model.toJSON()));
 		
-		var self = this;
-		// instantiate a MovieForm subview and append its markup to designated tag in self
-		$.get('tpl/Reviewer.html', function(data){
-			var template = _.template(data);
-			self.$('#reviewer').append(template(self.model.toJSON()));
-		});	
+		// render Reviewer subview
+		this.formView = new splat.MovieForm({model: this.model});
+		this.$('#movieform').append(this.formView.render().el);
 
-    }
+		// render ReviewThumbs subview
+		this.imgView = new splat.MovieImg({model: this.model});
+		this.$('#movieimg').append(this.imgView.render().el);
+
+		return this;
+    },
+
+    // remove subviews on close of Details view
+    onClose: function() {
+        if (this.formView) { this.formView.remove(); }
+        if (this.imgView) { this.imgView.remove(); }
+    },
+
 
 });
