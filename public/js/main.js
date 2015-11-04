@@ -14,6 +14,7 @@ splat.AppRouter = Backbone.Router.extend({
 		"movies/add": "addMovie",
 		"movies/:id": "editMovie",
 		"movies/:id/reviews": "addReview",
+		"reviewsView" : "addReview",
 
 	},
 	
@@ -118,38 +119,51 @@ splat.AppRouter = Backbone.Router.extend({
 			document.body.style.backgroundImage = "none";
 			document.body.style.backgroundColor = "black";
 		}).fail(function(collection, response){
-			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-error")
-			spalt.utils.hideNotice();
+			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger");
+			splat.utils.hideNotice();
 		})			
 	},
 
-	addReview: function(id) {
+	addReview: function() {
 
+		/*
 		// instantiate a movie collection
 		if (!this.reviewCollection){
 			this.reviewCollection = new splat.Reviews();
 		}
 
+		var self = this;
+		// reinitialize storage if necessary
+		var reviewsFetch = this.reviewCollection.fetch();
+		reviewsFetch.done(function(collection, response){
+			var reviewsModel = new splat.ReviewModel();
+			// instantiate a reviews view
+			self.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection});
+			// insert the rendered Details view element into document DOM
+			$('#content').html(this.reviewsView.render().el);
+			document.body.style.backgroundImage = "none";
+			document.body.style.backgroundColor = "black";
+		}).fail(function(collection, response){
+			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger");
+			splat.utils.hideNotice();
+		})
+		*/
 		var reviewsModel = new splat.ReviewModel();
-
-		
 		// instantiate a reviews view
-		this.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection});
-		
-		// insert the rendered Details view element into document DOM
+		this.reviewsView = new splat.ReviewsView({model:reviewsModel});
 		$('#content').html(this.reviewsView.render().el);
-		this.headerView.selectMenuItem("add-menu");
 		document.body.style.backgroundImage = "none";
 		document.body.style.backgroundColor = "black";
-
 	},
+
+
 
 });
 
 // Load HTML templates for Home, Header, About views, and when
 // template loading is complete, instantiate a Backbone router
 // with history.
-splat.utils.loadTemplates(['Home', 'Header', 'About', 'Details', 'MovieThumb'], function() {
+splat.utils.loadTemplates(['Home', 'Header', 'About', 'Details', 'MovieThumb', 'ReviewsView', 'Reviewer', 'ReviewThumbs'], function() {
 	splat.app = new splat.AppRouter();
 	Backbone.history.start();
 });

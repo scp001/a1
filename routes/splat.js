@@ -6,7 +6,7 @@ var fs = require('fs'),
     express = require("express"),
     url = require("url");
 
-// Implemention of splat API handlers:
+// Implementation of splat API handlers:
 
 // "exports" is used to make the associated name visible
 // to modules that "require" this file (in particular app.js)
@@ -30,11 +30,82 @@ exports.getMovie = function(req, res){
     });
 };
 
+exports.getMovies = function(req, res){
+	MovieModel.find({}, function(err, movies) {
+		if(err) {
+			res.status(500).send("Sorry, unable to retrieve all movies at this time ("
+				+err.message + ")");
+		}else{
+			res.status(200).send(movies);
+		}
+	});
+};
+
+exports.addMovie = function(req, res){
+	var newMovie = new MovieModel(req.body);
+	newMovie.save(function(err, movie) {
+	if(err) {
+		if(err.code == 11000){
+			res.status(403).send("Sorry, unable to create this movie: movie " + newMovie.title+
+				" directed by " + newMovie.director + " already exists");
+		} else {
+			res.status(500).send("Sorry, unable to create the movie at this time ("
+			+ err.message + ")");
+		}
+	} else {
+	    res.status(200).send(movie);
+	}
+	});
+};
+
+exports.editMovie = function(req, res) {
+	MovieModel.findById(req.params.id, function(err, movie) {
+        if (err) {
+            res.status(500).send("Sorry, unable to retrieve movie at this time (" 
+                +err.message+ ")" );
+        } else if (!movie) {
+            res.status(404).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
+        } else {
+        		var newMovie = req.body;
+        		delete newMovie["_id"];
+        		delete newMovie["__0"];
+            MovieModel.update(newMovie, function(err, message){
+					if(err){
+						res.status(500).send("Sorry, unable to edit movie at this time (" 
+						+err.message+ ")");
+					}  else {
+						res.status(200).send(message);			
+					}          
+            });
+        }
+    });
+	
+}
+
+exports.deleteMovie = function(req, res) {
+	MovieModel.findById(req.params.id, function(err, movie){
+	if(err) {
+	    res.status(500).send("Sorry, unable to delete the movie at this time ("
+		+ err.message + ")");
+	} else if (!movie) {
+	    res.status(404).send("Sorry, that movie does not exist");
+	} else {
+		MovieModel.remove({'_id':movie.id}, function(error, message){
+				if (err){
+					res.status(500).send("Sorry, unable to delete the movie (" +  message + ")");
+				} else{
+					res.status(200).send(message);
+				}
+		});
+	}
+	});
+}
+
 // upload an image file; returns image file-path on server
 exports.uploadImage = function(req, res) {
     // req.files is an object, attribute "file" is the HTML-input name attr
-    var filePath = req.files.file.path,   // ADD CODE to get file path
-        fileType = req.files.file.mimetype,   // ADD CODE to get MIME type
+    var filePath = req.files.file.path,
+        fileType = req.files.file.mimetype,
         // extract the MIME suffix for the user-selected file
         suffix = fileType.split(".")[1],
         // imageURL is used as the value of a movie-model poster field 
@@ -63,16 +134,21 @@ var MovieSchema = new mongoose.Schema({
     title: { type: String, required: true },
     director: { type: String, required: true },
     released: { type: String, required: true},
-    starring: { type: String, required: true},
+    starring: { type: [String], required: true},
     duration: { type: Number, required: true},
-    genre: { type: String, required: true},
+    genre: { type: [String], required: true},
     synopsis: { type: String, required: true},
-    // ADD CODE for other Movie attributes
+    rating : { type: String, required: true},
+    freshTotal : { type: Number, required: true},
+    freshVotes : { type: Number, required: true},
+    trailer : { type: String},
+    poster: { type: String, required: true},
+    dated: { type: Date, required: true},
 });
 
 // Constraints
 // each title:director pair must be unique; duplicates are dropped
-MovieSchema.index({"title":1, "director":1}, {unique:true, dropDups:true});  // ADD CODE
+MovieSchema.index({"title":1, "director":1}, {unique:true, dropDups:true});
 
 // Models
-var movieModel = mongoose.model('Movie', MovieSchema);
+var MovieModel = mongoose.model('Movie', MovieSchema);
