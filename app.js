@@ -9,9 +9,9 @@
  * the value returned by require(), in this case e.g. splat.api
  * The convention is use the same name for variable and module.
  */
-var http = require('http'),   // ADD CODE
+var http = require('http'),
     // NOTE, use the version of "express" linked to the assignment handout
-    express = require('express'),   // ADD CODE
+    express = require('express'),
     fs = require("fs"),
     path = require("path"),
     url = require("url"),
@@ -28,7 +28,7 @@ var http = require('http'),   // ADD CODE
     // config is an object module, that defines app-config attribues,
     // such as "port", DB parameters
     config = require("./config"),
-    splat = require('./routes/splat.js');  // route handlers ... ADD CODE
+    splat = require('./routes/splat.js');  // route handlers
 
 var app = express()  // Create Express app server
 
@@ -40,7 +40,7 @@ app.set('port', process.env.PORT || config.port);
 // activate basic HTTP authentication (to protect your solution files)
 app.use(basicAuth('songzhi', '12345'));  // REPLACE username/password
 
-// change param value to control level of logging  ... ADD CODE
+// change param value to control level of logging
 app.use(logger(config.env));  // 'default', 'short', 'tiny', 'dev'
 
 // use compression (gzip) to reduce size of HTTP responses
@@ -74,9 +74,12 @@ app.get('/', splat.api);
 app.get('/movies/:id', splat.getMovie);
 
 // ADD CODE to support other routes listed on assignment handout
+app.get('/movies', splat.getMovies);
+app.post('/movies', splat.addMovie);
+app.put('/movies/:id', splat.editMovie);
+app.delete('/movies/:id', splat.deleteMovie);
 
-
-// location of app's static content ... may need to ADD CODE
+// location of app's static content
 app.use(express.static(__dirname + "/public"));
 
 // return error details to client - use only during development
@@ -84,7 +87,7 @@ app.use(errorHandler({ dumpExceptions:true, showStack:true }));
 
 // Default-route middleware, in case none of above match
 app.use(function (req, res) {
-	// ADD CODE
+	res.status(404).send("Request not accepted.");
 });
 
 

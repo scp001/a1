@@ -5,7 +5,7 @@
 var splat =  splat || {};
 
 // note View-name (Review) matches name of template file Reviews.html
-splat.Review = Backbone.View.extend({
+splat.ReviewsView = Backbone.View.extend({
 
     // render the View
     render: function () {
@@ -14,20 +14,20 @@ splat.Review = Backbone.View.extend({
 		this.$el.html(this.template(this.model.toJSON()));
 		
 		// render Reviewer subview
-		this.formView = new splat.MovieForm({model: this.model});
-		this.$('#movieform').append(this.formView.render().el);
+		this.reviewerView = new splat.Reviewer({model: this.model});
+		this.$('#reviewer').append(this.reviewerView.render().el);
 
 		// render ReviewThumbs subview
-		this.imgView = new splat.MovieImg({model: this.model});
-		this.$('#movieimg').append(this.imgView.render().el);
+		this.reviewThumbsView = new splat.ReviewThumbs({model: this.model});
+		this.$('#reviewthumbs').append(this.reviewThumbsView.render().el);
 
 		return this;
     },
 
     // remove subviews on close of Details view
     onClose: function() {
-        if (this.formView) { this.formView.remove(); }
-        if (this.imgView) { this.imgView.remove(); }
+        if (this.reviewerView) { this.formView.remove(); }
+        if (this.reviewThumbsView) { this.imgView.remove(); }
     },
 
 

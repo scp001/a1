@@ -8,11 +8,11 @@ var splat =  splat || {};
 splat.ReviewModel = Backbone.Model.extend({
     // default value
 	defaults: {
-	  	freshness : 0.0  // fresh review value 1.0, rotten value 0.0
-		reviewName : "" // name of reviewer
-		reviewAffil : ""  // affiliation of reviewer
-		reviewText : ""  // review comments
-		movieId : ""  // id of reviewed movie
+	  	freshness : 0.0,  // fresh review value 1.0, rotten value 0.0
+		reviewName : "", // name of reviewer
+		reviewAffil : "",  // affiliation of reviewer
+		reviewText : "",  // review comments
+		movieId : "",  // id of reviewed movie
 	},
 
 });
