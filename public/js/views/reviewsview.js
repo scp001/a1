@@ -12,7 +12,7 @@ splat.ReviewsView = Backbone.View.extend({
 
 		// set the view element ($el) HTML content using its template
 		this.$el.html(this.template(this.model.toJSON()));
-		
+
 		// render Reviewer subview
 		this.reviewerView = new splat.Reviewer({model: this.model});
 		this.$('#reviewer').append(this.reviewerView.render().el);

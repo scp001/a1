@@ -122,8 +122,6 @@ display: inline-block;
     	display: block;
 }
 
-<<<<<<< HEAD
-=======
 .review{
 	color: #33CCFF;
 	font-size: 18px;
@@ -133,4 +131,21 @@ display: inline-block;
 	color: red;
 	font-size: 18px;
 }
->>>>>>> 6f0df3336dcc616defb1556e440a856f0e451067
+
+#reviewtext{
+	height: 150px;
+}
+
+#reviewer{
+	margin:10px;
+	padding:10px;
+}
+
+#reviewthumbs {
+	margin:10px;
+	padding:10px;
+}
+
+.reviewform {
+color:#555;
+}
