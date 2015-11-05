@@ -3,7 +3,7 @@
 }
 
 #content {
-    color: #FFF;   
+    color: #FFF;
 }
 
 body{
@@ -17,7 +17,7 @@ body{
     top: 30%;
     width: 100%;
     text-shadow: black 1px;
-    font-family: Verdana, Geneva, Helvetica; 
+    font-family: Verdana, Geneva, Helvetica;
     font-size: 36px;
 }
 
@@ -36,7 +36,7 @@ body{
 }
 
 .trans-button{
-	background-color: black;	
+	background-color: black;
 	border-radius: 4px;
 	color: #FFF;
 	white-space: normal;
@@ -89,8 +89,8 @@ margin-top:5px;
 	word-break: break-all;
 }
 
-.inline { 
-display: inline-block; 
+.inline {
+display: inline-block;
 }
 
 .error label, .error span{
@@ -122,3 +122,15 @@ display: inline-block;
     	display: block;
 }
 
+<<<<<<< HEAD
+=======
+.review{
+	color: #33CCFF;
+	font-size: 18px;
+}
+
+.rate{
+	color: red;
+	font-size: 18px;
+}
+>>>>>>> 6f0df3336dcc616defb1556e440a856f0e451067

@@ -11,24 +11,24 @@ splat.Details = Backbone.View.extend({
     render: function () {
 		// set the view element ($el) HTML content using its template
 		this.$el.html(this.template(this.model.toJSON()));
-		
+
 		var self = this;
 		// instantiate a MovieForm subview and append its markup to designated tag in self
 		$.get('tpl/MovieForm.html', function(data){
 			var template = _.template(data);
 			self.$('#movieform').append(template(self.model.toJSON()));
-		});	
+		});
 
 		// instantiate a MovieImg subview and append its markup to designated tag in self
 		$.get('tpl/MovieImg.html', function(data){
 			var template = _.template(data);
 			self.$('#movieimg').append(template(self.model.toJSON()));
-		});		
-				
+		});
+
 		return this;    // support method chaining
     },
-	
-	// define events	
+
+	// define events
 	events: {
 		"change .form-control" : "change",
 		"click #moviesave" : "addHandler",
@@ -38,7 +38,7 @@ splat.Details = Backbone.View.extend({
 		"change #uploadPic" : "selectImg",
 	},
 
-	
+
 
 	// add handler event
 	addHandler: function() {
@@ -48,9 +48,9 @@ splat.Details = Backbone.View.extend({
 		// Pass if there is no validation error
 		var pass = true;
 		// loop through all defaults
-		for (var element in this.model.defaults){	
+		for (var element in this.model.defaults){
 			// Run validation rule on changed item
-			var check = this.model.validateItem(element);		
+			var check = this.model.validateItem(element);
 			// check is tuple <isValid: Boolean, message: String>
 			if (check.isValid) {
         		splat.utils.removeValidationError(element);
@@ -80,18 +80,18 @@ splat.Details = Backbone.View.extend({
 					// notification panel, defined in section 2.6
         			splat.utils.showNotice('Success', "Movie updated", 'alert-success')
         			splat.utils.hideNotice()
-    			},	
+    			},
     			error: function(response) {
     				// display the error response from the server
         			splat.utils.showNotice('Fail', "Movie was not sucessfully updated", 'alert-danger')
-        			splat.utils.hideNotice()        			
+        			splat.utils.hideNotice()
     			},
     		});
 		} // create a new model in collection
 		else{
 			var newModel = this.collection.create(this.model, {
 			wait: true,  // don't create client model until server responds
-    		success: function(response) {   		
+    		success: function(response) {
 				// later, we'll navigate to the browse view upon success
         		splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true});
 				// notification panel, defined in section 2.6
@@ -106,14 +106,14 @@ splat.Details = Backbone.View.extend({
 		});
 		}
 	},
-	
+
 	// change event for form-control
 	change: function (event) {
 		// Remove any existing alert message
 		splat.utils.removeNotice();
 		// object to hold form-field name:value pairs
 		var changeObj = {};
-		
+
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
 		changeObj[event.target.name] = event.target.value;
@@ -121,9 +121,9 @@ splat.Details = Backbone.View.extend({
         splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
 		splat.utils.hideNotice();
 		// reflect changes back to the model
-		
+
 		// Run validation rule on changed item
-		var check = this.model.validateItem(event.target.name);		
+		var check = this.model.validateItem(event.target.name);
 		// check is tuple <isValid: Boolean, message: String>
 		if (check.isValid) {
         	splat.utils.removeValidationError(event.target.name);
@@ -133,11 +133,11 @@ splat.Details = Backbone.View.extend({
 		}
     },
 
-	// delete handler event	
+	// delete handler event
 	deleteHandler: function() {
 		// Remove any existing alert message
 		splat.utils.removeNotice();
-		
+
 		// Destroy the model
 		this.model.destroy({
 			wait: true,  // don't destroy client model until server responds
@@ -183,7 +183,7 @@ splat.Details = Backbone.View.extend({
 		reader.readAsDataURL(pictureFile);
 
 	},
-	
+
 	// Handle drag-and-drop picture
 	dragoverHandler: function(event){
 		// don't let parent element catch event
