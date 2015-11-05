@@ -30,5 +30,12 @@ splat.ReviewsView = Backbone.View.extend({
         if (this.reviewThumbsView) { this.imgView.remove(); }
     },
 
+    events: {
+		"click #moviesave" : "addReviewHandler"
+	},
 
+	// add handler event
+	addReviewHandler: function() {
+
+	},
 });
