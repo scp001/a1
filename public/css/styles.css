@@ -156,3 +156,8 @@ display: inline-block;
 	border-radius: 10px;
 	border: 2px solid #73AD21;
 }
+
+.fresh_rate{
+	color:black;
+	font-weight: bold;
+}
