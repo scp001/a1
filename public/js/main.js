@@ -126,7 +126,6 @@ splat.AppRouter = Backbone.Router.extend({
 
 	addReview: function() {
 
-		/*
 		// instantiate a movie collection
 		if (!this.reviewCollection){
 			this.reviewCollection = new splat.Reviews();
@@ -147,13 +146,7 @@ splat.AppRouter = Backbone.Router.extend({
 			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger");
 			splat.utils.hideNotice();
 		})
-		*/
-		var reviewsModel = new splat.ReviewModel();
-		// instantiate a reviews view
-		this.reviewsView = new splat.ReviewsView({model:reviewsModel});
-		$('#content').html(this.reviewsView.render().el);
-		document.body.style.backgroundImage = "none";
-		document.body.style.backgroundColor = "black";
+
 	},
 
 

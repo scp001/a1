@@ -14,11 +14,11 @@ splat.ReviewsView = Backbone.View.extend({
 		this.$el.html(this.template(this.model.toJSON()));
 
 		// render Reviewer subview
-		this.reviewerView = new splat.Reviewer({model: this.model});
+		this.reviewerView = new splat.Reviewer({model: this.model, collection: this.collection});
 		this.$('#reviewer').append(this.reviewerView.render().el);
 
 		// render ReviewThumbs subview
-		this.reviewThumbsView = new splat.ReviewThumbs({model: this.model});
+		this.reviewThumbsView = new splat.ReviewThumbs({model: this.model, collection: this.collection});
 		this.$('#reviewthumbs').append(this.reviewThumbsView.render().el);
 
 		return this;
