@@ -123,6 +123,17 @@ exports.uploadImage = function(req, res) {
     });
 };
 
+exports.getReview = function(req, res){
+	ReviewModel.find({}, function(err, reviews) {
+		if(err) {
+			res.status(500).send("Sorry, unable to retrieve all review at this time ("
+				+err.message + ")");
+		}else{
+			res.status(200).send(reviews);
+		}
+	});
+};
+
 exports.addReview = function(req, res){
 	var newReview = new ReviewModel(req.body);
 	ReviewModel.save(function(err, review) {
@@ -130,7 +141,7 @@ exports.addReview = function(req, res){
 		res.status(500).send("Sorry, unable to create the review at this time ("
 		+ err.message + ")");
 	} else {
-	    res.status(200).send(movie);
+	    res.status(200).send(review);
 	}
 	});
 };
