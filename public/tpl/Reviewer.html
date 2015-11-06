@@ -7,13 +7,13 @@
 <span class="rate">Currently rated:</span>
 </div>
 <br>
-<label class="control-label" for="reviewtext">Enter Your Review</label>
-<textarea class="reviewform" type="text" id="reviewtext" name="reviewtext" value=""/>
+<label class="control-label" for="reviewText">Enter Your Review</label>
+<textarea class="form-control reviewform" type="text" id="reviewText" name="reviewText" value=""/>
 </br>
-<label for="name" class="control-label">Name</label>
-<input type="text" class="reviewform" name="name" value="<%= reviewName %>"/>
-<label for="affiliation" class="control-label">Affiliation</label>
-<input type="text" class="reviewform" name="affiliation" value="<%= reviewAffil %>" />
+<label for="reviewName" class="control-label">Name</label>
+<input type="text" class="reviewform" name="reviewName" value="<%= reviewName %>"/>
+<label for="reviewAffil" class="control-label">Affiliation</label>
+<input type="text" class="reviewform" name="reviewAffil" value="<%= reviewAffil %>" />
 <br>
 <input type="button" id="reviewsave" class="btn-success btn btn-primary" name="save" value="Review Movie"/>
 </form>
