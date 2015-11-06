@@ -79,6 +79,8 @@ app.post('/movies', splat.addMovie);
 app.put('/movies/:id', splat.editMovie);
 app.delete('/movies/:id', splat.deleteMovie);
 
+app.post('/movies/:id/reviews', splat.addReview);
+
 // location of app's static content
 app.use(express.static(__dirname + "/public"));
 

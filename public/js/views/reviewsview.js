@@ -29,47 +29,4 @@ splat.ReviewsView = Backbone.View.extend({
         if (this.reviewerView) { this.formView.remove(); }
         if (this.reviewThumbsView) { this.imgView.remove(); }
     },
-
-    events: {
-		"click #reviewsave" : "addReviewHandler"
-	},
-
-	// addReview handler event
-	addReviewHandler: function() {
-
-		if(this.model.id){
-			var oldModel = this.collection.get(this.model.id);
-			// save model to collection
-			oldModel.save(this.model.attributes,{
-				wait: true,  // don't destroy client model until server responds
-    			success: function(response) {
-    				// display the success response
-        			splat.utils.showNotice('Success', "Movie updated", 'alert-success')
-        			splat.utils.hideNotice()
-    			},
-    			error: function(response) {
-    				// display the error response from the server
-        			splat.utils.showNotice('Fail', "Movie was not sucessfully updated", 'alert-danger')
-        			splat.utils.hideNotice()
-    			},
-    		});
-		} // create a new model in collection
-		else{
-			var newModel = this.collection.create(this.model, {
-			wait: true,  // don't create client model until server responds
-    		success: function(response) {
-				// later, we'll navigate to the browse view upon success
-        		splat.app.navigate('#movies/' + response.id, {replace:true, trigger:true});
-				// notification panel, defined in section 2.6
-        		splat.utils.showNotice('Success', "Review added", 'alert-success');
-        		splat.utils.hideNotice();
-    		},
-    		error: function(response) {
-    			// display the error response from the server
-        		splat.utils.showNotice('Fail', "Review was not sucessfully added", 'alert-danger');
-        		splat.utils.hideNotice();
-    		},
-		});
-		}
-	},
 });

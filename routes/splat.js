@@ -123,6 +123,18 @@ exports.uploadImage = function(req, res) {
     });
 };
 
+exports.addReview = function(req, res){
+	var newReview = new ReviewModel(req.body);
+	ReviewModel.save(function(err, review) {
+	if(err) {
+		res.status(500).send("Sorry, unable to create the review at this time ("
+		+ err.message + ")");
+	} else {
+	    res.status(200).send(movie);
+	}
+	});
+};
+
 var mongoose = require('mongoose'); // MongoDB integration
 
 // Connect to database, using credentials specified in your config module
@@ -146,9 +158,18 @@ var MovieSchema = new mongoose.Schema({
     dated: { type: Date, required: true},
 });
 
+var ReviewSchema = new mongoose.Schema({
+	freshness : { type: Number, required: true},
+	reviewName : { type: String, required: true },
+	reviewAffil : { type: String, required: true },
+	reviewText : { type: String, required: true },
+	movieId : { type: String, required: true },
+})
+
 // Constraints
 // each title:director pair must be unique; duplicates are dropped
 MovieSchema.index({"title":1, "director":1}, {unique:true, dropDups:true});
 
 // Models
 var MovieModel = mongoose.model('Movie', MovieSchema);
+var ReviewModel = mongoose.model('Review', ReviewSchema);
