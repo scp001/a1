@@ -16,7 +16,8 @@ splat.Reviewer = Backbone.View.extend({
 	},
 
 	events: {
-		"click #reviewsave" : "addReviewHandler"
+		"click #reviewsave" : "addReviewHandler",
+		"change .reviewform" : "change",
 	},
 
 	// addReview handler event
@@ -36,4 +37,15 @@ splat.Reviewer = Backbone.View.extend({
 			},
 		});
 	},
+	
+	// change event for reviewform
+	change: function (event) {
+		// object to hold form-field name:value pairs
+		var changeObj = {};
+
+		// Add change value to changeObj; change event is
+		// triggered once for each changed field value
+		changeObj[event.target.name] = event.target.value;
+        this.model.set(changeObj);
+    },
 });
