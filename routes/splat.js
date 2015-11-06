@@ -123,7 +123,7 @@ exports.uploadImage = function(req, res) {
     });
 };
 
-exports.getReview = function(req, res){
+exports.getReviews = function(req, res){
 	ReviewModel.find({}, function(err, reviews) {
 		if(err) {
 			res.status(500).send("Sorry, unable to retrieve all review at this time ("
@@ -175,11 +175,14 @@ var ReviewSchema = new mongoose.Schema({
 	reviewAffil : { type: String, required: true },
 	reviewText : { type: String, required: true },
 	movieId : { type: String, required: true },
-})
+});
 
 // Constraints
 // each title:director pair must be unique; duplicates are dropped
 MovieSchema.index({"title":1, "director":1}, {unique:true, dropDups:true});
+
+// each movieId:reviewAffil pair must be unique; duplicates are dropped
+ReviewSchema.index({"movieId":1, "reviewAffil":1}, {unique:true, dropDups:true});
 
 // Models
 var MovieModel = mongoose.model('Movie', MovieSchema);

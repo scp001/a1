@@ -14,7 +14,6 @@ splat.AppRouter = Backbone.Router.extend({
 		"movies/add": "addMovie",
 		"movies/:id": "editMovie",
 		"movies/:id/reviews": "addReview",
-		"reviewsView" : "addReview",
 
 	},
 	

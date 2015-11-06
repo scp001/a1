@@ -79,7 +79,7 @@ app.post('/movies', splat.addMovie);
 app.put('/movies/:id', splat.editMovie);
 app.delete('/movies/:id', splat.deleteMovie);
 
-app.get('/movies/:id/reviews', splat.getReview);
+app.get('/movies/:id/reviews', splat.getReviews);
 app.post('/movies/:id/reviews', splat.addReview);
 
 // location of app's static content

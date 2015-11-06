@@ -26,7 +26,7 @@ splat.ReviewsView = Backbone.View.extend({
 
     // remove subviews on close of Details view
     onClose: function() {
-        if (this.reviewerView) { this.formView.remove(); }
-        if (this.reviewThumbsView) { this.imgView.remove(); }
+        if (this.reviewerView) { this.reviewerView.remove(); }
+        if (this.reviewThumbsView) { this.reviewThumbsView.remove(); }
     },
 });
