@@ -8,12 +8,12 @@
 </div>
 <br>
 <label class="control-label" for="reviewtext">Enter Your Review</label>
-<textarea class="form-control" type="text" id="reviewtext" name="reviewtext"/>
+<textarea class="form-control" type="text" id="reviewtext" name="reviewtext" value=""/>
 </br>
 <label for="name" class="control-label">Name</label>
-<input type="text" class="reviewform" name="name" />
+<input type="text" class="reviewform" name="name" value="<%= reviewName %>"/>
 <label for="affiliation" class="control-label">Affiliation</label>
-<input type="text" class="reviewform" name="affiliation" />
+<input type="text" class="reviewform" name="affiliation" value="<%= reviewAffil %>" />
 <br>
 <input type="button" id="reviewsave" class="btn-success btn btn-primary" name="save" value="Review Movie"/>
 </form>
