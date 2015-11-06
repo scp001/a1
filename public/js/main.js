@@ -123,7 +123,7 @@ splat.AppRouter = Backbone.Router.extend({
 		})			
 	},
 
-	addReview: function() {
+	addReview: function(id) {
 
 		// instantiate a movie collection
 		if (!this.reviewCollection){
@@ -135,10 +135,14 @@ splat.AppRouter = Backbone.Router.extend({
 		var reviewsFetch = this.reviewCollection.fetch();
 		reviewsFetch.done(function(collection, response){
 			var reviewsModel = new splat.ReviewModel();
+			
+			console.log(reviewsModel);
+			console.log(id);		
+			reviewsModel.attributes.movieId = id;
 			// instantiate a reviews view
 			self.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection});
 			// insert the rendered Details view element into document DOM
-			$('#content').html(this.reviewsView.render().el);
+			$('#content').html(self.reviewsView.render().el);
 			document.body.style.backgroundImage = "none";
 			document.body.style.backgroundColor = "black";
 		}).fail(function(collection, response){

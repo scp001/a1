@@ -136,7 +136,7 @@ exports.getReviews = function(req, res){
 
 exports.addReview = function(req, res){
 	var newReview = new ReviewModel(req.body);
-	ReviewModel.save(function(err, review) {
+	newReview.save(function(err, review) {
 	if(err) {
 		res.status(500).send("Sorry, unable to create the review at this time ("
 		+ err.message + ")");

@@ -6,6 +6,9 @@ var splat =  splat || {};
 
 // note Model for movie
 splat.ReviewModel = Backbone.Model.extend({
+
+	idAttribute: "_id",
+
     // default value
 	defaults: {
 	  	freshness : 0.0,  // fresh review value 1.0, rotten value 0.0

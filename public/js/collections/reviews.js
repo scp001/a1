@@ -15,6 +15,6 @@ splat.Reviews = Backbone.Collection.extend({
     //localStorage: new Backbone.LocalStorage('splat')
     
     // move local storage to server
-	url: '/reviews'
+	url: '/movies/:id/reviews'
 
 });
