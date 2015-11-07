@@ -25,6 +25,12 @@ splat.Details = Backbone.View.extend({
 			self.$('#movieimg').append(template(self.model.toJSON()));
 		});
 
+		if (this.model.id){
+			var template = _.template("<span >Currently rated: </span><span class=\"review\"><a href=\"#movies/<%= _id %>/reviews\">Reviews</a><span>");
+			self.$('reviewRate').append(template(self.model.toJSON()));
+		}
+
+
 		return this;    // support method chaining
     },
 
