@@ -22,11 +22,11 @@ splat.Reviewer = Backbone.View.extend({
 
 	// addReview handler event
 	addReviewHandler: function() {
-		console.log(this.model);
 		var newModel = this.collection.create(this.model, {
 			wait: true,  // don't create client model until server responds
 			success: function(response) {
 				// notification panel, defined in section 2.6
+				splat.app.navigate('#movies/:id/reviews', {replace:true, trigger:true});
 				splat.utils.showNotice('Success', "Review added", 'alert-success');
 				splat.utils.hideNotice();
 			},

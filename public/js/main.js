@@ -135,9 +135,7 @@ splat.AppRouter = Backbone.Router.extend({
 		var reviewsFetch = this.reviewCollection.fetch();
 		reviewsFetch.done(function(collection, response){
 			var reviewsModel = new splat.ReviewModel();
-			
-			console.log(reviewsModel);
-			console.log(id);		
+				
 			reviewsModel.attributes.movieId = id;
 			// instantiate a reviews view
 			self.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection});

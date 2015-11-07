@@ -27,7 +27,7 @@ splat.Details = Backbone.View.extend({
 
 		if (this.model.id){
 			var template = _.template("<span >Currently rated: </span><span class=\"review\"><a href=\"#movies/<%= _id %>/reviews\">Reviews</a><span>");
-			self.$('reviewRate').append(template(self.model.toJSON()));
+			self.$('#reviewRate').append(template(self.model.toJSON()));
 		}
 
 

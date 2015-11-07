@@ -10,7 +10,7 @@ splat.ReviewThumbs = Backbone.View.extend({
 	// template function for the html
 	reviewsTemplate: _.template([
 		"<% reviews.each(function(review) { %>",
-	    "<%= reviewTemplate(reivew.toJSON()) %>",
+	    "<%= reviewTemplate(review.toJSON()) %>",
 		"<% }); %>",
     ].join('')),
 
@@ -39,6 +39,5 @@ splat.ReviewThumbs = Backbone.View.extend({
 
 		return this;
 	},
-
 
 });
