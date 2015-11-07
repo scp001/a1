@@ -1,1 +1,16 @@
-<p> Sort</p>
+<div class="tomato row-fluid col-lg-2 col-md-3 col-sm-4 col-xs-6">
+	<div id="fresh_rate">
+	</div>
+<p><%= freshness %></p>
+<p><%= reviewText %></p>
+
+</div>
+
+<script>
+	if (<%= freshness %> == 1.0){
+		 $('#freshrate').html('<img src="img/fresh.gif">');
+	}
+	else{
+		$('#freshrate').html('<img src="img/rotten.gif">')
+	}
+</script>
