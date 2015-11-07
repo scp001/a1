@@ -45,7 +45,14 @@ splat.Reviewer = Backbone.View.extend({
 
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
-		changeObj[event.target.name] = event.target.value;
-        this.model.set(changeObj);
+		if (event.target.name == "fresh"){
+			changeObj["freshness"] = 1.0;
+		}else if(event.target.name == "rotten"){
+			changeObj["freshness"] = 0.0;
+		}else{
+			changeObj[event.target.name] = event.target.value;
+		}
+		this.model.set(changeObj);
+		
     },
 });
