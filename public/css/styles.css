@@ -162,3 +162,7 @@ display: inline-block;
 	color:black;
 	font-weight: bold;
 }
+
+.reviewer{
+	float: left;
+	padding : 5px;

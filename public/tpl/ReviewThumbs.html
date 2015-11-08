@@ -1,11 +1,13 @@
 <li class='liststyle'>
 	<div class=" row-fluid col-lg-2 col-md-3 col-sm-4 col-xs-6">
 		<div class="tomato">
-		<img src=<%= (freshness == 1.0) ? "img/fresh.gif" : "img/rotten.gif" %>><%= reviewText %>
+		<img src=<%= (freshness == 1.0) ? "img/fresh.gif" : "img/rotten.gif" %>> "<%= reviewText %>"
 		</div>
-		<div>
+		<div class="reviewer">
 			<img src="img/critic.gif"></br>&nbsp<%= reviewName %>
 		</div>
-		<%= reviewAffil %>
+		<div class="reviewer">
+			<%= reviewAffil %>
+		</div>
 	</div>
 </li>
