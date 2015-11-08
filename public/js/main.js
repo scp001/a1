@@ -13,7 +13,7 @@ splat.AppRouter = Backbone.Router.extend({
 		"movies" : "borwseMovie",
 		"movies/add": "addMovie",
 		"movies/:id": "editMovie",
-		"movies/:id/reviews": "addReview",
+		"movies/:id/reviews": "browseReview",
 
 	},
 	
@@ -92,7 +92,7 @@ splat.AppRouter = Backbone.Router.extend({
 			document.body.style.backgroundImage = "none";
 			document.body.style.backgroundColor = "black";
 		}).fail(function(collection, response){
-			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-error")
+			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger")
 			spalt.utils.hideNotice();
 		});
 	},
@@ -123,7 +123,7 @@ splat.AppRouter = Backbone.Router.extend({
 		})			
 	},
 
-	addReview: function(id) {
+	browseReview: function(id) {
 
 		// instantiate a movie collection
 		if (!this.reviewCollection){

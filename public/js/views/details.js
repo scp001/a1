@@ -26,8 +26,11 @@ splat.Details = Backbone.View.extend({
 		});
 
 		if (this.model.id){
-			var template = _.template("<span >Currently rated: </span><span class=\"review\"><a href=\"#movies/<%= _id %>/reviews\">Reviews</a><span>");
-			self.$('#reviewRate').append(template(self.model.toJSON()));
+			var reviewRateView = new splat.ReviewRate();
+			this.$('.rate').append(reviewRateView.render().el);
+			
+			var template = _.template("<a href=\"#movies/<%= _id %>/reviews\">Reviews</a>");
+			this.$('.review').append(template(self.model.toJSON()));
 		}
 
 
