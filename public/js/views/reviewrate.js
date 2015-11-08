@@ -9,11 +9,11 @@ splat.ReviewRate = Backbone.View.extend({
 	// render the View
     render: function () {
 		var reviewCollection = new splat.Reviews();
-		var moviesFetch = this.movieCollection.fetch();
+		var reviewsFetch = reviewCollection.fetch();
 		this.template = _.template("... no reviews yet");
 		
 		var self = this;
-		moviesFetch.done(function(collection, response){
+		reviewsFetch.done(function(collection, response){
 			var num = 0, value = 0;
 			reviewCollection.each(function(review) {
 				num += 1;
@@ -33,5 +33,6 @@ splat.ReviewRate = Backbone.View.extend({
 		});
 		
 		this.$el.html(this.template());
+		return this;
 	},
 });
