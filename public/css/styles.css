@@ -129,7 +129,9 @@ display: inline-block;
 
 .rate{
 	color: red;
+	margin-left: 10px;
 	font-size: 18px;
+	float: left;
 }
 
 #reviewtext{
@@ -166,3 +168,9 @@ display: inline-block;
 .reviewer{
 	float: left;
 	padding : 5px;
+}
+
+.radio-left {
+	padding: opx;
+	float: left;
+}

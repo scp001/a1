@@ -12,7 +12,7 @@ splat.Reviewer = Backbone.View.extend({
 		// set the view element ($el) HTML content using its template
 		this.$el.html(this.template(this.model.toJSON()));
 		
-		var reviewRateView = new splat.ReviewRate();
+		var reviewRateView = new splat.ReviewRate({collection: this.collection});
 		this.$('.rate').append(reviewRateView.render().el);
 
 		return this;
@@ -48,13 +48,7 @@ splat.Reviewer = Backbone.View.extend({
 
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
-		if (event.target.name == "fresh"){
-			changeObj["freshness"] = 1.0;
-		}else if(event.target.name == "rotten"){
-			changeObj["freshness"] = 0.0;
-		}else{
-			changeObj[event.target.name] = event.target.value;
-		}
+		changeObj[event.target.name] = event.target.value;
 		this.model.set(changeObj);
 		
     },
