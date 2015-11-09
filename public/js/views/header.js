@@ -6,7 +6,10 @@ var splat =  splat || {};
 
 // note View-name (Header) matches name of template file Header.html
 splat.Header = Backbone.View.extend({
-
+	
+	events: {
+		"change .sortMenu" : "change",
+	},
 
     // render the View
     render: function () {
@@ -22,6 +25,14 @@ splat.Header = Backbone.View.extend({
 		// set input menuItem to active
 		if(menuItem){
 			$('.'+menuItem).addClass('active');
+		}
+	},
+	
+	change: function(event){
+		if(event.target.value == 1){
+			// Title
+		}else {
+			// Director
 		}
 	}
 
