@@ -8,7 +8,7 @@ var splat =  splat || {};
 splat.Header = Backbone.View.extend({
 	
 	events: {
-		"change .sortMenu" : "change",
+		"change .sortOrder" : "sortOrder",
 	},
 
     // render the View
@@ -28,12 +28,11 @@ splat.Header = Backbone.View.extend({
 		}
 	},
 	
-	change: function(event){
-		if(event.target.value == 1){
-			// Title
-		}else {
-			// Director
-		}
+	sortOrder: function(event){
+		event.stopPropagation();
+		splat.order = event.target.value;
+		Backbone.trigger('orderevent' ,event);
+		$('#orderDiv').removeClass('open');
 	}
 
 });

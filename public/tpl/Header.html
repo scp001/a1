@@ -14,10 +14,16 @@
 		<ul class="nav navbar-nav">
 			<li class="browse-menu dropdown" id="orderdrop" >
 				<a id="ordering" class="dropdown-toggle" data-toggle="dropdown">Browse Movies</a>
-				<div id="select-order" class="dropdown-menu">
-					<strong>Sort</strong></br>
-					<input type="radio" name="sort" value=1 class="sortMenu">Title</br>
-					<input type="radio" name="sort" value=0 class="sortMenu">Director
+				<div id="orderDiv" class="dropdown-menu">
+					<form id="orderForm">
+						<fieldset>
+						<h4>Sort Order</h4>
+						<input class="sortOrder" name="sortOrder" type="radio" value="title" />
+						<label for="sortOrder">Title</label><br/>
+						<input class="sortOrder" name="sortOrder" type="radio" value="director" />
+						<label for="sortOrder">Director</label><br/>
+						</fieldset>
+					</form>
 				</div>
 			</li>
 			<li class="add-menu"><a href="#movies/add">Add Movie</a></li>

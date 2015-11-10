@@ -18,10 +18,20 @@ splat.MovieThumb = Backbone.View.extend({
 	initialize: function() {
 		// initiates a request to retrieve the tempalte
 		this.movieThumbLoad = $.get('tpl/MovieThumb.html');
+		this.listenTo(Backbone, 'orderevent', this.render);
 	},
 
     // render the View
     render: function () {
+	
+		// comparator function on collection is the basis for comparing movie
+		// models
+		this.collection.comparator = function(movie) {
+            return movie.get(splat.order);
+        };
+		// sort collection before rendering it - implicitly uses comparator
+		
+        this.collection.sort();
 		var self = this;
 		
 		// if the bind is done

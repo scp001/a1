@@ -10,9 +10,9 @@ splat.ReviewThumbs = Backbone.View.extend({
 	// template function for the html
 	reviewsTemplate: _.template([
 		"<% reviews.each(function(review) { %>",
-		"<%= if (review.attributes.movieId == id) { %>",
+		"<% if (review.attributes.movieId == id) { %>",
 	    "<%= reviewTemplate(review.toJSON()) %>",
-		"<%= } %>",
+		"<% } %>",
 		"<% }); %>",
     ].join('')),
 
@@ -30,6 +30,7 @@ splat.ReviewThumbs = Backbone.View.extend({
 		this.reviewThumbLoad.done(function(markup) {
 			self.template = _.template(markup);
 		});
+		
 
 		// define the template function with variables		
 		var reviewsMarkup = this.reviewsTemplate({
