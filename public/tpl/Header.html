@@ -7,17 +7,20 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Splat!</a>
+      <a class="navbar-brand home-menu" href="#">Splat!</a>
     </div><!-- /.navbar-header -->
 
 	<div id="nav-collapse" class="collapse navbar-collapse">
 		<ul class="nav navbar-nav">
-			<li class="browse-menu" id="dropdownMenu2" data-toggle="dropdown"><a href="#movies">Browse Movies</a></li>
-			<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-				<li>Sort</li>
-				<li><input type="radio" name="sort" value=1 class="sortMenu">Title</li>
-				<li><input type="radio" name="sort" value=0 class="sortMenu">Director</li>
-			</ul>
+			<li class="browse-menu dropdown" id="dropdownMenu">
+				<a id="ordering" href="#movies" >Browse Movies</a>
+			</li>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenu">
+				Sort
+				<input type="radio" name="sort" value=1 class="sortMenu">Title
+				<input type="radio" name="sort" value=0 class="sortMenu">Director
+				<a href="#">Separated link</a>
+			</div>
 			<li class="add-menu"><a href="#movies/add">Add Movie</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
