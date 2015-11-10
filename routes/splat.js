@@ -140,6 +140,12 @@ exports.addReview = function(req, res){
 		res.status(500).send("Sorry, unable to create the review at this time ("
 		+ err.message + ")");
 	} else {
+	    MovieModel.findById(review.movieId, function(err, movie) {
+		movie.freshVotes += newReview.freshness;
+		movie.freshTotal += 1;
+		console.log(movie);
+		movie.save();
+	    });
 	    res.status(200).send(review);
 	}
 	});
