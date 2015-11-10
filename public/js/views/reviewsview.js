@@ -33,9 +33,7 @@ splat.ReviewsView = Backbone.View.extend({
     },
 
 	showScore: function () {
-		// var movie = this.movies.get(this.model.attributes.movieId);
-		// if (movie.attributes.freshVotes == 0){
-		//		display ... no reviews yet
+
 		//}else{
 			//	display movie.attributes.freshTotal/movie.attributes.freshVotes
 		//}
@@ -43,6 +41,38 @@ splat.ReviewsView = Backbone.View.extend({
 
 	renderReviews: function () {
 
+		alert("hehe");
+		console.log(this.movie.attributes.freshVotes);
+		if (this.movie.attributes.freshVotes == 0){
+			var reviewTemplate = _.template("... no reviews yet");
+			this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+		}
+		else{
+			this.$('.rate').empty()
+			if (!this.movieCollection){
+			this.movieCollection = new splat.Movies();
+			}
+
+			var moviesFetch = this.movieCollection.fetch();
+			var self = this;
+
+			moviesFetch.done(function(collection, response){
+				console.log(self.movieCollection);
+				}).fail(function(collection, response){
+				splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger");
+				splat.utils.hideNotice();
+			})
+		}
+
+
+
+			// if ((Math.floor(this.movie.attributes.freshTotal/this.movie.attributes.freshVotes*1000)/10) >= 50.0){
+			// 	this.$('.rate').append('current rated: <image src="img/fresh.gif">');
+			// }
+			// else{
+			// 	this.$('.rate').append('current rated: <image src="img/rotten.gif">');
+			// }
+			// this.$('.rate').append(Math.floor(this.movie.attributes.freshTotal/this.movie.attributes.freshVotes*1000)/10 + "%");
 	},
 
     // remove subviews on close of Details view
