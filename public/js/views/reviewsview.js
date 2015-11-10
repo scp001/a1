@@ -12,7 +12,7 @@ splat.ReviewsView = Backbone.View.extend({
 		// invoke showScore and renderReviews methods when collection is sync'd
 		this.listenTo(this.reviews, "sync", this.reviewerView);
 		this.listenTo(this.reviews, "sync", this.reviewThumbsView);
-	}
+	},
 
     // render the View
     render: function () {
