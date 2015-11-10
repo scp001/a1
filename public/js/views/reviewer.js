@@ -35,7 +35,7 @@ splat.Reviewer = Backbone.View.extend({
 				this.$('.rate').append('current rated: <image src="img/fresh.gif">');
 			}
 			else{
-				this.$('.rate').append('<image src="img/rotten.gif">');
+				this.$('.rate').append('current rated: <image src="img/rotten.gif">');
 			}
 			this.$('.rate').append(this.rating + "%");
 		}
