@@ -140,15 +140,15 @@ splat.AppRouter = Backbone.Router.extend({
 		moviesFetch.done(function(collection, response){
 
 			// reinitialize storage if necessary
-			console.log(self.movieCollection.get(id));
 			var reviewsFetch = self.reviewCollection.fetch();
 			reviewsFetch.done(function(collection, response){
 				var reviewsModel = new splat.ReviewModel();
 
 				reviewsModel.attributes.movieId = id;
-				// instantiate a reviews view
-				var movieDetails = self.movieCollection.get(reviewsModel.attributes.movieId);
-				self.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection, movieDetails:self.movieCollection.get(id)});
+				
+				// instantiate a reviews view		
+				self.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection, movie: self.movieCollection});
+		
 				// insert the rendered Details view element into document DOM
 				$('#content').html(self.reviewsView.render().el);
 				document.body.style.backgroundImage = "none";
@@ -157,7 +157,7 @@ splat.AppRouter = Backbone.Router.extend({
 				splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger");
 				splat.utils.hideNotice();
 			})
-})
+		})
 	}
 });
 

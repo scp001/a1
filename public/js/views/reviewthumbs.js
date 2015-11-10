@@ -20,7 +20,6 @@ splat.ReviewThumbs = Backbone.View.extend({
 	initialize: function(option) {
 		// initiates a request to retrieve the tempalte
 		this.reviewThumbLoad = $.get('tpl/ReviewThumbs.html');
-		console.log(this.option.)
 	},
 
 	// render the View
