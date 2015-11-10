@@ -67,7 +67,6 @@ exports.editMovie = function(req, res) {
             res.status(404).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
         		var newMovie = req.body;
-        		delete newMovie["_id"];
         		delete newMovie["__0"];
             MovieModel.update(newMovie, function(err, message){
 					if(err){
