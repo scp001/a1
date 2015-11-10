@@ -10,8 +10,8 @@ splat.ReviewsView = Backbone.View.extend({
 	initialize: function() {
 
 		// invoke showScore and renderReviews methods when collection is sync'd
-		this.listenTo(this.reviewCollection, "sync", this.showScore);
-		this.listenTo(this.reviewCollection, "sync", this.renderReviews);
+		this.listenTo(this.collection, "sync", this.showScore);
+		this.listenTo(this.collection, "sync", this.renderReviews);
 	},
 
     // render the View
@@ -30,13 +30,18 @@ splat.ReviewsView = Backbone.View.extend({
 
 		return this;
     },
-	
+
 	showScore: function () {
-		alert("wow");
+		// var movie = this.movies.get(this.model.attributes.movieId);
+		// if (movie.attributes.freshVotes == 0){
+		//		display ... no reviews yet
+		//}else{
+			//	display movie.attributes.freshTotal/movie.attributes.freshVotes
+		//}
 	},
-	
+
 	renderReviews: function () {
-	
+
 	},
 
     // remove subviews on close of Details view

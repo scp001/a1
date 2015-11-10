@@ -26,9 +26,7 @@ splat.Reviewer = Backbone.View.extend({
 		var newModel = this.collection.create(this.model, {
 			wait: true,  // don't create client model until server responds
 			success: function(response) {
-				
 				// notification panel, defined in section 2.6
-				splat.app.navigate(Backbone.history.getFragment(), {replace: true, trigger:true});
 				splat.utils.showNotice('Success', "Review added", 'alert-success');
 				splat.utils.hideNotice();
 			},
@@ -39,7 +37,7 @@ splat.Reviewer = Backbone.View.extend({
 			},
 		});
 	},
-	
+
 	// change event for reviewform
 	change: function (event) {
 		// object to hold form-field name:value pairs
@@ -49,6 +47,6 @@ splat.Reviewer = Backbone.View.extend({
 		// triggered once for each changed field value
 		changeObj[event.target.name] = event.target.value;
 		this.model.set(changeObj);
-		
+
     },
 });

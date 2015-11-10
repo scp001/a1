@@ -28,10 +28,21 @@ splat.Details = Backbone.View.extend({
 		if (this.model.id){
 			// var reviewRateView = new splat.ReviewRate();
 			// this.$('.rate').append(reviewRateView.render().el);
-			
+
 			var template = _.template("<a href=\"#movies/<%= _id %>/reviews\">Reviews</a>");
 			this.$('.review').append(template(self.model.toJSON()));
+
+			if (this.model.attributes.freshVotes == 0.0){
+
+				var reviewTemplate = _.template("... no reviews yet");
+				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+			}else{
+				var reviewTemplate = _.template("current reviews");
+				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+			}
 		}
+
+
 
 
 		return this;    // support method chaining
