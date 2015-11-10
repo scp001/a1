@@ -10,8 +10,8 @@ splat.ReviewsView = Backbone.View.extend({
 	initialize: function() {
 
 		// invoke showScore and renderReviews methods when collection is sync'd
-		this.listenTo(this.reviews, "sync", this.reviewerView);
-		this.listenTo(this.reviews, "sync", this.reviewThumbsView);
+		this.listenTo(this.reviewCollection, "sync", this.showScore);
+		this.listenTo(this.reviewCollection, "sync", this.renderReviews);
 	},
 
     // render the View
@@ -30,6 +30,14 @@ splat.ReviewsView = Backbone.View.extend({
 
 		return this;
     },
+	
+	showScore: function () {
+		alert("wow");
+	},
+	
+	renderReviews: function () {
+	
+	},
 
     // remove subviews on close of Details view
     onClose: function() {
