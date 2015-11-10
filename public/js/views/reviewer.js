@@ -27,10 +27,17 @@ splat.Reviewer = Backbone.View.extend({
 				var reviewTemplate = _.template("... no reviews yet");
 				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 		}else{
+			//the temlate is not usable for unknown reason.
 
-				var reviewTemplate = _.template("current rated: <image src=<%= (this.rating >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> ");
-				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
-				this.$('.rate').append(this.rating + "%");
+			// var reviewTemplate = _.template("current rated: <image src=<%= (this.rating >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> ");
+			// this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+			if (this.rating >= 50.0){
+				this.$('.rate').append('current rated: <image src="img/fresh.gif">');
+			}
+			else{
+				this.$('.rate').append('<image src="img/rotten.gif">');
+			}
+			this.$('.rate').append(this.rating + "%");
 		}
 
 		return this;
