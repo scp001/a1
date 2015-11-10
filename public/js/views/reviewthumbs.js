@@ -16,27 +16,29 @@ splat.ReviewThumbs = Backbone.View.extend({
 		"<% }); %>",
     ].join('')),
 
-    // initialize the view	
-	initialize: function() {
+    // initialize the view
+	initialize: function(option) {
 		// initiates a request to retrieve the tempalte
 		this.reviewThumbLoad = $.get('tpl/ReviewThumbs.html');
+		console.log(this.option.)
 	},
 
 	// render the View
     render: function () {
 		var self = this;
-		
+
 		// if the bind is done
 		this.reviewThumbLoad.done(function(markup) {
 			self.template = _.template(markup);
 		});
-		
 
-		// define the template function with variables		
+
+
+		// define the template function with variables
 		var reviewsMarkup = this.reviewsTemplate({
 			reviews: this.collection, reviewTemplate: this.template, id: this.model.attributes.movieId,
 		});
-		
+
 		// set the view element ($el) HTML content using its template
 		this.$el.html("<div class='container-fluid'><br><ul>" + reviewsMarkup + "</ul></div>");
 
