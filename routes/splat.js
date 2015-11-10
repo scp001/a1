@@ -20,7 +20,7 @@ exports.api = function(req, res){
 exports.getMovie = function(req, res){
     MovieModel.findById(req.params.id, function(err, movie) {
         if (err) {
-            res.status(500).send("Sorry, unable to retrieve movie at this time (" 
+            res.status(500).send("Sorry, unable to retrieve movie at this time ("
                 +err.message+ ")" );
         } else if (!movie) {
             res.status(404).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
@@ -61,7 +61,7 @@ exports.addMovie = function(req, res){
 exports.editMovie = function(req, res) {
 	MovieModel.findById(req.params.id, function(err, movie) {
         if (err) {
-            res.status(500).send("Sorry, unable to retrieve movie at this time (" 
+            res.status(500).send("Sorry, unable to retrieve movie at this time ("
                 +err.message+ ")" );
         } else if (!movie) {
             res.status(404).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
@@ -70,15 +70,15 @@ exports.editMovie = function(req, res) {
         		delete newMovie["__0"];
             MovieModel.update(newMovie, function(err, message){
 					if(err){
-						res.status(500).send("Sorry, unable to edit movie at this time (" 
+						res.status(500).send("Sorry, unable to edit movie at this time ("
 						+err.message+ ")");
 					}  else {
-						res.status(200).send(message);			
-					}          
+						res.status(200).send(message);
+					}
             });
         }
     });
-	
+
 }
 
 exports.deleteMovie = function(req, res) {
@@ -107,7 +107,7 @@ exports.uploadImage = function(req, res) {
         fileType = req.files.file.mimetype,
         // extract the MIME suffix for the user-selected file
         suffix = fileType.split(".")[1],
-        // imageURL is used as the value of a movie-model poster field 
+        // imageURL is used as the value of a movie-model poster field
 	// id parameter is the movie's "id" attribute as a string value
         imageURL = 'img/uploads/' + req.params.id + suffix,
         // rename the image file to match the imageURL
@@ -116,7 +116,7 @@ exports.uploadImage = function(req, res) {
         if (!err) {
             res.status(200).send(imageURL);
         } else {
-            res.status(500).send("Sorry, unable to upload poster image at this time (" 
+            res.status(500).send("Sorry, unable to upload poster image at this time ("
                 +err.message+ ")" );
 	}
     });
@@ -141,8 +141,8 @@ exports.addReview = function(req, res){
 		+ err.message + ")");
 	} else {
 	    MovieModel.findById(review.movieId, function(err, movie) {
-		movie.freshVotes += newReview.freshness;
-		movie.freshTotal += 1;
+		movie.freshVotes += 1;
+		movie.freshTotal += newReview.freshness;
 		console.log(movie);
 		movie.save();
 	    });

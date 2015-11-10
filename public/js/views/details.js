@@ -32,12 +32,12 @@ splat.Details = Backbone.View.extend({
 			var template = _.template("<a href=\"#movies/<%= _id %>/reviews\">Reviews</a>");
 			this.$('.review').append(template(self.model.toJSON()));
 
-			if (this.model.attributes.freshTotal == 0.0){
+			if (this.model.attributes.freshVotes == 0.0){
 
 				var reviewTemplate = _.template("... no reviews yet");
 				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 			}else{
-				var reviewTemplate = _.template("current reviews: <image src=<%= (Math.floor(freshVotes/freshTotal*1000)/10 >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> <%= Math.floor(freshVotes/freshTotal*1000)/10 %>%");
+				var reviewTemplate = _.template("current rated: <image src=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>% ");
 				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 			}
 		}

@@ -9,7 +9,7 @@ splat.ReviewsView = Backbone.View.extend({
 
 	initialize: function(options) {
 		this.movie = options.movie;
-		
+
 		// invoke showScore and renderReviews methods when collection is sync'd
 		this.listenTo(this.collection, "sync", this.showScore);
 		this.listenTo(this.collection, "sync", this.renderReviews);
@@ -22,7 +22,7 @@ splat.ReviewsView = Backbone.View.extend({
 		this.$el.html(this.template(this.model.toJSON()));
 
 		// render Reviewer subview
-		this.reviewerView = new splat.Reviewer({model: this.model, collection: this.collection});
+		this.reviewerView = new splat.Reviewer({model: this.model, collection: this.collection, movie: this.movie});
 		this.$('#reviewer').append(this.reviewerView.render().el);
 
 		// render ReviewThumbs subview

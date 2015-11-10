@@ -25,13 +25,10 @@ splat.ReviewThumbs = Backbone.View.extend({
 	// render the View
     render: function () {
 		var self = this;
-
 		// if the bind is done
 		this.reviewThumbLoad.done(function(markup) {
 			self.template = _.template(markup);
 		});
-
-
 
 		// define the template function with variables
 		var reviewsMarkup = this.reviewsTemplate({

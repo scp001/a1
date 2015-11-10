@@ -7,12 +7,35 @@ var splat =  splat || {};
 // note View-name (Reviewer) matches name of template file Reviewer.html
 splat.Reviewer = Backbone.View.extend({
 
+	initialize: function(option) {
+
+		this.freshTotal = option.movie.attributes.freshTotal;
+		this.freshVotes = option.movie.attributes.freshVotes;
+		this.rating = Math.floor(this.freshTotal/this.freshVotes*1000)/10;
+		console.log(this.freshTotal);
+		console.log(this.freshVotes);
+		console.log(this.rating);
+	},
+
 	// render the View
     render: function () {
+    	var self = this;
 		// set the view element ($el) HTML content using its template
-		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.html(this.template(self.model.toJSON()));
+
+		if (this.freshVotes == 0.0){
+				var reviewTemplate = _.template("... no reviews yet");
+				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+		}else{
+
+				var reviewTemplate = _.template("current rated: <image src=<%= (this.rating >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> ");
+				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+				this.$('.rate').append(this.rating + "%");
+		}
 
 		return this;
+
+
 	},
 
 	events: {
