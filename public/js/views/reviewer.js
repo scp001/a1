@@ -57,6 +57,9 @@ splat.Reviewer = Backbone.View.extend({
 				// notification panel, defined in section 2.6
 				splat.utils.showNotice('Success', "Review added", 'alert-success');
 				splat.utils.hideNotice();
+				var movieId = self.model.attributes.movieId;
+				self.model = new splat.ReviewModel();
+				self.model.attributes.movieId = movieId;
 			},
 			error: function(response) {
 				// display the error response from the server

@@ -82,6 +82,9 @@ app.delete('/movies/:id', splat.deleteMovie);
 app.get('/movies/:id/reviews', splat.getReviews);
 app.post('/movies/:id/reviews', splat.addReview);
 
+app.get('/movies/:id/video', splat.playMovie);
+
+
 // location of app's static content
 app.use(express.static(__dirname + "/public"));
 
