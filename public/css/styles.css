@@ -128,10 +128,10 @@ display: inline-block;
 }
 
 .rate{
-	color: red;
-	margin-left: 10px;
+	color: white;
 	font-size: 18px;
 	float: left;
+	text-align: center;
 }
 
 #reviewtext{
@@ -186,4 +186,27 @@ display: inline-block;
 	white-space:nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.freshpic{
+	border:0px;
+    background-image: url("/img/fresh_lg.png");
+    height: 82px;
+	width: 84px;
+	font-size: 15px;
+	color: white;
+
+}
+
+.rottenpic{
+	text-align: center;
+	padding-top: 20px;
+	border:0px;
+    background-image: url("/img/rotten_lg.png");
+    height: 82px;
+	width: 84px;
+	font-size: 15px;
+	color: white;
+
+
 }

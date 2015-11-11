@@ -29,15 +29,15 @@ splat.Details = Backbone.View.extend({
 			// var reviewRateView = new splat.ReviewRate();
 			// this.$('.rate').append(reviewRateView.render().el);
 
-			var template = _.template("<a href=\"#movies/<%= _id %>/reviews\">Reviews</a>");
-			this.$('.review').append(template(self.model.toJSON()));
+			// var template = _.template("<a href=\"#movies/<%= _id %>/reviews\">Reviews</a>");
+			// this.$('.review').append(template(self.model.toJSON()));
 
 			if (this.model.attributes.freshVotes == 0.0){
 
-				var reviewTemplate = _.template("... no reviews yet");
+				var reviewTemplate = _.template("<a href=\"#movies/<%= _id %>/reviews\"><div class=\"rottenpic\">N/A</div></a>");
 				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 			}else{
-				var reviewTemplate = _.template("current rated: <image src=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>% ");
+				var reviewTemplate = _.template("<a href=\"#movies/<%= _id %>/reviews\"><div class=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? \"freshpic\" : \"rottenpic\" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div></a>");
 				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 			}
 		}
