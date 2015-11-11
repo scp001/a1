@@ -236,10 +236,10 @@ splat.Details = Backbone.View.extend({
 	},
 
 	decodeBase64Image: function(dataString) {
-  		var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+  		var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
 
   		return matches[2];
-	}
+	},
 
 
 	// Resize sourceImg, returning result as a DataURL value. Type,
