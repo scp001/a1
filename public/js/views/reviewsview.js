@@ -36,6 +36,7 @@ splat.ReviewsView = Backbone.View.extend({
 		var moviesFetch = this.movies.fetch();
 		var self = this;
 		moviesFetch.done(function(collection, response){
+		/*
 		var movie = self.movies.get(self.model.attributes.movieId);
 
 		if (movie.attributes.freshVotes == 0){
@@ -53,11 +54,20 @@ splat.ReviewsView = Backbone.View.extend({
 			}
 			self.$('.rate').append(rating + "%" + "(" + movie.attributes.freshVotes + ")");
 		}
+		*/
+			self.$('#reviewer').empty();
+			var movieId = self.model.attributes.movieId;
+			self.model = new splat.ReviewModel();
+			self.model.attributes.movieId = movieId;
+			self.reviewerView = new splat.Reviewer({model: self.model, collection: self.collection, movies: self.movies});
+			self.$('#reviewer').append(self.reviewerView.render().el);
+			return self;
 		});
 	},
 
 	renderReviews: function () {
-		
+
+		this.$('#reviewthumbs').empty();
 		this.reviewThumbsView = new splat.ReviewThumbs({model: this.model, collection: this.collection});
 		this.$('#reviewthumbs').append(this.reviewThumbsView.render().el);
 		return this;
