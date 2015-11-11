@@ -168,9 +168,22 @@ display: inline-block;
 .reviewer{
 	float: left;
 	padding : 5px;
+	max-width: 50px;
+}
+
+.reviewaffil{
+	float: left;
+	padding : 5px;
+	max-width: 130px;
 }
 
 .radio-left {
-	padding: opx;
+	padding: 0px;
 	float: left;
+}
+
+.thumbclass p, .thumbclass h4, .thumbclass{
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
