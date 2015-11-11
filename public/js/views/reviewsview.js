@@ -8,7 +8,7 @@ var splat =  splat || {};
 splat.ReviewsView = Backbone.View.extend({
 
 	initialize: function(options) {
-		this.movie = options.movie;
+		this.movies = options.movies;
 
 		// invoke showScore and renderReviews methods when collection is sync'd
 		this.listenTo(this.collection, "sync", this.showScore);
@@ -17,12 +17,12 @@ splat.ReviewsView = Backbone.View.extend({
 
     // render the View
     render: function () {
-		console.log(this.movie);
+		
 		// set the view element ($el) HTML content using its template
 		this.$el.html(this.template(this.model.toJSON()));
 
 		// render Reviewer subview
-		this.reviewerView = new splat.Reviewer({model: this.model, collection: this.collection, movie: this.movie});
+		this.reviewerView = new splat.Reviewer({model: this.model, collection: this.collection, movies: this.movies});
 		this.$('#reviewer').append(this.reviewerView.render().el);
 
 		// render ReviewThumbs subview
@@ -34,37 +34,26 @@ splat.ReviewsView = Backbone.View.extend({
 
 	showScore: function () {
 
-		//}else{
-			//	display movie.attributes.freshTotal/movie.attributes.freshVotes
-		//}
-	},
+		var movie = this.movies.get(this.model.attribites.movieId);
 
-	renderReviews: function () {
-
-		alert("hehe");
-		console.log(this.movie.attributes.freshVotes);
-		if (this.movie.attributes.freshVotes == 0){
+		console.log(movie.attributes.freshVotes);
+		if (movie.attributes.freshVotes == 0){
 			var reviewTemplate = _.template("... no reviews yet");
 			this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 		}
 		else{
 			this.$('.rate').empty()
-			if (!this.movieCollection){
-			this.movieCollection = new splat.Movies();
+			var rating = Math.floor(move.attributes.freshTotal / move.attributes.freshVotes*1000)/10;
+			if (rating >= 50.0){
+				this.$('.rate').append('current rated: <image src="img/fresh.gif">');
 			}
-
-			var moviesFetch = this.movieCollection.fetch();
-			var self = this;
-
-			moviesFetch.done(function(collection, response){
-				console.log(self.movieCollection);
-				}).fail(function(collection, response){
-				splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger");
-				splat.utils.hideNotice();
-			})
+			else{
+				this.$('.rate').append('current rated: <image src="img/rotten.gif">');
+			}
 		}
+	},
 
-
+	renderReviews: function () {
 
 			// if ((Math.floor(this.movie.attributes.freshTotal/this.movie.attributes.freshVotes*1000)/10) >= 50.0){
 			// 	this.$('.rate').append('current rated: <image src="img/fresh.gif">');

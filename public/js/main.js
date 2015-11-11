@@ -147,7 +147,7 @@ splat.AppRouter = Backbone.Router.extend({
 				reviewsModel.attributes.movieId = id;
 
 				// instantiate a reviews view
-				self.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection, movie: self.movieCollection.get(id)});
+				self.reviewsView = new splat.ReviewsView({model:reviewsModel, collection: self.reviewCollection, movies: self.movieCollection});
 
 				// insert the rendered Details view element into document DOM
 				$('#content').html(self.reviewsView.render().el);
