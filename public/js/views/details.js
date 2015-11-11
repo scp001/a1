@@ -196,6 +196,10 @@ splat.Details = Backbone.View.extend({
 		reader.onload = function(event){
 			var targetImgElt = $("#detailsImage")[0];
 			var newImage = self.resize(reader.result, type);
+			var imageName = self.model.id + "." + type;
+			console.log(imageName);
+			var fileData = self.decodeBase64Image(newImage);
+			console.log(fileData);
 			targetImgElt.src = newImage;
 			self.model.set('poster', newImage);
 		};
@@ -231,9 +235,16 @@ splat.Details = Backbone.View.extend({
 		}
 	},
 
+	decodeBase64Image: function(dataString) {
+  		var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+
+  		return matches[2];
+	}
+
+
 	// Resize sourceImg, returning result as a DataURL value. Type,
 	// quality are optional params for image-type and quality setting
-	resize: function(sourceImg, type, quality) {
+	resize: function(sourceImg, type, quality, callback) {
 		var type = type || "image/jpeg"; // default MIME image type
 		var quality = quality || "0.95"; // tradeoff quality vs size
 		var image = new Image(), MAX_HEIGHT = 300, MAX_WIDTH = 450;
@@ -245,6 +256,6 @@ splat.Details = Backbone.View.extend({
 		canvas.height = image.height;
 		var ctx = canvas.getContext("2d"); // get 2D rendering context
 		ctx.drawImage(image,0,0, image.width, image.height); // render
-		return canvas.toDataURL(type, quality);
+		if(callback){return canvas.toDataURL(type, quality);};
 	},
 });
