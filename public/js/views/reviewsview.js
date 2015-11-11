@@ -33,36 +33,34 @@ splat.ReviewsView = Backbone.View.extend({
     },
 
 	showScore: function () {
+		var moviesFetch = this.movies.fetch();
+		var self = this;
+		moviesFetch.done(function(collection, response){
+		var movie = self.movies.get(self.model.attributes.movieId);
 
-		var movie = this.movies.get(this.model.attributes.movieId);
-
-		console.log(movie.attributes.freshVotes);
 		if (movie.attributes.freshVotes == 0){
 			var reviewTemplate = _.template("... no reviews yet");
-			this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+			self.$('.rate').append(reviewTemplate(self.model.toJSON()));
 		}
 		else{
-			this.$('.rate').empty()
+			self.$('.rate').empty()
 			var rating = Math.floor(movie.attributes.freshTotal / movie.attributes.freshVotes*1000)/10;
 			if (rating >= 50.0){
-				this.$('.rate').append('current rated: <image src="img/fresh.gif">');
+				self.$('.rate').append('current rated: <image src="img/fresh.gif">');
 			}
 			else{
-				this.$('.rate').append('current rated: <image src="img/rotten.gif">');
+				self.$('.rate').append('current rated: <image src="img/rotten.gif">');
 			}
-			this.$('.rate').append(rating + "%" + "(" + movie.attributes.freshVotes + ")");
+			self.$('.rate').append(rating + "%" + "(" + movie.attributes.freshVotes + ")");
 		}
+		});
 	},
 
 	renderReviews: function () {
-
-			// if ((Math.floor(this.movie.attributes.freshTotal/this.movie.attributes.freshVotes*1000)/10) >= 50.0){
-			// 	this.$('.rate').append('current rated: <image src="img/fresh.gif">');
-			// }
-			// else{
-			// 	this.$('.rate').append('current rated: <image src="img/rotten.gif">');
-			// }
-			// this.$('.rate').append(Math.floor(this.movie.attributes.freshTotal/this.movie.attributes.freshVotes*1000)/10 + "%");
+		
+		this.reviewThumbsView = new splat.ReviewThumbs({model: this.model, collection: this.collection});
+		this.$('#reviewthumbs').append(this.reviewThumbsView.render().el);
+		return this;
 	},
 
     // remove subviews on close of Details view
