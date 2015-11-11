@@ -50,6 +50,7 @@ splat.ReviewsView = Backbone.View.extend({
 			else{
 				this.$('.rate').append('current rated: <image src="img/rotten.gif">');
 			}
+			this.$('.rate').append(rating + "%" + "(" + movie.attributes.freshVotes + ")");
 		}
 	},
 
