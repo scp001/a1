@@ -189,8 +189,12 @@ display: inline-block;
 }
 
 .freshpic{
-	border:0px;
+
     background-image: url("/img/fresh_lg.png");
+    text-align: center;
+	padding-top: 20px;
+	border:0px;
+    background-image: url("/img/rotten_lg.png");
     height: 82px;
 	width: 84px;
 	font-size: 15px;
