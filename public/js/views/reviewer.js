@@ -12,7 +12,7 @@ splat.Reviewer = Backbone.View.extend({
 		this.freshTotal = this.movie.attributes.freshTotal;
 		this.freshVotes = this.movie.attributes.freshVotes;
 		this.rating = Math.floor(this.freshTotal/this.freshVotes*1000)/10;
-		
+
 	},
 
 	// render the View
@@ -35,7 +35,7 @@ splat.Reviewer = Backbone.View.extend({
 			else{
 				this.$('.rate').append('current rated: <image src="img/rotten.gif">');
 			}
-			this.$('.rate').append(this.rating + "%" + "(" + this.freshVotes + ")");
+			this.$('.rate').append(" " + this.rating + "%" + "(" + this.freshVotes + ")");
 		}
 
 		return this;

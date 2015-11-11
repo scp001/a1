@@ -207,6 +207,10 @@ display: inline-block;
 	width: 84px;
 	font-size: 15px;
 	color: white;
+}
 
-
+#rate_on_review{
+	color: red;
+	padding-left: 50px;
+	font-weight: bold;
 }
