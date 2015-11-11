@@ -143,7 +143,6 @@ exports.addReview = function(req, res){
 	    MovieModel.findById(review.movieId, function(err, movie) {
 		movie.freshVotes += 1;
 		movie.freshTotal += newReview.freshness;
-		console.log(movie);
 		movie.save();
 	    });
 	    res.status(200).send(review);
