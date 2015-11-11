@@ -34,7 +34,7 @@ splat.ReviewsView = Backbone.View.extend({
 
 	showScore: function () {
 
-		var movie = this.movies.get(this.model.attribites.movieId);
+		var movie = this.movies.get(this.model.attributes.movieId);
 
 		console.log(movie.attributes.freshVotes);
 		if (movie.attributes.freshVotes == 0){
@@ -43,7 +43,7 @@ splat.ReviewsView = Backbone.View.extend({
 		}
 		else{
 			this.$('.rate').empty()
-			var rating = Math.floor(move.attributes.freshTotal / move.attributes.freshVotes*1000)/10;
+			var rating = Math.floor(movie.attributes.freshTotal / movie.attributes.freshVotes*1000)/10;
 			if (rating >= 50.0){
 				this.$('.rate').append('current rated: <image src="img/fresh.gif">');
 			}

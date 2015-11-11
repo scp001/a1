@@ -8,7 +8,7 @@ var splat =  splat || {};
 splat.Reviewer = Backbone.View.extend({
 
 	initialize: function(option) {
-		this.movie = option.movies.get(this.model.attribites.movieId);
+		this.movie = option.movies.get(this.model.attributes.movieId);
 		this.freshTotal = this.movie.attributes.freshTotal;
 		this.freshVotes = this.movie.attributes.freshVotes;
 		this.rating = Math.floor(this.freshTotal/this.freshVotes*1000)/10;
