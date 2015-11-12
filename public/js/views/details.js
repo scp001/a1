@@ -201,10 +201,6 @@ splat.Details = Backbone.View.extend({
 		};
 		// read image File
 		reader.readAsDataURL(pictureFile);
-		
-		'movie/:id/image'.create(this.model, function(error, path){
-			console.log(path);
-		});
 	},
 
 	// Handle drag-and-drop picture

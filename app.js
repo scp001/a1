@@ -47,11 +47,10 @@ app.use(logger(config.env));  // 'default', 'short', 'tiny', 'dev'
 app.use(compression());
 
 // parse HTTP request body
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
         extended: true
 }));
-app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
 
 // set file-upload directory for poster images
 app.use(multer({dest: __dirname + '/public/img/uploads/'}));
@@ -79,8 +78,6 @@ app.get('/movies', splat.getMovies);
 app.post('/movies', splat.addMovie);
 app.put('/movies/:id', splat.editMovie);
 app.delete('/movies/:id', splat.deleteMovie);
-app.post('movies/image', splat.uploadImage);
-app.post('movies/:id/image', splat.uploadImage);
 
 app.get('/movies/:id/reviews', splat.getReviews);
 app.post('/movies/:id/reviews', splat.addReview);

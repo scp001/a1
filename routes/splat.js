@@ -45,6 +45,7 @@ exports.getMovies = function(req, res){
 
 // create a new movie model and save it
 exports.addMovie = function(req, res){
+	var newMovie = req.body;
 	var newMovie = new MovieModel(req.body);
 	newMovie.save(function(err, movie) {
 	if(err) {
@@ -71,17 +72,28 @@ exports.editMovie = function(req, res) {
             res.status(404).send("Sorry, that movie doesn't exist; try reselecting from Browse view");
         } else {
         		var newMovie = req.body;
+        		var movieImage = newMovie["poster"];
+        		var matches = movieImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+        		if (matches.length == 3){      			
+        			var suffix = matches[1].split("/")[1],
+        			    value = matches[2],
+        			    id = newMovie["_id"],
+        			    imageURL = '/public/img/uploads/' + id + "." + suffix,
+        				newPath = __dirname + '/..' + imageURL;
+        				newMovie['poster'] = imageURL;
+        				fs.writeFile(newPath, value, 'base64', function(err, message){});
+        		}
         		delete newMovie["_id"];
-			delete newMovie["__0"];
-			// update movie with request body
-            movie.update(newMovie, function(err, message){
+				delete newMovie["__0"];
+				// update movie with request body
+            	movie.update(newMovie, function(err, message){
 					if(err){
 						res.status(500).send("Sorry, unable to edit movie at this time ("
 						+err.message+ ")");
 					}  else {
 						res.status(200).send(message);
 					}
-            });
+            	});
         }
     });
 
@@ -191,6 +203,14 @@ exports.playMovie = function(req, res){
         	});
 	});
 };
+
+/*
+this.decodeBase64Image = function(dataString) {
+  		var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+
+  		return matches[2];
+	},
+*/
 
 var mongoose = require('mongoose'); // MongoDB integration
 
