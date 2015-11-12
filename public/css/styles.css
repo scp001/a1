@@ -225,3 +225,6 @@ display: inline-block;
 	float: right;
 }
 
+#orderForm{
+	padding-left: 10px;
+}
