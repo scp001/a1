@@ -9,13 +9,13 @@
             ADD-TEXT
         </video>
 
-        <div class="infostyle thumbclass">
+        <div class="infostyle">
           <% if (freshVotes == 0) { %>
           <div class="rottenpic" >N/A</div>
           <%} else{ %>
           <div class=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div>
           <% } %>
-          <div class="info-text">
+          <div class="info-text thumbclass">
           <h4><%= title %> (<%= released %>)</h4>
             <p>Directed by: <%= director %><br/>
             Starring: <%= starring %><br/>
