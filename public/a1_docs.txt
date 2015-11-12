@@ -1,4 +1,0 @@
-1.	Stating to use router, model and view is a little hard.
-	Once I get familiar with them, it becomes easy.
-2.	Changing the background to proper position and size takes us much time.
-3.	In step 2, it takes much time to get fimiliar with collection.

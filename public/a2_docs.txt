@@ -1,0 +1,2 @@
+1. The most hard one for me is trying to save image to a file.
+2. Displaying the reivew rate is also a little hard for me.
