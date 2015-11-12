@@ -196,16 +196,15 @@ splat.Details = Backbone.View.extend({
 		reader.onload = function(event){
 			var targetImgElt = $("#detailsImage")[0];
 			var newImage = self.resize(reader.result, type);
-			var imageName = self.model.id + "." + type;
-			console.log(imageName);
-			var fileData = self.decodeBase64Image(newImage);
-			console.log(fileData);
 			targetImgElt.src = newImage;
 			self.model.set('poster', newImage);
 		};
 		// read image File
 		reader.readAsDataURL(pictureFile);
-
+		
+		'movie/:id/image'.create(this.model, function(error, path){
+			console.log(path);
+		});
 	},
 
 	// Handle drag-and-drop picture
