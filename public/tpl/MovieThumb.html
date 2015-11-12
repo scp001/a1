@@ -11,9 +11,9 @@
 
         <div class="infostyle thumbclass">
           <% if (freshVotes == 0) { %>
-          <div class="rottenpic pull-left" >N/A</div>
+          <div class="rottenpic" >N/A</div>
           <%} else{ %>
-          <div class=pull-left <%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div>
+          <div class=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div>
           <% } %>
           <div class="pull-right">
           <h4><%= title %> (<%= released %>)</h4>
