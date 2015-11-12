@@ -87,6 +87,8 @@ margin-top:5px;
 
 .infostyle{
 	word-break: break-all;
+	text-align: right;
+	color: white;
 }
 
 .inline {
