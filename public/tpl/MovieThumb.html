@@ -15,12 +15,12 @@
           <%} else{ %>
           <div class=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div>
           <% } %>
-          <div class="info-text thumbclass">
-          <h4><%= title %> (<%= released %>)</h4>
-            <p>Directed by: <%= director %><br/>
+
+          <strong><%= title %> (<%= released %>)</strong><br/>
+			Directed by: <%= director %><br/>
             Starring: <%= starring %><br/>
             Genres: <%= genre %> Rating: <%= rating %>
-			</p>
+
           </div>
          </div>
       </a>
