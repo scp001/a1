@@ -219,3 +219,7 @@ display: inline-block;
 	font-weight: bold;
 }
 
+.info-text{
+	float: right;
+}
+
