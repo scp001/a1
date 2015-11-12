@@ -7,6 +7,7 @@ var splat =  splat || {};
 // note View-name (Reviewer) matches name of template file Reviewer.html
 splat.Reviewer = Backbone.View.extend({
 
+	// get movie collection from parent view
 	initialize: function(option) {
 		this.movie = option.movies.get(this.model.attributes.movieId);
 		this.freshTotal = this.movie.attributes.freshTotal;
@@ -25,10 +26,7 @@ splat.Reviewer = Backbone.View.extend({
 				var reviewTemplate = _.template("... no reviews yet");
 				this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 		}else{
-			//the temlate is not usable for unknown reason.
-
-			// var reviewTemplate = _.template("current rated: <image src=<%= (this.rating >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> ");
-			// this.$('.rate').append(reviewTemplate(self.model.toJSON()));
+			// if rating is greater that 50% show fresh
 			if (this.rating >= 50.0){
 				this.$('.rate').append('currently rated: <image src="img/fresh.gif">');
 			}
@@ -57,11 +55,6 @@ splat.Reviewer = Backbone.View.extend({
 				// notification panel, defined in section 2.6
 				splat.utils.showNotice('Success', "Review added", 'alert-success');
 				splat.utils.hideNotice();
-				/*
-				var movieId = self.model.attributes.movieId;
-				self.model = new splat.ReviewModel();
-				self.model.attributes.movieId = movieId;
-				*/
 			},
 			error: function(response) {
 				// display the error response from the server

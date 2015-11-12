@@ -36,25 +36,8 @@ splat.ReviewsView = Backbone.View.extend({
 		var moviesFetch = this.movies.fetch();
 		var self = this;
 		moviesFetch.done(function(collection, response){
-		/*
-		var movie = self.movies.get(self.model.attributes.movieId);
-
-		if (movie.attributes.freshVotes == 0){
-			var reviewTemplate = _.template("... no reviews yet");
-			self.$('.rate').append(reviewTemplate(self.model.toJSON()));
-		}
-		else{
-			self.$('.rate').empty()
-			var rating = Math.floor(movie.attributes.freshTotal / movie.attributes.freshVotes*1000)/10;
-			if (rating >= 50.0){
-				self.$('.rate').append('current rated: <image src="img/fresh.gif">');
-			}
-			else{
-				self.$('.rate').append('current rated: <image src="img/rotten.gif">');
-			}
-			self.$('.rate').append(rating + "%" + "(" + movie.attributes.freshVotes + ")");
-		}
-		*/
+		
+			// rerender reviewer view so that the form will be refreshed
 			self.$('#reviewer').empty();
 			var movieId = self.model.attributes.movieId;
 			self.model = new splat.ReviewModel();
@@ -67,6 +50,7 @@ splat.ReviewsView = Backbone.View.extend({
 
 	renderReviews: function () {
 
+		// rerender reviewthumbs view
 		this.$('#reviewthumbs').empty();
 		this.reviewThumbsView = new splat.ReviewThumbs({model: this.model, collection: this.collection});
 		this.$('#reviewthumbs').append(this.reviewThumbsView.render().el);

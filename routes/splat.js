@@ -30,6 +30,8 @@ exports.getMovie = function(req, res){
     });
 };
 
+
+// use find to retrieve all movie models
 exports.getMovies = function(req, res){
 	MovieModel.find({}, function(err, movies) {
 		if(err) {
@@ -41,6 +43,7 @@ exports.getMovies = function(req, res){
 	});
 };
 
+// create a new movie model and save it
 exports.addMovie = function(req, res){
 	var newMovie = new MovieModel(req.body);
 	newMovie.save(function(err, movie) {
@@ -58,6 +61,7 @@ exports.addMovie = function(req, res){
 	});
 };
 
+// reterive movie by id
 exports.editMovie = function(req, res) {
 	MovieModel.findById(req.params.id, function(err, movie) {
         if (err) {
@@ -69,6 +73,7 @@ exports.editMovie = function(req, res) {
         		var newMovie = req.body;
         		delete newMovie["_id"];
 			delete newMovie["__0"];
+			// update movie with request body
             movie.update(newMovie, function(err, message){
 					if(err){
 						res.status(500).send("Sorry, unable to edit movie at this time ("
@@ -82,6 +87,7 @@ exports.editMovie = function(req, res) {
 
 }
 
+// reterive movie by id
 exports.deleteMovie = function(req, res) {
 	MovieModel.findById(req.params.id, function(err, movie){
 	if(err) {
@@ -90,6 +96,7 @@ exports.deleteMovie = function(req, res) {
 	} else if (!movie) {
 	    res.status(404).send("Sorry, that movie does not exist");
 	} else {
+		// use model remove to remove movie
 		MovieModel.remove({'_id':movie.id}, function(error, message){
 				if (err){
 					res.status(500).send("Sorry, unable to delete the movie (" +  message + ")");
@@ -124,6 +131,7 @@ exports.uploadImage = function(req, res) {
 	
 };
 
+// use find to reterive all movies
 exports.getReviews = function(req, res){
 	ReviewModel.find({}, function(err, reviews) {
 		if(err) {
@@ -135,6 +143,7 @@ exports.getReviews = function(req, res){
 	});
 };
 
+// create a new review model and save it to server
 exports.addReview = function(req, res){
 	var newReview = new ReviewModel(req.body);
 	newReview.save(function(err, review) {
@@ -153,10 +162,14 @@ exports.addReview = function(req, res){
 };
 
 exports.playMovie = function(req, res){
-	
+
+	// resolve file path
 	var file = path.resolve(__dirname,"/..");
+	// get sepcific range
 	var range = req.headers.range;
+	// get position
 	var positions = range.replace(/bytes=/, "").split("-");
+	// get start position
 	var start = parseInt(positions[0], 10);
 
     	fs.stat(file, function(err, stats) {
