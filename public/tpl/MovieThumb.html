@@ -11,9 +11,9 @@
 
         <div class="infostyle thumbclass">
           <% if (freshVotes == 0) { %>
-          <div class="rottenpic" >N/A</div>
+          <a href= "#movies/<%=_id %>/reviews"><div class="rottenpic" >N/A</div></a>
           <%} else{ %>
-          <div class=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div>
+          <a href="#movies/<%= _id %>/reviews"><div class=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div></a>
           <% } %>
 
           <strong><%= title %> (<%= released %>)</strong><br/>
