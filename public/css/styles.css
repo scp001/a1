@@ -219,6 +219,7 @@ display: inline-block;
 	color: red;
 	padding-left: 50px;
 	font-weight: bold;
+	font-style: italic;
 }
 
 .info-text{

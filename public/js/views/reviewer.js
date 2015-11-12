@@ -30,7 +30,7 @@ splat.Reviewer = Backbone.View.extend({
 			// var reviewTemplate = _.template("current rated: <image src=<%= (this.rating >= 50.0 ) ? \"img/fresh.gif\" : \"img/rotten.gif\" %>> ");
 			// this.$('.rate').append(reviewTemplate(self.model.toJSON()));
 			if (this.rating >= 50.0){
-				this.$('.rate').append('current rated: <image src="img/fresh.gif">');
+				this.$('.rate').append('currently rated: <image src="img/fresh.gif">');
 			}
 			else{
 				this.$('.rate').append('current rated: <image src="img/rotten.gif">');
