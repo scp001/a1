@@ -256,6 +256,6 @@ splat.Details = Backbone.View.extend({
 		canvas.height = image.height;
 		var ctx = canvas.getContext("2d"); // get 2D rendering context
 		ctx.drawImage(image,0,0, image.width, image.height); // render
-		callbackreturn canvas.toDataURL(type, quality);
+		return canvas.toDataURL(type, quality);
 	},
 });
