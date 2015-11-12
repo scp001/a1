@@ -33,6 +33,7 @@ splat.Header = Backbone.View.extend({
 		splat.order = event.target.value;
 		Backbone.trigger('orderevent' ,event);
 		$('#orderDiv').removeClass('open');
+		splat.app.navigate("#movies", {replace:true, trigger:true});
 	}
 
 });
