@@ -2,24 +2,24 @@
 <div class="thumbnails flex  row-fluid col-lg-2 col-md-3 col-sm-4 col-xs-6">
   <div class="thumbnail plain thumbnailstyle" title="Browse Movies">
     <div class="thumbtext">
-      <a href="#movies/<%= _id %>" class="plain">
-        <video class="img-responsive" controls preload="none" poster="<%= poster %>" >
-            <source src="<%= trailer %>" type="video/mp4"/>
+      <a href="#movies/<%- _id %>" class="plain">
+        <video class="img-responsive" controls preload="none" poster="<%- poster %>" >
+            <source src="<%- trailer %>" type="video/mp4"/>
             <!-- fallback -->
             ADD-TEXT
         </video>
 
         <div class="infostyle thumbclass">
           <% if (freshVotes == 0) { %>
-          <a href= "#movies/<%=_id %>/reviews"><div class="rottenpic" >N/A</div></a>
+          <a href= "#movies/<%-_id %>/reviews"><div class="rottenpic" >N/A</div></a>
           <%} else{ %>
-          <a href="#movies/<%= _id %>/reviews"><div class=<%= (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%= Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%= freshVotes%>) </div></a>
+          <a href="#movies/<%- _id %>/reviews"><div class=<%- (Math.floor(freshTotal/freshVotes*1000)/10 >= 50.0 ) ? "freshpic" : "rottenpic" %>> <%- Math.floor(freshTotal/freshVotes*1000)/10 %>%(<%- freshVotes%>) </div></a>
           <% } %>
 
-          <strong><%= title %> (<%= released %>)</strong><br/>
-			Directed by: <%= director %><br/>
-            Starring: <%= starring %><br/>
-            Genres: <%= genre %> Rating: <%= rating %>
+          <strong><%- title %> (<%- released %>)</strong><br/>
+			Directed by: <%- director %><br/>
+            Starring: <%- starring %><br/>
+            Genres: <%- genre %> Rating: <%- rating %>
 
           </div>
       </a>

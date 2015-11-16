@@ -1,13 +1,13 @@
 <li class='liststyle'>
 	<div class="flex row-fluid col-lg-2 col-md-3 col-sm-4 col-xs-6">
 		<div class="tomato thumbclass ">
-		<img src=<%= (freshness == 1.0) ? "img/fresh.gif" : "img/rotten.gif" %>> "<%= reviewText %>"
+		<img src=<%- (freshness == 1.0) ? "img/fresh.gif" : "img/rotten.gif" %>> "<%- reviewText %>"
 		</div>
 		<div class="reviewer thumbclass">
-			<img src="img/critic.gif"></br>&nbsp<%= reviewName %>
+			<img src="img/critic.gif"></br>&nbsp<%- reviewName %>
 		</div>
 		<div class="reviewaffil thumbclass">
-			<%= reviewAffil %>
+			<%- reviewAffil %>
 		</div>
 	</div>
 </li>
