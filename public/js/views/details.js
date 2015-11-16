@@ -136,7 +136,7 @@ splat.Details = Backbone.View.extend({
 
 		// Add change value to changeObj; change event is
 		// triggered once for each changed field value
-		changeObj[event.target.name] = event.target.value;
+		changeObj[event.target.name] = _.escape(event.target.value);
         this.model.set(changeObj);
         splat.utils.showNotice('Note', 'Movie attribute updated; to make changes permanent, click "Save Changes" button', 'alert-info');
 		splat.utils.hideNotice();
