@@ -9,7 +9,7 @@
  * the value returned by require(), in this case e.g. splat.api
  * The convention is use the same name for variable and module.
  */
-var http = require('http'),
+var http = require('https'),
     // NOTE, use the version of "express" linked to the assignment handout
     express = require('express'),
     fs = require("fs"),
@@ -29,6 +29,11 @@ var http = require('http'),
     // such as "port", DB parameters
     config = require("./config"),
     splat = require('./routes/splat.js');  // route handlers
+
+var options = {
+	key: fs.readFileSync('key.pem'), //RSA private-key
+	cert: fs.readFileSync('cert.pem'), // RSA public-key certificate
+};
 
 var app = express()  // Create Express app server
 
@@ -98,7 +103,7 @@ app.use(function (req, res) {
 
 
 // Start HTTP server
-http.createServer(app).listen(app.get('port'), function () {
+var a = http.createServer(options, app).listen(app.get('port'), function () {
     console.log("Express server listening on port %d in %s mode",
     		app.get('port'), config.env );
 });
