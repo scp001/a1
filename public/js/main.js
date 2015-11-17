@@ -18,26 +18,11 @@ splat.AppRouter = Backbone.Router.extend({
 	},
 
 	// When an instance of an AppRouter is declared, create a Header view
-	initialize: function() {
-		// instantiate a user collection
-		if (!this.usersCollection){
-			this.usersCollection = new splat.Users();
-		}
-		
-		var usersFetch = this.usersCollection.fetch();
-		
-		usersFetch.done(function(collection, response){
-			var userModel = new splat.UserwModel();
-			// instantiate a Header view
-			this.headerView = new splat.Header({model:userModel, collection: this.usersCollection});
-			// insert the rendered Header view element into the document DOM
-			$('.header').html(this.headerView.render().el);
-		}).fail(function(collection, response){
-			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger")
-			spalt.utils.hideNotice();
-		});
-
-		
+	initialize: function() {	
+		// instantiate a Header view
+		this.headerView = new splat.Header();
+		// insert the rendered Header view element into the document DOM
+		$('.header').html(this.headerView.render().el);	
 	},
 
 	home: function() {
