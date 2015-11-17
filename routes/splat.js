@@ -204,6 +204,26 @@ exports.playMovie = function(req, res){
 	});
 };
 
+exports.getUsers = function(req, res){
+	UserModel.find({}, function(err, users) {
+		if(err) {
+			res.status(500).send("Sorry, unable to retrieve all users at this time ("
+				+err.message + ")");
+		}else{
+			res.status(200).send(users);
+		}
+	});
+};
+
+exports.signup = function(req, res){
+	var newUser = new UserModel(req.body);
+	
+};
+
+exports.signin = function(req, res){
+	
+};
+
 var mongoose = require('mongoose'); // MongoDB integration
 
 // Connect to database, using credentials specified in your config module
@@ -249,6 +269,10 @@ MovieSchema.index({"title":1, "director":1}, {unique:true, dropDups:true});
 // each movieId:reviewAffil pair must be unique; duplicates are dropped
 ReviewSchema.index({"movieId":1, "reviewAffil":1}, {unique:true, dropDups:true});
 
+// each username must be unique; duplicates are dropped
+UserSchema.index({"username":1}, {unique:true, dropDups:true});
+
 // Models
 var MovieModel = mongoose.model('Movie', MovieSchema);
 var ReviewModel = mongoose.model('Review', ReviewSchema);
+var UserModel = mongoose.model('User', UserSchema);
