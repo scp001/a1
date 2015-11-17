@@ -91,7 +91,7 @@ app.get('/movies/:id/video', splat.playMovie);
 
 app.get('/auth', splat.getUsers);
 app.post('/auth', splat.signup);
-app.put('/auth', splat,signin);
+app.put('/auth', splat.signin);
 
 
 // location of app's static content
