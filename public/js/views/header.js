@@ -82,17 +82,18 @@ splat.Header = Backbone.View.extend({
 		}
 		
 		var newModel = this.collection.create(this.model, {
-		wait: true,  // don't create client model until server responds
-    	success: function(response) {
-			// notification panel, defined in section 2.6
-        	splat.utils.showNotice('Success', "New Account Created", 'alert-success');
-        	splat.utils.hideNotice();
-    	},
-    	error: function(response) {
-    		// display the error response from the server
-        	splat.utils.showNotice('Fail', "New Account was not created", 'alert-danger');
-        	splat.utils.hideNotice();
-    	},
+			wait: true,  // don't create client model until server responds
+			success: function(response) {
+				// notification panel, defined in section 2.6
+				splat.utils.showNotice('Success', "New Account Created", 'alert-success');
+				splat.utils.hideNotice();
+			},
+			error: function(response) {
+				// display the error response from the server
+				splat.utils.showNotice('Fail', "New Account was not created", 'alert-danger');
+				splat.utils.hideNotice();
+			},
+		});
 	},
 	
 	signin: function(event){
