@@ -29,6 +29,48 @@
 			<li class="add-menu"><a href="#movies/add">Add Movie</a></li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
+			<li class="singup-menu dropdown" id="singupdrop">
+				<a id="singup" class="dropdown-toggle" data-toggle="dropdown">Sign Up</a>
+				<div id="signupDiv" class="dropdown-menu">
+					<form id="signupForm">
+						<div class="controls">
+							<input id="username" type="text" name="username" class="form-control" placeholder="Username"/>
+							<span class="help-inline"></span>
+						</div>
+						<div class="controls">
+							<input id="email" type="email" name="email" class="form-control" placeholder="Email"/>
+							<span class="help-inline"></span>
+						</div>
+						<div class="controls">
+							<input id="password" type="password" name="password" class="form-control" placeholder="Password"/>
+							<span class="help-inline"></span>
+						</div>
+						<div class="controls">
+							<input id="password2" type="password" name="password2" class="form-control" placeholder="Enter Password Again"/>
+							<span class="help-inline"></span>
+						</div>
+						<button type="button" class="btn btn-danger" id="singup-button">Sing Up</button>
+					</form>
+				</div>
+			</li>
+			<li class="signin-menu dropdown" id="singindrop">
+				<a id="singin" class="dropdown-toggle" data-toggle="dropdown">About</a>
+				<div id="signinDiv" class="dropdown-menu">
+					<form id="signinForm">
+						<div class="controls">
+							<input id="username" type="text" name="username" class="form-control" placeholder="Username"/>
+							<span class="help-inline"></span>
+						</div>
+						<div class="controls">
+							<input id="password" type="password" name="password" class="form-control" placeholder="Password"/>
+							<span class="help-inline"></span>
+						</div>
+						<input id="remember" type="checkbox" name="remember" value="1" />
+                        <label for="remember">Remember me</label>
+						<button type="button" class="btn btn-danger" id="singin-button">Sing In</button>
+					</form>
+				</div>
+			</li>
 			<li class="about-menu"><a href="#About">About</a></li>
 		</ul>
 	</div><!-- /.navbar-collapse -->

@@ -82,5 +82,21 @@ splat.utils = {
     	var controlGroup = $('#' + field).parent().parent();
     	controlGroup.removeClass('has-error');
     	$('.help-block', controlGroup).html("");
+    },
+	
+	// add error message to help-block
+    addSignupError: function(field, message){
+    	// use jQuery to address input field by its name attribute
+    	var controlGroup = $('#' + field).parent();
+    	controlGroup.addClass('has-error');
+    	$('.help-block', controlGroup).html(message);
+    },
+    
+	// remove any error message
+    removeSignupError: function (field){
+    	// use jQuery to address input field by its name attribute
+    	var controlGroup = $('#' + field).parent();
+    	controlGroup.removeClass('has-error');
+    	$('.help-block', controlGroup).html("");
     }
 };

@@ -204,14 +204,6 @@ exports.playMovie = function(req, res){
 	});
 };
 
-/*
-this.decodeBase64Image = function(dataString) {
-  		var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-
-  		return matches[2];
-	},
-*/
-
 var mongoose = require('mongoose'); // MongoDB integration
 
 // Connect to database, using credentials specified in your config module
@@ -233,6 +225,7 @@ var MovieSchema = new mongoose.Schema({
     trailer : { type: String},
     poster: { type: String, required: true},
     dated: { type: Date, required: true},
+	userid : {type: String, required: true},
 });
 
 var ReviewSchema = new mongoose.Schema({
@@ -241,6 +234,12 @@ var ReviewSchema = new mongoose.Schema({
 	reviewAffil : { type: String, required: true },
 	reviewText : { type: String, required: true },
 	movieId : { type: String, required: true },
+});
+
+var UserSchema = new mongoose.Schema({
+	username: {type:String, required: true},
+	password: {type:String, required: true},
+	email: {type:String, required: true},
 });
 
 // Constraints
