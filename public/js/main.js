@@ -18,9 +18,11 @@ splat.AppRouter = Backbone.Router.extend({
 	},
 
 	// When an instance of an AppRouter is declared, create a Header view
-	initialize: function() {	
+	initialize: function() {
+		var userModel = new splat.UserwModel();
+		this.userCollection = new splat.Users();
 		// instantiate a Header view
-		this.headerView = new splat.Header();
+		this.headerView = new splat.Header({model:userModel, collection: this.userCollection});
 		// insert the rendered Header view element into the document DOM
 		$('.header').html(this.headerView.render().el);	
 	},
