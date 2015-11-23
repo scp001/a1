@@ -53,8 +53,13 @@ app.use(logger(config.env));  // 'default', 'short', 'tiny', 'dev'
 app.use(compression());
 
 // change the configuration of your session cookies to include the secure flag
+app.use(session({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: true,
+    cookie:{secure: true}
+}));
 app.use(csrftoken());
-app.use(session({}));
 
 // Setup for rendering csurf token into index.html at app-startup
 app.engine('.html', require('ejs').__express);
@@ -63,15 +68,6 @@ app.set('views', __dirname + '/public');
 app.get('/index.html', function(req, res) {
     // req.csrfToken() returns a fresh random CSRF token value
     res.render('index.html', {csrftoken: req.csrfToken()});
-});
-
-// error-handling Express middleware function
-app.use(function(err, req, res, next) {
-	if(err.code == 'EBADCSRFTOKEN'){
-		res.status(403).send("Please reload the page to get a fresh CSRF token value.");
-	}else{
-		next(err);
-	}
 });
 
 // parse HTTP request body
@@ -128,6 +124,15 @@ app.use(function (req, res) {
 	res.status(404).send("Request not accepted.");
 });
 
+// error-handling Express middleware function
+app.use(function(err, req, res, next) {
+    if(err.code == 'EBADCSRFTOKEN'){
+        res.status(403).send("Please reload the page to get a fresh CSRF token value.");
+    }else{
+        // hand off control to the next callback
+        next(err);
+    }
+});
 
 // Start HTTP server
 var a = http.createServer(options, app).listen(app.get('port'), function () {

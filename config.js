@@ -1,5 +1,6 @@
 module.exports = {
-	port : 41487,
+	secret: 'ninja',
+	port : 41484,
 	env : 'dev', // 'default', 'short', 'tiny', 'dev'
 	dbuser: "songzhi",
 	dbpass: "songzhi",
