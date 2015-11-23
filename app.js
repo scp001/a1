@@ -23,8 +23,9 @@ var http = require('https'),
     methodOverride = require("method-override"),
     directory = require("serve-index"),
     errorHandler = require("errorhandler"),
-    basicAuth = require("basic-auth-connect"),  // optional, for HTTP auth
-
+    basicAuth = require("basic-auth-connect"),  // optional, for HTTP auth	
+	csrftoken = require("csurf"),	// for CSRF token
+	
     // config is an object module, that defines app-config attribues,
     // such as "port", DB parameters
     config = require("./config"),
@@ -50,6 +51,28 @@ app.use(logger(config.env));  // 'default', 'short', 'tiny', 'dev'
 
 // use compression (gzip) to reduce size of HTTP responses
 app.use(compression());
+
+// change the configuration of your session cookies to include the secure flag
+app.use(csrftoken());
+app.use(session({}));
+
+// Setup for rendering csurf token into index.html at app-startup
+app.engine('.html', require('ejs').__express);
+app.set('views', __dirname + '/public');
+// When client-side requests index.html, perform template substitution on it
+app.get('/index.html', function(req, res) {
+    // req.csrfToken() returns a fresh random CSRF token value
+    res.render('index.html', {csrftoken: req.csrfToken()});
+});
+
+// error-handling Express middleware function
+app.use(function(err, req, res, next) {
+	if(err.code == 'EBADCSRFTOKEN'){
+		res.status(403).send("Please reload the page to get a fresh CSRF token value.");
+	}else{
+		next(err);
+	}
+});
 
 // parse HTTP request body
 app.use(bodyParser.urlencoded({

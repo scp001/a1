@@ -160,6 +160,14 @@ splat.AppRouter = Backbone.Router.extend({
 	}
 });
 
+Backbone.ajax = function() {
+    // Invoke $.ajaxSetup in the context of Backbone.$
+    Backbone.$.ajaxSetup.call(Backbone.$, {beforeSend: function(jqXHR){
+        jqXHR.setRequestHeader("X-CSRF-Token", splat.csrftoken);
+    }});
+    return Backbone.$.ajax.apply(Backbone.$, arguments);
+};
+
 // Load HTML templates for Home, Header, About views, and when
 // template loading is complete, instantiate a Backbone router
 // with history.
