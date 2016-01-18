@@ -18,16 +18,16 @@ var driver = new webdriver.Builder().
 
 //===========================
 //GOOGLE TEST
-driver.get('http://www.google.com.ua');
+driver.get('https://www.google.ca/');
 // driver.findElement(webdriver.By.name('q')).sendKeys('webdriver');
 // driver.findElement(webdriver.By.name('btnG')).click();
 
 // driver.findElement(webdriver.By.id('gb_70')).click();
 
-driver.findElement(webdriver.By.xpath("//*[text()='Увійти']")).click();
+driver.findElement(webdriver.By.xpath("//*[text()='Sign in']")).click();
 driver.wait(function() {
  return driver.getTitle().then(function(title) {
-   return title === 'Вхід – Облікові записи    Google';
+   return title === 'Sign in with your Google Account';
  });
 }, 1000);
 

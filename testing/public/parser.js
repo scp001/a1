@@ -1,17 +1,9 @@
-// "id NAME set Igor id Surname get Igorenko name button click title GOOGLE";
-/**
-id NAME set Igor
-id Surname get Igorenko
-name button click
-title GOOGLE
-
-*/
-// document.getElementById(23).value = 234;
+var lcomand ={words : [], comand:''}
 function getCase(input) {
   var count =0;
   words = input.words;
   comand = input.comand;
-  comand+='driver.findElement(wedbriver.By.';
+  comand+='driver.findElement(webdriver.By.';
 }
 
 function findByParam(input){
@@ -21,17 +13,17 @@ function findByParam(input){
   comand = input.comand;
   switch (words[0]) {
     case 'name':
-      comand+='driver.findElement(wedbriver.By.name(';
+      comand+='driver.findElement(webdriver.By.name(';
       find=true;
       count++;
       break;
     case 'id':
-      comand+='driver.findElement(wedbriver.By.id(';
+      comand+='driver.findElement(webdriver.By.id(';
       find=true;
       count++;
       break;
     case 'title':
-      comand+='driver.getTitle().then(function(title) { assertEquals(' + '\''+words[3]+'\'' +', title);});';
+      comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';});';
       count+=4;
       break;
     case 'click':
@@ -73,10 +65,10 @@ function findByParam(input){
 }
 
 function parse(){
+  lcomand.comand = '';
   var str = document.getElementById(23).value;
   console.log(str);
   var comands = str.split('\n');
-  var lcomand ={words : [], comand:''}
   for (var i = 0; i < comands.length; i++) {
     var lwords = comands[i].match(/(?:[^\s"]+|"[^"]*")+/g);
     if (!lwords) {
@@ -85,8 +77,8 @@ function parse(){
     //remove spaces and "
     for (var j = 0; j < lwords.length; j++) {
       lwords[j]=lwords[j].trim();
-      if(lwords[j][0]=='\"' && lwords[j][lwords[j].length - 1] == '\"'){
-          lwords[j]=lwords[j].substring(1, lwords[j].length - 1);
+      if(lwords[j][0] == '\"' && lwords[j][lwords[j].length - 1] == '\"'){
+          lwords[j] = lwords[j].substring(1, lwords[j].length - 1);
           console.log(lwords[j]);
       }
     }
@@ -103,4 +95,12 @@ function createComand(argument) {
     findByParam(argument);
   }
   document.getElementById(24).value = argument.comand;
+}
+
+function runTest()
+{
+  $.post('/runTest',{
+    adress:document.getElementById(25).value,
+    comand: lcomand.comand
+  });
 }

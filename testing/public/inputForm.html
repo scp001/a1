@@ -16,13 +16,15 @@
 				<div id="content">
           <div class='col-md-4'><strong>Write your test: </strong></div>
 	        <div class='row'>
-	            <textarea id="23" name="humanTest" type='text' class='form-control input-group' style="margin: 0px; width: 350px; height: 150px;" >id NAME set Igor
-id Surname get Igorenko
-click Hello!
-title should be "Google Hi!"</textarea>
+	            <textarea id="23" name="humanTest" type='text' class='form-control input-group' style="margin: 0px; width: 350px; height: 150px;" >click "Sign in"
+title should be "Sign in with your Google Account"</textarea>
               <button name="parse" onclick="parse()">Create Test</button>
 	        </div>
           <textarea id="24" name="aiTest" type='text' class='form-control input-group' style="margin: 0px;margin-top: 5px;width: 950px; height: 150px;" disabled="disabled"></textarea>
+					<div class="row">
+					<input id="25" name="urlInput" type="text" style="margin:5px;margin-top: 5px;" value="https://www.google.ca/"/>
+					<button name="runTest" onclick="runTest()">Run Test</button>
+					</div>
 				</div>
 			</div> <!-- row -->
 		</main> <!-- container-fluid -->
@@ -31,8 +33,9 @@ title should be "Google Hi!"</textarea>
       document.title="myTitle";
 
     }
-    </script>
-		<script src="parser.js"></script>
+    </script><script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="/parser.js"></script>
 		<footer class="footer">
 		</footer>
 
