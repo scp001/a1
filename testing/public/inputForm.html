@@ -14,26 +14,29 @@
 			<!-- row for use in Bootstrap grid layout -->
 			<div class="row" id="mainrow">
 				<div id="content">
-          <div class='col-md-4'><strong>Write your test: </strong></div>
-	        <div class='row'>
-	            <textarea id="23" name="humanTest" type='text' class='form-control input-group' style="margin: 0px; width: 350px; height: 150px;" >click "Sign in"
-title should be "Sign in with your Google Account"</textarea>
-              <button name="parse" onclick="parse()">Create Test</button>
-	        </div>
-          <textarea id="24" name="aiTest" type='text' class='form-control input-group' style="margin: 0px;margin-top: 5px;width: 950px; height: 150px;" disabled="disabled"></textarea>
-					<div class="row">
-					<input id="25" name="urlInput" type="text" style="margin:5px;margin-top: 5px;" value="https://www.google.ca/"/>
-					<button name="runTest" onclick="runTest()">Run Test</button>
+          			<div class='col-md-4'><strong>Write your test: </strong></div>
+	        			<div class='row'>
+							<div>
+	            				<textarea id="23" name="humanTest"  class='form-control input-group' style="margin: 0; width: 500px; height: 150px; resize: none;" >click "Sign in"
+									title should be "Sign in with your Google Account"</textarea>
+              					<button name="parse" onclick="parse()">Create Test</button>
+							</div>
+							<div>
+								<button name="c09" onclick="testC09()"> C09 Eatz Test </button>
+							</div>
+							<div>
+								<textarea id="24" name="aiTest" class='form-control input-group' style="margin: 0;margin-top: 5px;width: 950px; height: 150px; resize: none;" disabled="disabled"></textarea>
+							</div>
+							<div>
+								<input id="25" name="urlInput" type="text" style="margin:5px;margin-top: 5px;" value="https://www.google.ca/"/>
+								<button name="runTest" onclick="runTest()">Run Test</button>
+							</div>
+	       			 	</div>
 					</div>
-				</div>
-			</div> <!-- row -->
+			</div>
+			<!-- row -->
 		</main> <!-- container-fluid -->
-    <script type="text/javascript">
-    {
-      document.title="myTitle";
-
-    }
-    </script><script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+   		<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<script src="/parser.js"></script>
 		<footer class="footer">

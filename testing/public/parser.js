@@ -1,73 +1,85 @@
-var lcomand ={words : [], comand:''}
-function getCase(input) {
-  var count =0;
-  words = input.words;
-  comand = input.comand;
-  comand+='driver.findElement(webdriver.By.';
-}
+var lcomand ={words : [], comand:''};
+
+var findElement = function(input){
+    var count = 0;
+    var found = false;
+    var words = input.words;
+    var comand = input.comand;
+    var value =  words[0];
+
+    var events = ['click', 'dbclick', 'change', 'blur', 'focus', 'contextmenu', 'keydown', 'keypress', 'keyup', 'mouseenter', 'mousedown',
+    'mouseup', 'mouseleave', 'mouseover', 'mousemove', 'scroll', 'select', 'submit', 'hover', 'ready', 'resize'];
+
+    var elements =  ['name', 'id', 'title'];
+
+    var forms = ['fill'];
+
+    if(elements.indexOf(value) > -1) {
+      if(value === 'title') {
+        comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';});';
+        count+=4;
+      }
+      else {
+        comand+='driver.findElement(webdriver.By.' + value + '(';
+        count+=1;
+      }
+
+      found = true;
+    }
+
+    if(events.indexOf(value) > -1) {
+      comand+='driver.findElement(webdriver.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).' + value + '();';
+      count+=2;
+
+      found = true;
+    }
+
+    if(forms.indexOf(value) > -1) {
+        comand+='driver.findElement(webdriver.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).sendKeys(' + words[2] + ');';
+    }
+
+    return {
+      comand: comand,
+      words: words,
+      count: count,
+      found: found
+  }
+};
 
 function findByParam(input){
-  var count =0;
-  var find = false;
-  words = input.words;
-  comand = input.comand;
-  switch (words[0]) {
-    case 'name':
-      comand+='driver.findElement(webdriver.By.name(';
-      find=true;
-      count++;
-      break;
-    case 'id':
-      comand+='driver.findElement(webdriver.By.id(';
-      find=true;
-      count++;
-      break;
-    case 'title':
-      comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';});';
-      count+=4;
-      break;
-    case 'click':
-      comand+='driver.findElement(webdriver.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).click();';
-      count+=2;
-      break;
-    default:
-        input.words = [];
-      break;
-  }
-  if(find){
-    comand+='\''+words[1]+'\''+'))';
-    count++;
-    switch (words[2]) {
+
+  var result = findElement(input);
+
+  if(result.found){
+    switch (result.words[2]) {
       case 'set':
-        comand+='.sendKeys('+'\''+words[3]+'\''+');';
-        count+=2;
+        result.comand+='.sendKeys('+'\''+result.words[3]+'\''+');';
+        result.count+=2;
         break;
       case 'get':
-        comand+='.getAttribute(\'value\').then(function(value){ assert.equal(value, '+ '\''+words[3]+'\'' + ');});';
-        count+=2;
+        result.comand+='.getAttribute(\'value\').then(function(value){ assert.equal(value, '+ '\''+result.words[3]+'\'' + ');});';
+        result.count+=2;
         break;
       default:
           input.words = [];
         break;
     }
   }
-  // console.log(words);
-  // console.log(count);
-  if (count==input.words.length) {
+
+  if (result.count==input.words.length) {
       input.words = [];
   }
   else{
-    input.words = input.words.slice(count);
+      input.words = input.words.slice(result.count);
   }
-  if(comand){
-    input.comand = comand+'\n';
+  if(result.comand){
+      input.comand = result.comand+'\n';
   }
 }
 
-function parse(){
+function parse() {
   lcomand.comand = '';
   var str = document.getElementById(23).value;
-  console.log(str);
   var comands = str.split('\n');
   for (var i = 0; i < comands.length; i++) {
     var lwords = comands[i].match(/(?:[^\s"]+|"[^"]*")+/g);
@@ -79,7 +91,6 @@ function parse(){
       lwords[j]=lwords[j].trim();
       if(lwords[j][0] == '\"' && lwords[j][lwords[j].length - 1] == '\"'){
           lwords[j] = lwords[j].substring(1, lwords[j].length - 1);
-          console.log(lwords[j]);
       }
     }
     if(lwords.length!=0){
@@ -87,10 +98,9 @@ function parse(){
       createComand(lcomand);
     }
   }
-  console.log(lcomand.comand);
 }
+
 function createComand(argument) {
-  console.log(argument.words);
   while (argument.words.length!=0) {
     findByParam(argument);
   }
@@ -100,7 +110,15 @@ function createComand(argument) {
 function runTest()
 {
   $.post('/runTest',{
-    adress:document.getElementById(25).value,
-    comand: lcomand.comand
+    address: document.getElementById(25).value,
+    command: lcomand.comand
   });
 }
+
+var testC09 = function(){
+    var text = 'title should be "C09 Eatz Project" \n click "Sign In" \n fill Username "root" \n fill Password "Testroot1" \n click "Sign in"';
+    var link = 'http://eatz.herokuapp.com/';
+
+    document.getElementById(23).value = text;
+    document.getElementById(25).value = link;
+};
