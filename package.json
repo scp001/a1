@@ -1,11 +1,29 @@
 {
   "name": "splat",
   "version": "0.3.3",
+  "dependencies": {
+    "basic-auth-connect": "^1.0.0",
+    "body-parser": "^1.14.2",
+    "compression": "^1.6.1",
+    "csurf": "^1.8.3",
+    "ejs": "^2.3.4",
+    "errorhandler": "^1.4.3",
+    "express": "^4.13.3",
+    "express-session": "^1.13.0",
+    "fs": "0.0.2",
+    "method-override": "^2.3.5",
+    "mongoose": "^4.3.6",
+    "morgan": "^1.6.1",
+    "multer": "^1.1.0",
+    "path": "^0.12.7",
+    "serve-index": "^1.7.2",
+    "url": "^0.11.0"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-uglify": "^0.11.0",
-    "qunitjs": "^1.20.0"
-    "grunt-contrib-jshint": "^0.11.2",
+    "qunitjs": "^1.20.0",
+    "grunt-contrib-jshint": "^0.11.2"
   },
-  "port": "41484",
+  "port": "41484"
 }

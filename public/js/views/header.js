@@ -61,11 +61,13 @@ splat.Header = Backbone.View.extend({
 	
 	singup: function(event){
 		// Pass if there is no validation error
+		this.model.set($(event.target).closest('form').serializeArray().reduce(function(a, x) { a[x.name] = x.value; return a; }, {}));
+
 		var pass = true;
 		// loop through all defaults
-		for (var element in this.model.defaults){
+		for (var element in this.model.attributes){
 			// Run validation rule on changed item
-			var check = this.model.validateItem(element);
+			var check = this.model.validateItem(element, this.model);
 			// check is tuple <isValid: Boolean, message: String>
 			if (check.isValid) {
         		splat.utils.removeSignupError(element);
@@ -80,7 +82,11 @@ splat.Header = Backbone.View.extend({
 		if(!pass){
 			return;
 		}
-		
+
+
+		this.collection.model = {};
+		this.collection.model.prototype = {};
+		this.collection.model.prototype.idAttribute = 'username';
 		var newModel = this.collection.create(this.model, {
 			wait: true,  // don't create client model until server responds
 			success: function(response) {

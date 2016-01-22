@@ -18,10 +18,10 @@ splat.UserwModel = Backbone.Model.extend({
 	},
 	
 	// Validation function
-	validateItem: function(key) {
+	validateItem: function(key, obj) {
 		// if a validator is defined on this key
 		// test it, else defaults to valid
-		return (this.validators[key]) ? this.validators[key](this.get(key)) : {isValid: true};
+		return (this.validators[key]) ? this.validators[key](this.get(key), obj) : {isValid: true};
 	},
 	
 	// regex validation for each input
@@ -36,8 +36,8 @@ splat.UserwModel = Backbone.Model.extend({
 			return value ? {isValid: true} : {isValid: false, message: "Password cannot be empty"};
 		},
 		
-		password2: function(value){
-			return (value && value == this.model.get("password")) ? {isValid: true} : {isValid: false, message: "Two passwords entered must match"};
+		password2: function(value, obj){
+			return (value && value == obj.get('password')) ? {isValid: true} : {isValid: false, message: "Two passwords entered must match"};
 		},
 		
 		// email regex

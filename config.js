@@ -4,5 +4,5 @@ module.exports = {
 	env : 'dev', // 'default', 'short', 'tiny', 'dev'
 	dbuser: "songzhi",
 	dbpass: "songzhi",
-	dbname: "songzhi",
-}
+	dbname: "songzhi"
+};

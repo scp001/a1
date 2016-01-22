@@ -9,7 +9,7 @@
  * the value returned by require(), in this case e.g. splat.api
  * The convention is use the same name for variable and module.
  */
-var http = require('https'),
+var https = require('https'),
     // NOTE, use the version of "express" linked to the assignment handout
     express = require('express'),
     fs = require("fs"),
@@ -23,7 +23,7 @@ var http = require('https'),
     methodOverride = require("method-override"),
     directory = require("serve-index"),
     errorHandler = require("errorhandler"),
-    basicAuth = require("basic-auth-connect"),  // optional, for HTTP auth	
+    basicAuth = require("basic-auth-connect"),  // optional, for HTTP auth
 	csrftoken = require("csurf"),	// for CSRF token
 	
     // config is an object module, that defines app-config attribues,
@@ -33,10 +33,10 @@ var http = require('https'),
 
 var options = {
 	key: fs.readFileSync('key.pem'), //RSA private-key
-	cert: fs.readFileSync('cert.pem'), // RSA public-key certificate
+	cert: fs.readFileSync('cert.pem') // RSA public-key certificate
 };
 
-var app = express()  // Create Express app server
+var app = express();  // Create Express app server
 
 // Configure app server
 
@@ -44,7 +44,7 @@ var app = express()  // Create Express app server
 app.set('port', process.env.PORT || config.port);
 
 // activate basic HTTP authentication (to protect your solution files)
-app.use(basicAuth('songzhi', '12345'));  // REPLACE username/password
+//app.use(basicAuth('songzhi', '12345'));  // REPLACE username/password
 
 // change param value to control level of logging
 app.use(logger(config.env));  // 'default', 'short', 'tiny', 'dev'
@@ -59,15 +59,15 @@ app.use(session({
     saveUninitialized: true,
     cookie:{secure: true}
 }));
-app.use(csrftoken());
+// app.use(csrftoken());
 
 // Setup for rendering csurf token into index.html at app-startup
 app.engine('.html', require('ejs').__express);
-app.set('views', __dirname + '/public');
+app.set('views', path.join(__dirname, '/public'));
 // When client-side requests index.html, perform template substitution on it
-app.get('/index.html', function(req, res) {
+app.get('/', function(req, res) {
     // req.csrfToken() returns a fresh random CSRF token value
-    res.render('index.html', {csrftoken: req.csrfToken()});
+    res.render('index.html', {csrftoken: '2'/*, req.csrfToken()*/});
 });
 
 // parse HTTP request body
@@ -77,13 +77,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({limit: '50mb'}));
 
 // set file-upload directory for poster images
-app.use(multer({dest: __dirname + '/public/img/uploads/'}));
+var upload = multer({ dest: path.join(__dirname, '/public/img/uploads/')});
 
 // checks req.body for HTTP method overrides
 app.use(methodOverride());
-
-// load static html
-app.use(express.static(__dirname + ""));
 
 // App routes (RESTful API) - handler implementation resides in routes/splat.js
 
@@ -114,7 +111,7 @@ app.put('/auth', splat.signin);
 
 
 // location of app's static content
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "/public")));
 
 // return error details to client - use only during development
 app.use(errorHandler({ dumpExceptions:true, showStack:true }));
@@ -134,8 +131,8 @@ app.use(function(err, req, res, next) {
     }
 });
 
-// Start HTTP server
-var a = http.createServer(options, app).listen(app.get('port'), function () {
+// Start HTTPS server
+https.createServer(options, app).listen(app.get('port'), function () {
     console.log("Express server listening on port %d in %s mode",
     		app.get('port'), config.env );
 });

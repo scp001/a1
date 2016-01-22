@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Splat</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<header class="header">
+				<div class="selenium-logo">
+					<img src="img/selenium.png">
+				</div>
+			</header>
+			<div class="main">
+				<div class="left-side">
+					<div><strong>Write your test: </strong></div>
+					<div>
+						<textarea title="Human" id="humanArea" name="humanTest"  class='form-control input-group'></textarea>
+						<button class="btn btn-primary" name="parse" onclick="parse()">Create Test</button>
+					</div>
+					<div>
+						<textarea title="AI" id="aiArea" name="aiTest" class='form-control input-group' wrap="soft"></textarea>
+					</div>
+					<div>
+						<input title="URL" id="url" name="urlInput" type="text" value="https://www.google.ca/" />
+						<button class="btn btn-success" name="runTest" id="run" onclick="runTest()">Run Test</button>
+					</div>
+				</div>
+
+				<div class="right-side">
+					<div><strong> Provided tests: </strong></div>
+					<div>
+						<!--a href="javascript:;" name="tG" onclick="testGoogle()"> Google Test </a>
+						<a href="javascript:;" name="c09Reg" onclick="testC09Reg()"> C09 Eatz Registration Test </a>
+						<a href="javascript:;" name="c09Auth" onclick="testC09Auth()"> C09 Eatz Authorization Test </a>
+						<a href="javascript:;" name="splatAuth" onclick="testSplatAuth()"> Splat Authorization Test </a>
+						<a href="javascript:;" name="splatAddMovie" onclick="testSplatAddMovie()"> Splat Add Movie Test </a-->
+						<a href="javascript:;" name="splatReg" onclick="testSplatReg()"> Splat Registration Test </a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="provided.js"></script>
+	<script src="parser.js"></script>
+</html>

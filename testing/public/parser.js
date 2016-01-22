@@ -14,6 +14,8 @@ var findElement = function(input){
 
     var forms = ['fill'];
 
+    var time = ['wait'];
+
     if(elements.indexOf(value) > -1) {
       if(value === 'title') {
         comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';});';
@@ -28,14 +30,33 @@ var findElement = function(input){
     }
 
     if(events.indexOf(value) > -1) {
-      comand+='driver.findElement(webdriver.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).' + value + '();';
-      count+=2;
+      if(words[1] == 'button'){
+        comand+='driver.findElement(webdriver.By.xpath("//button[text()='+ '\''+words[2]+'\'' +']")).' + value + '();';
+        count+=3;
+      } else {
+        comand+='driver.findElement(webdriver.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).' + value + '();';
+        count+=2;
+      }
 
       found = true;
     }
 
     if(forms.indexOf(value) > -1) {
-        comand+='driver.findElement(webdriver.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).sendKeys(' + words[2] + ');';
+        comand+='driver.findElement(webdriver.By.xpath("//*[@placeholder='+ '\''+words[1]+'\'' +']")).sendKeys("' + words[2] + '");';
+        count+=2;
+
+        found = true;
+    }
+
+    if(time.indexOf(value) > -1) {
+        if(words.length == 2){
+          comand+='driver.' + value + '(webdriver.until.elementLocated(webdriver.By.tagName(\'body\')), '+words[1]+' * 1000);';
+          count+=2;
+        } else {
+          comand+='driver.' + value + '(webdriver.until.titleIs("' + words[4] + '"), 1000);';
+          count+=5;
+        }
+        found = true;
     }
 
     return {
@@ -79,7 +100,7 @@ function findByParam(input){
 
 function parse() {
   lcomand.comand = '';
-  var str = document.getElementById(23).value;
+  var str = document.getElementById('humanArea').value;
   var comands = str.split('\n');
   for (var i = 0; i < comands.length; i++) {
     var lwords = comands[i].match(/(?:[^\s"]+|"[^"]*")+/g);
@@ -104,21 +125,17 @@ function createComand(argument) {
   while (argument.words.length!=0) {
     findByParam(argument);
   }
-  document.getElementById(24).value = argument.comand;
+  document.getElementById('aiArea').value = argument.comand;
 }
+
+
 
 function runTest()
 {
   $.post('/runTest',{
-    address: document.getElementById(25).value,
-    command: lcomand.comand
+    address: document.getElementById('url').value,
+    command: document.getElementById('aiArea').value
+  }, function () {
+    console.log("arguments:",arguments)
   });
 }
-
-var testC09 = function(){
-    var text = 'title should be "C09 Eatz Project" \n click "Sign In" \n fill Username "root" \n fill Password "Testroot1" \n click "Sign in"';
-    var link = 'http://eatz.herokuapp.com/';
-
-    document.getElementById(23).value = text;
-    document.getElementById(25).value = link;
-};

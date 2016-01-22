@@ -1,0 +1,21 @@
+@font-face{font-family:Titillium-Bold;src:url(../fonts/Titillium-Bold.otf)}@font-face{font-family:Titillium-Light;src:url(../fonts/Titillium-Light.otf)}@font-face{font-family:Titillium-Regular;src:url(../fonts/Titillium-Regular.otf)}
+body,html{cursor:default}
+body,div,html,nav{display:block}
+.container{position:relative}
+body,html{background-color:#f8f8f8;font-family:Titillium-Regular,sans-serif;color:#333332;margin:0}
+body{overflow-x:hidden!important;}
+.container-fluid { max-width: 1000px; margin: 0 auto; }
+.left-side { max-width: 80%; position: relative; float: left; display: inline-block }
+.right-side { max-width: 20%; position: relative; float: right; display: inline-block }
+body { padding: 20px 0 }
+textarea {top: 20px; position: relative; white-space: nowrap;  overflow: hidden; }
+#aiArea { width: 150%; margin: 0; height: 150px; resize: none; }
+#humanArea {width: 500px; margin: 0;height: 300px; resize: none; }
+button { font-family: sans-serif; padding: 20px 5px; position: relative; margin: 30px 0; }
+#url { margin: 40px 0; }
+.right-side a { display: block }
+#run { margin: 20px 5px; }
+.btn { padding: 3px 12px; }
+.selenium-logo{ position: relative; left: 40%;}
+.selenium-logo img {width: 100px; height: 100px  }
+.main { padding-top: 20px; }
