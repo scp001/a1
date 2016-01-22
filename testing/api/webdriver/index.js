@@ -1,23 +1,41 @@
 var webdriver = require('selenium-webdriver');
+var asyncEval = require('async-eval');
+
+webdriver.logging.installConsoleHandler();
+webdriver.logging.getLogger().setLevel(webdriver.logging.Level.ALL);
 
 function WebDriver() {}
 
 WebDriver.prototype.test = function(address, command, callback) {
+
     if(address && command) {
-        var script = 'var driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();' + 'driver.get(\'' + address + '\');'
-            + command + ';driver.wait(function(){}, 25 * 1000); driver.quit();';
+        var scope = this;
+        scope.webdriver = webdriver;
+        var script = 'resolve(function(){ var driver = new this.wd.Builder().forBrowser("firefox")' +
+            '.setControlFlow(new this.wd.promise.ControlFlow().on("uncaughtException", function(err) { return err })).build();' +
+            'driver.get(\'' + address + '\');' + command  + ';driver.wait(function(){}, 25 * 1000); driver.quit();});';
 
-        try{
-            var run = Function('webdriver', script);
-            run(webdriver);
-        } catch (e){
-            console.log(e);
-            return callback(false, e.message);
-        }
+             function resolve(callback) {
+                 setTimeout(callback, 250);
+             }
 
-        return callback();
+             var obj = { wd : scope.webdriver };
+
+             var options = {
+                 this : obj,
+                 asyncFunctions: {
+                     resolve: resolve
+                 }
+             };
+
+            asyncEval(script, options , function(err){
+                if(err) return callback(true, err.stack);
+                return callback();
+            });
+
+
     }
-    else return callback(false);
+    else return callback(true, 'script or url is not defined');
 };
 
 module.exports = new WebDriver();

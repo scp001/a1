@@ -18,18 +18,24 @@ var driver = new webdriver.Builder().
 
 //===========================
 //GOOGLE TEST
-driver.get('https://www.google.ca/');
+driver.get('https://localhost:41484/index.html');
 // driver.findElement(webdriver.By.name('q')).sendKeys('webdriver');
 // driver.findElement(webdriver.By.name('btnG')).click();
 
 // driver.findElement(webdriver.By.id('gb_70')).click();
 
-driver.findElement(webdriver.By.xpath("//*[text()='Sign in']")).click();
-driver.wait(function() {
- return driver.getTitle().then(function(title) {
-   return title === 'Sign in with your Google Account';
- });
-}, 1000);
+var run = function(callback) {
+    driver.findElement(webdriver.By.xpath("//*[text()='Sign Ufhfhfp']")).then(function (el) {
+        callback();
+    }, function (e) {
+        callback(e)
+    });
+driver.findElement(webdriver.By.xpath("//*[text()='Sign']"));
+};
+run(function(err){
+    if(err) return console.log('ERROR');
+    else console.log('OK');
+});
 
 //======================
 //GITHUB TEST

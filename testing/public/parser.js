@@ -18,11 +18,11 @@ var findElement = function(input){
 
     if(elements.indexOf(value) > -1) {
       if(value === 'title') {
-        comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';});';
+        comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';}).then(null, function(e){return callback(true, e.stack)});';
         count+=4;
       }
       else {
-        comand+='driver.findElement(webdriver.By.' + value + '(';
+        comand+='driver.findElement(this.wd.By.' + value + '(';
         count+=1;
       }
 
@@ -31,10 +31,10 @@ var findElement = function(input){
 
     if(events.indexOf(value) > -1) {
       if(words[1] == 'button'){
-        comand+='driver.findElement(webdriver.By.xpath("//button[text()='+ '\''+words[2]+'\'' +']")).' + value + '();';
+        comand+='driver.findElement(this.wd.By.xpath("//button[text()='+ '\''+words[2]+'\'' +']")).then(function(el){ el.' + value +'(); }, function(e){return callback(true, e.stack)});';
         count+=3;
       } else {
-        comand+='driver.findElement(webdriver.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).' + value + '();';
+        comand+='driver.findElement(this.wd.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).then(function(el){ el.' + value +'(); }, function(e){return callback(true, e.stack)});';
         count+=2;
       }
 
@@ -42,7 +42,7 @@ var findElement = function(input){
     }
 
     if(forms.indexOf(value) > -1) {
-        comand+='driver.findElement(webdriver.By.xpath("//*[@placeholder='+ '\''+words[1]+'\'' +']")).sendKeys("' + words[2] + '");';
+        comand+='driver.findElement(this.wd.By.xpath("//*[@placeholder='+ '\''+words[1]+'\'' +']")).sendKeys("' + words[2] + '").then(null, function(e){return callback(true, e.stack)});';
         count+=2;
 
         found = true;
@@ -50,10 +50,10 @@ var findElement = function(input){
 
     if(time.indexOf(value) > -1) {
         if(words.length == 2){
-          comand+='driver.' + value + '(webdriver.until.elementLocated(webdriver.By.tagName(\'body\')), '+words[1]+' * 1000);';
+          comand+='driver.' + value + '(this.wd.until.elementLocated(this.wd.By.tagName(\'body\')), '+words[1]+' * 1000).then(null, function(e){return callback(true, e.stack)});';
           count+=2;
         } else {
-          comand+='driver.' + value + '(webdriver.until.titleIs("' + words[4] + '"), 1000);';
+          comand+='driver.' + value + '(this.wd.until.titleIs("' + words[4] + '"), 1000).then(null, function(e){return callback(true, e.stack)});';
           count+=5;
         }
         found = true;
@@ -78,7 +78,7 @@ function findByParam(input){
         result.count+=2;
         break;
       case 'get':
-        result.comand+='.getAttribute(\'value\').then(function(value){ assert.equal(value, '+ '\''+result.words[3]+'\'' + ');});';
+        result.comand+='.getAttribute(\'value\').then(function(value){ assert.equal(value, '+ '\''+result.words[3]+'\'' + ');}).then(null, function(e){return callback(true, e.stack)});';
         result.count+=2;
         break;
       default:
