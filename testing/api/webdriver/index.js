@@ -11,8 +11,8 @@ WebDriver.prototype.test = function(address, command, callback) {
     if(address && command) {
         var scope = this;
         scope.webdriver = webdriver;
-        var script = 'resolve(function(){ var driver = new this.wd.Builder().forBrowser("firefox")' +
-            '.setControlFlow(new this.wd.promise.ControlFlow().on("uncaughtException", function(err) { return err })).build();' +
+        var script = 'resolve(function(){ var driver = new this.wd.Builder().forBrowser("chrome")' +
+            '.setControlFlow(new this.wd.promise.ControlFlow().on("uncaughtException", function(err) { return err.stack })).build();' +
             'driver.get(\'' + address + '\');' + command  + ';driver.wait(function(){}, 25 * 1000); driver.quit();});';
 
              function resolve(callback) {
