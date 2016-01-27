@@ -109,6 +109,11 @@ app.get('/auth', splat.getUsers);
 app.post('/auth', splat.signup);
 app.put('/auth', splat.signin);
 
+app.get('/signout', function(req, res){
+    req.session.destroy(function(){
+        res.redirect('/');
+    });
+});
 
 // location of app's static content
 app.use(express.static(path.join(__dirname, "/public")));

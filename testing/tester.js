@@ -37,32 +37,6 @@ run(function(err){
     else console.log('OK');
 });
 
-//var self = this.wd;
-//driver.getTitle().then(function(title) { return title === 'Splat';}).then(function(){
-//    driver.wait(self.until.elementLocated(self.By.tagName('body')), 4 * 1000).then(function(){
-//        driver.findElement(self.By.xpath("//*[text()='Sign Up']")).then(function(el){ el.click();
-//            driver.wait(self.until.elementLocated(self.By.tagName('body')), 2 * 1000).then(function(){
-//                driver.findElement(self.By.xpath("//*[@placeholder='Username']")).sendKeys("root").then(function(){
-//                    driver.findElement(self.By.xpath("//*[@placeholder='Email']")).sendKeys("root@gmail.com").then(function(){
-//                        driver.findElement(self.By.xpath("//*[@placeholder='Password']")).sendKeys("Testroot1").then(function(){
-//                            driver.findElement(self.By.xpath("//*[@placeholder='Enter Password Again']")).sendKeys("Testroot1").then(function(){
-//                                driver.findElement(self.By.xpath("//button[text()='Sing Up']")).then(function(el){ el.click();
-//                                    driver.wait(self.until.elementLocated(self.By.tagName('body')), 3 * 1000).then(function(){
-//                                        driver.findElement(self.By.xpath("//*[text()='Add Movie']")).then(function(el){ el.click();
-//                                        }, function(err){ return callback(true, err.stack) })
-//                                    }, function(err){ return callback(true, err.stack) })
-//                                }, function(err){ return callback(true, err.stack) })
-//                            }, function(err){ return callback(true, err.stack) })
-//                        }, function(err){ return callback(true, err.stack) })
-//                    }, function(err){ return callback(true, err.stack) })
-//                }, function(err){ return callback(true, err.stack) })
-//            }, function(err){ return callback(true, err.stack) })
-//        }, function(err){ return callback(true, err.stack) })
-//    }, function(err){ return callback(true, err.stack) })
-//}, function(err){ return callback(true, err.stack) });
-
-
-
 //======================
 //GITHUB TEST
 // driver.get('http://www.github.com');

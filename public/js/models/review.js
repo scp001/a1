@@ -15,7 +15,7 @@ splat.ReviewModel = Backbone.Model.extend({
 		reviewName : "", // name of reviewer
 		reviewAffil : "",  // affiliation of reviewer
 		reviewText : "",  // review comments
-		movieId : "",  // id of reviewed movie
-	},
+		movieId : ""  // id of reviewed movie
+	}
 
 });

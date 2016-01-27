@@ -13,13 +13,13 @@ splat.AppRouter = Backbone.Router.extend({
 		"movies" : "borwseMovie",
 		"movies/add": "addMovie",
 		"movies/:id": "editMovie",
-		"movies/:id/reviews": "browseReview",
+		"movies/:id/reviews": "browseReview"
 
 	},
 
 	// When an instance of an AppRouter is declared, create a Header view
 	initialize: function() {
-		var userModel = new splat.UserwModel();
+		var userModel = new splat.UserModel();
 		this.userCollection = new splat.Users();
 		// instantiate a Header view
 		this.headerView = new splat.Header({model:userModel, collection: this.userCollection});
@@ -31,7 +31,7 @@ splat.AppRouter = Backbone.Router.extend({
 		// If the Home view doesn't exist, instantiate one
 		if (!this.homeView) {
 			this.homeView = new splat.Home();
-		};
+		}
 
 		// insert the rendered Home view element into the document DOM
 		$('#content').html(this.homeView.render().el);
@@ -46,7 +46,7 @@ splat.AppRouter = Backbone.Router.extend({
 		// If the About view doesn't exist, instantiate one
 		if (!this.aboutView) {
 			this.aboutView = new splat.About();
-		};
+		}
 
 		// insert the rendered About view element into the document DOM
 		$('#content').html(this.aboutView.render().el);
@@ -93,7 +93,7 @@ splat.AppRouter = Backbone.Router.extend({
 			document.body.style.backgroundImage = "none";
 			document.body.style.backgroundColor = "black";
 		}).fail(function(collection, response){
-			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger")
+			splat.utils.showNotice("Error", "Cannot connect to storage", "alert-danger");
 			spalt.utils.hideNotice();
 		});
 	},
@@ -175,5 +175,6 @@ Backbone.ajax = function() {
 // with history.
 splat.utils.loadTemplates(['Home', 'Header', 'About', 'Details', 'MovieThumb', 'ReviewsView', 'Reviewer', 'ReviewThumbs'], function() {
 	splat.app = new splat.AppRouter();
+	splat.session = new splat.SessionModel({});
 	Backbone.history.start();
 });

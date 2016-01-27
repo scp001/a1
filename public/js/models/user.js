@@ -5,7 +5,7 @@
 var splat =  splat || {};
 
 // User
-splat.UserwModel = Backbone.Model.extend({
+splat.UserModel = Backbone.Model.extend({
 
 	idAttribute: "_id",
 
@@ -14,7 +14,7 @@ splat.UserwModel = Backbone.Model.extend({
 	  	username : "",  // user name
 		password : "", // password
 		password2 : "", // password 2
-		email : "",  // email address
+		email : ""  // email address
 	},
 	
 	// Validation function
@@ -44,7 +44,7 @@ splat.UserwModel = Backbone.Model.extend({
 		email: function(value){
 			var emailRegex =/^\w+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 			return (value && emailRegex.test(value)) ? {isValid: true} : {isValid: false, message: "Email address is not valid"};
-		},
-	},
+		}
+	}
 
 });

@@ -8,9 +8,9 @@ var splat = splat || {};
 splat.Users = Backbone.Collection.extend({
 
     // identify collections model
-    model: splat.UserModel,
+    models: splat.UserModel,
     
     // move local storage to server
-	url: '/auth',
+	url: '/auth'
 
 });

@@ -1,4 +1,4 @@
-var lcomand ={words : [], comand:''};
+var lcomand = {words : [], comand:''};
 
 var findElement = function(input){
     var count = 0;
@@ -31,10 +31,18 @@ var findElement = function(input){
 
     if(events.indexOf(value) > -1) {
         if(words[1] == 'button'){
-            comand+='driver.findElement(self.By.xpath("//button[text()='+ '\''+words[2]+'\'' +']")).then(function(el){ el.' + value +'(); ';
+            comand+='driver.findElement(self.By.xpath("//button[text()='+ '\''+words[2]+'\'' +']")).then(function(el){ if(el) el.' + value +'(); ';
             count+=3;
+        } else if(words[1] == 'element'){
+            if (words[2] == 'with'){
+                if(words[3] == 'id'){
+                    comand+='driver.findElement(self.By.xpath("//*[@id = \''+words[4]+'\'' +']")).then(function(el){ if(el) el.' + value +'(); ';
+                    count+=5;
+                }
+            }
+
         } else {
-            comand+='driver.findElement(self.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).then(function(el){ el.' + value +'(); ';
+            comand+='driver.findElement(self.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).then(function(el){ if(el) el.' + value +'(); ';
             count+=2;
         }
 
@@ -42,8 +50,13 @@ var findElement = function(input){
     }
 
     if(forms.indexOf(value) > -1) {
-        comand+='driver.findElement(self.By.xpath("//*[@placeholder='+ '\''+words[1]+'\'' +']")).sendKeys("' + words[2] + '").then(function(){ ';
-        count+=2;
+        if(words[1] == 'element'){
+            comand+='driver.findElement(self.By.xpath("//*[@id = \''+words[4]+'\'' +']")).then(function(el){ if(el) el.sendKeys("' + words[7] + '");';
+            count+=8;
+        } else {
+            comand+='driver.findElement(self.By.xpath("//*[@placeholder='+ '\''+words[1]+'\'' +']")).then(function(el){ if(el) el.sendKeys("' + words[2] + '");';
+            count+=2;
+        }
 
         found = true;
     }
@@ -70,7 +83,7 @@ var findElement = function(input){
 var CompleteChain = function(command){
     var length = command.split(/\n/).length;
     for(var i = 0; i < length-1; i++) {
-        command += ' }, function(err){ return callback(true, err.stack) }) \n '
+        command += ' }, function(err){ return scope.callback(true, err.stack) }) \n '
     }
     return command;
 };
@@ -133,9 +146,8 @@ function createComand(argument) {
     while (argument.words.length!=0) {
         findByParam(argument);
     }
-    document.getElementById('aiArea').value = 'var self = this.wd; \n' + CompleteChain(argument.comand) + ';';
+    document.getElementById('aiArea').value = 'var self = scope.wd; \n' + CompleteChain(argument.comand);
 }
-
 
 function runTest()
 {

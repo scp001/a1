@@ -11,7 +11,7 @@ splat.Header = Backbone.View.extend({
 		"change .sortOrder" : "sortOrder",
 		"change .formcontrol" : "verifySingup",
 		"click #singup-button" : "singup",
-		"click #singin-button" : "singin",
+		"click #singin-button" : "singin"
 	},
 
     // render the View
@@ -60,21 +60,25 @@ splat.Header = Backbone.View.extend({
 	},
 	
 	singup: function(event){
+		if(event) event.preventDefault();
 		// Pass if there is no validation error
 		this.model.set($(event.target).closest('form').serializeArray().reduce(function(a, x) { a[x.name] = x.value; return a; }, {}));
 
 		var pass = true;
 		// loop through all defaults
-		for (var element in this.model.attributes){
-			// Run validation rule on changed item
-			var check = this.model.validateItem(element, this.model);
-			// check is tuple <isValid: Boolean, message: String>
-			if (check.isValid) {
-        		splat.utils.removeSignupError(element);
-        	}
-			else{
-				pass = false;
-				splat.utils.addSignupError(element, check.message);
+		var attributes = this.model.attributes;
+		for (var element in attributes) {
+			if (attributes.hasOwnProperty(element)) {
+				// Run validation rule on changed item
+				var check = this.model.validateItem(attributes[element], this.model);
+				// check is tuple <isValid: Boolean, message: String>
+				if (check.isValid) {
+					splat.utils.removeSignupError(element);
+				}
+				else {
+					pass = false;
+					splat.utils.addSignupError(element, check.message);
+				}
 			}
 		}
 
@@ -83,11 +87,7 @@ splat.Header = Backbone.View.extend({
 			return;
 		}
 
-
-		this.collection.model = {};
-		this.collection.model.prototype = {};
-		this.collection.model.prototype.idAttribute = 'username';
-		var newModel = this.collection.create(this.model, {
+		this.collection.create(this.model, {
 			wait: true,  // don't create client model until server responds
 			success: function(response) {
 				// notification panel, defined in section 2.6
@@ -98,13 +98,50 @@ splat.Header = Backbone.View.extend({
 				// display the error response from the server
 				splat.utils.showNotice('Fail', "New Account was not created", 'alert-danger');
 				splat.utils.hideNotice();
-			},
+			}
 		});
 	},
 	
-	signin: function(event){
+	singin: function(event){
+		event.preventDefault();
+
 		var remember = this.$('#remember').value == '1' ? 1 : 0;
-		
-	},
+		this.model.set($(event.target).closest('form').serializeArray().reduce(function(a, x) { a[x.name] = x.value; return a; }, {}));
+
+		var pass = true;
+
+		var attributes = this.model.attributes;
+		for (var element in attributes) {
+			if (attributes.hasOwnProperty(element)) {
+				var check = this.model.validateItem( attributes[element], this.model);
+				if (check.isValid) {
+					splat.utils.removeSigninError( element);
+				}
+				else {
+					pass = false;
+					splat.utils.addSigninError(element, check.message);
+				}
+			}
+		}
+
+		if(!pass){
+			return;
+		}
+
+		splat.session.signin({
+			username: attributes['username'],
+			password: attributes['password']
+		}, {
+			wait: true,
+			success: function () {
+				splat.utils.showNotice('Success', "Successfully signed in", 'alert-success');
+				splat.utils.hideNotice();
+			},
+			error: function () {
+				splat.utils.showNotice('Failed', "Failed to sign in", 'alert-success');
+				splat.utils.hideNotice();
+			}
+		});
+	}
 
 });

@@ -98,5 +98,17 @@ splat.utils = {
     	var controlGroup = $('#' + field).parent();
     	controlGroup.removeClass('has-error');
     	$('.help-block', controlGroup).html("");
+    },
+
+    addSigninError: function (field, message) {
+        var controlGroup = $('#' + field).parent();
+        controlGroup.addClass('has-error');
+        $('.help-block', controlGroup).html(message);
+    },
+
+    removeSigninError: function (field){
+        var controlGroup = $('#' + field).parent();
+        controlGroup.removeClass('has-error');
+        $('.help-block', controlGroup).html("");
     }
 };

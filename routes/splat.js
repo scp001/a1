@@ -97,7 +97,7 @@ exports.editMovie = function(req, res) {
         }
     });
 
-}
+};
 
 // reterive movie by id
 exports.deleteMovie = function(req, res) {
@@ -118,7 +118,7 @@ exports.deleteMovie = function(req, res) {
 		});
 	}
 	});
-}
+};
 
 // upload an image file; returns image file-path on server
 exports.uploadImage = function(req, res) {
@@ -218,11 +218,33 @@ exports.getUsers = function(req, res){
 exports.signup = function(req, res){
 	console.log('we are in signup!', req.body);
 	var newUser = new UserModel(req.body);
+	UserModel.create(newUser);
 	res.status(200).send([newUser]);
 };
 
 exports.signin = function(req, res){
-	
+	var username = req.body.username;
+	var password = req.body.password;
+
+	if(!username || !password){
+		res.status(403).send({'status' : "Invalid Username/Password"});
+	}
+	else {
+		UserModel.findOne({'username': username, 'password': password}, function (err, user) {
+			if (err) {
+				res.status(500).send( { 'status' : "Sorry, unable to sign in at this time ("
+					+ err.message + ")"});
+			} else if (!user) {
+				res.status(404).send({'status' : 'User is not registered yet'});
+			} else {
+				req.session.regenerate(function(){
+					req.session.user = user;
+					req.session.success = { 'status' : 'Authenticated as ' + user.username};
+					res.status(200).send(req.session.success);
+				});
+			}
+		})
+	}
 };
 
 var mongoose = require('mongoose'); // MongoDB integration
@@ -245,7 +267,7 @@ var MovieSchema = new mongoose.Schema({
     trailer : { type: String},
     poster: { type: String, required: true},
     dated: { type: Date, required: true},
-	userid : {type: String, required: true},
+	userid : {type: String, required: true}
 });
 
 var ReviewSchema = new mongoose.Schema({
@@ -253,13 +275,13 @@ var ReviewSchema = new mongoose.Schema({
 	reviewName : { type: String, required: true },
 	reviewAffil : { type: String, required: true },
 	reviewText : { type: String, required: true },
-	movieId : { type: String, required: true },
+	movieId : { type: String, required: true }
 });
 
 var UserSchema = new mongoose.Schema({
 	username: {type:String, required: true},
 	password: {type:String, required: true},
-	email: {type:String, required: true},
+	email: {type:String, required: true}
 });
 
 // Constraints
