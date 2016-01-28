@@ -55,7 +55,7 @@ splat.Details = Backbone.View.extend({
 		"click #moviedel" : "deleteHandler",
 		"dragover #detailsImage" : "dragoverHandler",
 		"drop #detailsImage" : "dropHandler",
-		"change #uploadPic" : "selectImg",
+		"change #uploadPic" : "selectImg"
 	},
 
 
@@ -98,14 +98,14 @@ splat.Details = Backbone.View.extend({
 				wait: true,  // don't destroy client model until server responds
     			success: function(response) {
 					// notification panel, defined in section 2.6
-        			splat.utils.showNotice('Success', "Movie updated", 'alert-success')
+        			splat.utils.showNotice('Success', "Movie updated", 'alert-success');
         			splat.utils.hideNotice()
     			},
     			error: function(response) {
     				// display the error response from the server
-        			splat.utils.showNotice('Fail', "Movie was not sucessfully updated", 'alert-danger')
+        			splat.utils.showNotice('Fail', "Movie was not sucessfully updated", 'alert-danger');
         			splat.utils.hideNotice()
-    			},
+    			}
     		});
 		} // create a new model in collection
 		else{
@@ -122,7 +122,7 @@ splat.Details = Backbone.View.extend({
     			// display the error response from the server
         		splat.utils.showNotice('Fail', "Movie was not sucessfully added", 'alert-danger');
         		splat.utils.hideNotice();
-    		},
+    		}
 		});
 		}
 	},
@@ -245,5 +245,5 @@ splat.Details = Backbone.View.extend({
 		var ctx = canvas.getContext("2d"); // get 2D rendering context
 		ctx.drawImage(image,0,0, image.width, image.height); // render
 		return canvas.toDataURL(type, quality);
-	},
+	}
 });

@@ -40,7 +40,6 @@ var findElement = function(input){
                     count+=5;
                 }
             }
-
         } else {
             comand+='driver.findElement(self.By.xpath("//*[text()='+ '\''+words[1]+'\'' +']")).then(function(el){ if(el) el.' + value +'(); ';
             count+=2;
@@ -51,8 +50,12 @@ var findElement = function(input){
 
     if(forms.indexOf(value) > -1) {
         if(words[1] == 'element'){
-            comand+='driver.findElement(self.By.xpath("//*[@id = \''+words[4]+'\'' +']")).then(function(el){ if(el) el.sendKeys("' + words[7] + '");';
-            count+=8;
+            if (words[2] == 'with') {
+                if(words[3] == 'id') {
+                    comand += 'driver.findElement(self.By.xpath("//*[@id = \'' + words[4] + '\'' + ']")).then(function(el){ if(el) el.sendKeys("' + words[5] + '");';
+                    count += 6;
+                }
+            }
         } else {
             comand+='driver.findElement(self.By.xpath("//*[@placeholder='+ '\''+words[1]+'\'' +']")).then(function(el){ if(el) el.sendKeys("' + words[2] + '");';
             count+=2;

@@ -43,19 +43,55 @@ var testSplatAddMovie = function() {
     var text = (function (){/*
      title should be "Splat"
      wait 4
-     click "Add a new movie"
+     click "Add Movie"
      wait 2
-     fill Title "The Revenant"
-     fill Released "2015"
-     fill Director "Alejandro Iniarritu"
-     fill Rating "R"
-     fill Starring " Leonardo DiCaprio, Tom Hardy"
-     fill Duration "154"
-     fill Genre(s) "adventure, drama"
-     fill synopsis "Description"
-     fill "Trailer URL" "http://www.imdb.com/video/playlist/title?tconst=tt1663202&rid=undefined&refsuffix=tt_ov_vi"
+     fill element with id title "The Revenant"
+     fill element with id released "2015"
+     fill element with id director "Alejandro Iniarritu"
+     fill element with id rating "R"
+     fill element with id starring " Leonardo DiCaprio, Tom Hardy"
+     fill element with id duration "154"
+     fill element with id genre "adventure, drama"
+     fill element with id synopsis "Description"
+     fill element with id trailer "https://youtu.be/QRfj1VCg16Y"
      click "Save Changes"
     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
+
+    var link = 'https://localhost:41484/index.html';
+
+    document.getElementById('humanArea').value = text;
+    document.getElementById('url').value = link;
+};
+
+var testSplatUpdateMovie = function() {
+    var text = (function (){/*
+     title should be "Splat"
+     wait 4
+     click "Browse Great Movies"
+     wait 2
+     click element with id "TheRevenant"
+     wait 2
+     fill element with id synopsis "summary"
+     wait 4
+     click "Save Changes"
+     click "Save Changes"
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
+
+    var link = 'https://localhost:41484/index.html';
+
+    document.getElementById('humanArea').value = text;
+    document.getElementById('url').value = link;
+};
+
+var testSplatDeleteMovie = function() {
+    var text = (function (){/*
+     title should be "Splat"
+     wait 4
+     click "Browse Great Movies"
+     wait 2
+     click element with id "TheRevenant"
+     click "Delete Movie"
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
     var link = 'https://localhost:41484/index.html';
 

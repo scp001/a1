@@ -11,7 +11,7 @@ splat.MovieThumb = Backbone.View.extend({
 	moviesTemplate: _.template([
 		"<% movies.each(function(movie) { %>",
 	    "<%= movieTemplate(movie.toJSON()) %>",
-		"<% }); %>",
+		"<% }); %>"
     ].join('')),
 
 	// initialize the view	
@@ -41,7 +41,7 @@ splat.MovieThumb = Backbone.View.extend({
 
 		// define the template function with variables		
 		var moviesMarkup = this.moviesTemplate({
-			movies: this.collection, movieTemplate: this.template,
+			movies: this.collection, movieTemplate: this.template
 		});
 		
 		// set the view element ($el) HTML content using its template
