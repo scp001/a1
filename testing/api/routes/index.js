@@ -3,15 +3,18 @@ var webdriver = require('../webdriver');
 module.exports = function (app) {
 
   app.post('/runTest', function(req, res, next) {
-      webdriver.test(req.body.address, req.body.command, function (err, extraMessage) {
+      if(!req.body.address.trim() || !req.body.command.trim()){
+        res.status(400).send('Script or url is not defined');
+      }
+      webdriver.test(req.body.address, req.body.command, function (err, message) {
+        res.header("Content-Type", "application/json");
         if (!err) {
-          res.header("Content-Type", "application/json");
-          res.status(200).send({'status': 'OK'});
+          res.status(200).send('200 OK');
         } else {
-          if (extraMessage) {
-            res.status(500).send({'status': extraMessage});
+          if (message) {
+            res.status(400).send(message.message);
           } else {
-            res.status(500).send({'status': 'Internal Server Error'});
+            res.status(500).send('500 Internal Server Error');
           }
         }
       })

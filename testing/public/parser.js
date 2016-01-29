@@ -86,7 +86,7 @@ var findElement = function(input){
 var CompleteChain = function(command){
     var length = command.split(/\n/).length;
     for(var i = 0; i < length-1; i++) {
-        command += ' }, function(err){ return scope.callback(true, err.stack) }) \n '
+        command += ' }, function(err){ return scope.callback(true, err) }) \n '
     }
     return command;
 };
@@ -154,10 +154,18 @@ function createComand(argument) {
 
 function runTest()
 {
-    $.post('/runTest',{
-        address: document.getElementById('url').value,
-        command: document.getElementById('aiArea').value
-    }, function () {
-        console.log("arguments:",arguments)
+    document.getElementById('status-field').innerHTML = '<p class="alert alert-info"> Pending... </p>';
+
+    $.ajax({
+     type: 'POST',
+     url: '/runTest',
+     dataType: 'text',
+     data: { address: document.getElementById('url').value, command: document.getElementById('aiArea').value },
+     success: function(response){
+         document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response + '</p>';
+     },
+     error: function(response) {
+         document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! ' + response.status + ' ' + response.responseText + '</p>';
+     }
     });
 }

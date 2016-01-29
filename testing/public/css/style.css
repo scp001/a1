@@ -8,7 +8,7 @@ body{overflow-x:hidden!important;}
 .left-side { max-width: 80%; position: relative; float: left; display: inline-block }
 .right-side { max-width: 20%; position: relative; float: right; display: inline-block }
 body { padding: 20px 0 }
-textarea {top: 20px; position: relative; white-space: nowrap;  overflow: hidden; }
+textarea {top: 20px; position: relative; white-space: nowrap;  overflow-y: auto; overflow-x: hidden }
 #aiArea { width: 150%; margin: 0; height: 150px; resize: none; }
 #humanArea {width: 500px; margin: 0;height: 300px; resize: none; }
 button { font-family: sans-serif; padding: 20px 5px; position: relative; margin: 30px 0; }

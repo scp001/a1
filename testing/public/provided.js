@@ -26,8 +26,8 @@ var testSplatAuth = function() {
      wait 4
      click "Sign In"
      wait 2
-     fill element with id "singin-username" with value "root"
-     fill element with id "singin-password" with value "Testroot1"
+     fill element with id "singin-username" "root"
+     fill element with id "singin-password" "Testroot1"
      click element with id "remember"
      click element with id "singin-button"
      wait 3
