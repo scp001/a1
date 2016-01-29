@@ -14,7 +14,7 @@ WebDriver.prototype.test = function(address, command, callback) {
             callback: callback
         };
 
-        var script = 'var driver = new scope.wd.Builder().forBrowser("firefox")' +
+        var script = 'var driver = new scope.wd.Builder().forBrowser("chrome")' +
             '.setControlFlow(new scope.wd.promise.ControlFlow().on("uncaughtException", function(err) { new Error(err) })).build();' +
             'driver.get(\'' + address + '\');' + command  + '.then(function(){ return scope.callback() }).then(function(){ driver.wait(function(){}, 1000); driver.quit(); })';
 
