@@ -12,9 +12,12 @@ textarea {top: 20px; position: relative; white-space: nowrap;  overflow-y: auto;
 #aiArea { width: 150%; margin: 0; height: 150px; resize: none; }
 #humanArea {width: 500px; margin: 0;height: 300px; resize: none; }
 button { font-family: sans-serif; padding: 20px 5px; position: relative; margin: 30px 0; }
-#url { margin: 40px 0; }
+#url { margin: 20px 0; }
+#run { margin: 5px 5px; }
+#close {margin-top: 50px}
+#closeWindow {width: 70px; height : 30px; margin-left: 10px; display: inline-block}
+#status-field {margin-top: 10px}
 .right-side a { display: block }
-#run { margin: 20px 5px; }
 .btn { padding: 3px 12px; }
 .selenium-logo{ position: relative; left: 40%;}
 .selenium-logo img {width: 100px; height: 100px  }

@@ -45,19 +45,19 @@ exports.getMovies = function(req, res){
 
 // create a new movie model and save it
 exports.addMovie = function(req, res){
-	MovieModel.create(req.body, function(err, movie){
-		if(err) {
-			if(err.code == 11000){
-				res.status(403).send("Sorry, unable to create this movie: movie " + newMovie.title+
-					" directed by " + newMovie.director + " already exists");
+		MovieModel.update({title: req.body.title}, req.body, {upsert: true}, function(err, movie){
+			if(err) {
+				if(err.code == 11000){
+					res.status(403).send("Sorry, unable to create this movie: movie " + movie.title+
+						" directed by " + movie.director + " already exists");
+				} else {
+					res.status(500).send("Sorry, unable to create the movie at this time ("
+						+ err.message + ")");
+				}
 			} else {
-				res.status(500).send("Sorry, unable to create the movie at this time ("
-					+ err.message + ")");
+				res.status(200).send(movie);
 			}
-		} else {
-			res.status(200).send(movie);
-		}
-	});
+		})
 };
 
 // reterive movie by id

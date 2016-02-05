@@ -66,7 +66,7 @@ var findElement = function(input){
 
     if(time.indexOf(value) > -1) {
         if(words.length == 2){
-            comand+='driver.' + value + '(self.until.elementLocated(self.By.tagName(\'body\')), '+words[1]+' * 1000).then(function(){ ';
+            comand+='driver.sleep('+words[1]+'*1000).then(function(){ ';
             count+=2;
         } else {
             comand+='driver.' + value + '(self.until.titleIs("' + words[4] + '"), 1000).then(function(){  ';
@@ -160,7 +160,7 @@ function runTest()
      type: 'POST',
      url: '/runTest',
      dataType: 'text',
-     data: { address: document.getElementById('url').value, command: document.getElementById('aiArea').value },
+     data: { address: document.getElementById('url').value, command: document.getElementById('aiArea').value, options: { closeWindow: document.getElementById("closeWindow").value} },
      success: function(response){
          document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response + '</p>';
      },

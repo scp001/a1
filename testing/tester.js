@@ -49,6 +49,5 @@ run(function(err){
 // }, 1000);
 
 
-
-driver.quit();
+driver.wait(function(){ driver.quit(); }, 4000);
 

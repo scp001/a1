@@ -6,7 +6,7 @@ module.exports = function (app) {
       if(!req.body.address.trim() || !req.body.command.trim()){
         res.status(400).send('Script or url is not defined');
       }
-      webdriver.test(req.body.address, req.body.command, function (err, message) {
+      webdriver.test(req.body.address, req.body.command, req.body.options, function (err, message) {
         res.header("Content-Type", "application/json");
         if (!err) {
           res.status(200).send('200 OK');
