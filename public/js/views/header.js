@@ -138,7 +138,7 @@ splat.Header = Backbone.View.extend({
 				splat.utils.hideNotice();
 			},
 			error: function () {
-				splat.utils.showNotice('Failed', "Failed to sign in", 'alert-success');
+				splat.utils.showNotice('Failed', "Failed to sign in", 'alert-danger');
 				splat.utils.hideNotice();
 			}
 		});

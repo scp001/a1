@@ -10,7 +10,7 @@ var findElement = function(input){
     var events = ['click', 'dbclick', 'change', 'blur', 'focus', 'contextmenu', 'keydown', 'keypress', 'keyup', 'mouseenter', 'mousedown',
         'mouseup', 'mouseleave', 'mouseover', 'mousemove', 'scroll', 'select', 'submit', 'hover', 'ready', 'resize'];
 
-    var elements =  ['name', 'id', 'title'];
+    var elements =  ['name', 'id', 'title', 'page'];
 
     var forms = ['fill'];
 
@@ -20,6 +20,14 @@ var findElement = function(input){
         if(value === 'title') {
             comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';}).then(function(){ ';
             count+=4;
+        }
+        else if(value === 'page') {
+            if(words[1] == 'should') {
+                if(words[2] == 'contains') {
+                    comand+='driver.findElement(self.By.xpath("//*[text()=' + '\''+ words[3] +'\'' + ']")).then(function () {';
+                    count+=4;
+                }
+            }
         }
         else {
             comand+='driver.findElement(self.By.' + value + '(';

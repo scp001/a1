@@ -1,3 +1,12 @@
+var links = (function () {
+    var splatLink = 'http://localhost:41484/index.html';
+    return {
+        splat: function(){
+            return splatLink;
+        }
+    };
+})();
+
 var testSplatReg = function() {
 
   var text = (function () {/*
@@ -16,10 +25,8 @@ var testSplatReg = function() {
     click element with id "singup-button"
    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
-    var link = 'https://localhost:41484/index.html';
-
     document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = link;
+    document.getElementById('url').value = links.splat();
 };
 
 var testSplatAuth = function() {
@@ -38,10 +45,8 @@ var testSplatAuth = function() {
      click element with id "singin-button"
 */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
-    var link = 'https://localhost:41484/index.html';
-
     document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = link;
+    document.getElementById('url').value = links.splat();
 };
 
 //var testSplatAddMovie = function() {
@@ -124,10 +129,8 @@ var testSpaltOrderMoviesByTitle = function() {
      wait 0.5
      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
-    var link = 'https://localhost:41484/index.html';
-
     document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = link;
+    document.getElementById('url').value = links.splat();
 };
 
 var testSpaltOrderMoviesByDirector = function() {
@@ -140,10 +143,8 @@ var testSpaltOrderMoviesByDirector = function() {
      wait 0.5
      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
-    var link = 'https://localhost:41484/index.html';
-
     document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = link;
+    document.getElementById('url').value = links.splat();
 };
 
 var testSpalatAddDeleteMovie = function() {
@@ -181,10 +182,8 @@ var testSpalatAddDeleteMovie = function() {
      click "Delete Movie"
      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
-    var link = 'https://localhost:41484/index.html';
-
     document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = link;
+    document.getElementById('url').value = links.splat();
 };
 
 var testSpalatAddUpdateDeleteMovie = function() {
@@ -234,8 +233,60 @@ var testSpalatAddUpdateDeleteMovie = function() {
      click "Delete Movie"
      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
-    var link = 'https://localhost:41484/index.html';
+    document.getElementById('humanArea').value = text;
+    document.getElementById('url').value = links.splat();
+};
+
+var testSplatAddComment = function() {
+    var text = (function (){/*
+     title should be "Splat"
+     wait 0.5
+     click "Add Movie"
+     wait 0.5
+     fill element with id title "The Revenant"
+     wait 0.5
+     fill element with id released "2015"
+     wait 0.5
+     fill element with id director "Alejandro Iniarritu"
+     wait 0.5
+     fill element with id rating "R"
+     wait 0.5
+     fill element with id starring " Leonardo DiCaprio, Tom Hardy"
+     wait 0.5
+     fill element with id duration "154"
+     wait 0.5
+     fill element with id genre "adventure, drama"
+     wait 0.5
+     fill element with id synopsis "Description"
+     wait 0.5
+     fill element with id trailer "https://youtu.be/QRfj1VCg16Y"
+     click "Save Changes"
+     wait 0.5
+     click "Splat!"
+     title should be "Splat"
+     wait 0.5
+     click "Browse Great Movies"
+     wait 0.5
+     click element with id "TheRevenant"
+     wait 0.5
+     fill element with id commentUsername "user1234"
+     wait 0.5
+     fill element with id commentText "Great movie. Highly recommend this!"
+     wait 0.5
+     click "Save Comment"
+     wait 0.5
+     page should contains "user1234: Great movie. Highly recommend this!"
+     wait 0.5
+     click "Splat!"
+     title should be "Splat"
+     wait 0.5
+     click "Browse Great Movies"
+     wait 0.5
+     click element with id "TheRevenant"
+     wait 0.5
+     click "Delete Movie"
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
 
     document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = link;
+    document.getElementById('url').value = links.splat();
 };

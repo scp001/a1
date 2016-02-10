@@ -104,17 +104,20 @@ exports.editMovie = function(req, res) {
 exports.deleteMovie = function(req, res) {
 	MovieModel.findById(req.params.id, function(err, movie){
 	if(err) {
-	    res.status(500).send("Sorry, unable to delete the movie at this time ("
+	    res.status(500).send("Sorry, unable to remove the movie at this time ("
 		+ err.message + ")");
 	} else if (!movie) {
 	    res.status(404).send("Sorry, that movie does not exist");
 	} else {
 		// use model remove to remove movie
-		MovieModel.remove({'_id':movie.id}, function(error, message){
+		MovieModel.remove({'_id':movie.id}, function(err, message){
 				if (err){
-					res.status(500).send("Sorry, unable to delete the movie (" +  message + ")");
+					res.status(500).send("Sorry, unable to remove the movie (" +  err + ")");
 				} else{
-					res.status(200).send(message);
+					CommentModel.remove({'movieId': movie.id}, function(err){
+						if(err) res.status(500).send("Sorry, unable to remove the movie (" +  err + ")");
+						else res.status(200).send(message);
+					});
 				}
 		});
 	}
@@ -248,6 +251,76 @@ exports.signin = function(req, res){
 	}
 };
 
+exports.addComment = function(req, res){
+	var obj = req.body;
+	if(!obj) res.status(400).send({'status' : "Bad Request"});
+	else {
+		var comment = new CommentModel(obj);
+		CommentModel.create(comment, function(err){
+			if(err) res.status(500).send( { 'status' : "Sorry, unable to add comment at this time ("
+			+ err.message + ")"});
+			else res.status(200).send([comment]);
+		});
+	}
+};
+
+exports.comments = function(req, res){
+	if(!req.params.movieId) res.status(400).send({'status' : "Bad Request"});
+	CommentModel.find({ movieId:  req.params.movieId}, function(err, comments){
+		if(err) res.status(500).send( { 'status' : "Sorry, unable to get comments at this time  ("
+		+ err.message + ")"});
+		else {
+			 res.status(200).send(comments);
+		}
+	})
+};
+
+exports.editComment = function(req, res) {
+	if(!req.params.id) res.status(400).send({'status' : "Bad Request"});
+
+	CommentModel.findById(req.params.id, function(err, comment) {
+		if (err) {
+			res.status(500).send(err.message);
+		} else if (!comment) {
+			res.status(404).send("Sorry, comment doesn't exist");
+		} else {
+			var newComment = req.body;
+			delete newComment["_id"];
+			delete newComment["__0"];
+			// update movie with request body
+			comment.update(newComment, function(err, message){
+				if(err){
+					res.status(500).send("Sorry, unable to edit comment at this time ("
+						+err.message+ ")");
+				}  else {
+					res.status(200).send(message);
+				}
+			});
+		}
+	});
+};
+
+exports.deleteComment = function(req, res) {
+	if(!req.params.id) res.status(400).send({'status' : "Bad Request"});
+
+	CommentModel.findById(req.params.id, function(err, comment){
+		if(err) {
+			res.status(500).send(err.message);
+		} else if (!comment) {
+			res.status(404).send("Sorry, that comment does not exist");
+		} else {
+			// use model remove to remove movie
+			CommentModel.remove({'_id':comment.id}, function(err, message){
+				if (err){
+					res.status(500).send("Sorry, unable to delete the comment (" +  message + ")");
+				} else{
+					res.status(200).send(message);
+				}
+			});
+		}
+	});
+};
+
 var mongoose = require('mongoose'); // MongoDB integration
 
 // Connect to database, using credentials specified in your config module
@@ -269,6 +342,13 @@ var MovieSchema = new mongoose.Schema({
     poster: { type: String, required: true},
     dated: { type: Date, required: true}
 	//userid : {type: String, required: true}
+});
+
+var CommentSchema = new mongoose.Schema({
+	movieId: {type: String, required: true },
+	username: {type: String, required: true},
+	text: {type: String, required: true},
+	dated: { type: Date, required: true}
 });
 
 var ReviewSchema = new mongoose.Schema({
@@ -299,3 +379,4 @@ UserSchema.index({"username":1}, {unique:true, dropDups:true});
 var MovieModel = mongoose.model('Movie', MovieSchema);
 var ReviewModel = mongoose.model('Review', ReviewSchema);
 var UserModel = mongoose.model('User', UserSchema);
+var CommentModel = mongoose.model('Comment', CommentSchema);

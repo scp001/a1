@@ -10,20 +10,53 @@ splat.Details = Backbone.View.extend({
     // render the View
     render: function () {
 		// set the view element ($el) HTML content using its template
-		this.$el.html(this.template(this.model.toJSON()));
+		if(this.model) {
+			this.$el.html(this.template(this.model.toJSON()));
 
-		var self = this;
-		// instantiate a MovieForm subview and append its markup to designated tag in self
-		$.get('tpl/MovieForm.html', function(data){
-			var template = _.template(data);
-			self.$('#movieform').append(template(self.model.toJSON()));
-		});
 
-		// instantiate a MovieImg subview and append its markup to designated tag in self
-		$.get('tpl/MovieImg.html', function(data){
-			var template = _.template(data);
-			self.$('#movieimg').append(template(self.model.toJSON()));
-		});
+			var self = this;
+			// instantiate a MovieForm subview and append its markup to designated tag in self
+			$.get('tpl/MovieForm.html', function (data) {
+				var template = _.template(data);
+				self.$('#movieform').append(template(self.model.toJSON()));
+			});
+
+			// instantiate a MovieImg subview and append its markup to designated tag in self
+			$.get('tpl/MovieImg.html', function (data) {
+				var template = _.template(data);
+				self.$('#movieimg').append(template(self.model.toJSON()));
+			});
+
+			$.ajax({
+				type: 'GET',
+				url: '/comments/' + this.model.attributes._id,
+				dataType: 'text',
+				success: function (response) {
+					if (response) {
+						var comments = [];
+						var data = JSON.parse(response);
+						_.forEach(data, function (item) {
+							var html =
+									'<div  style="padding: 0; margin-bottom: 40px; width:33vw">' +
+									'<textarea disabled title="text" class="form-control"  name="text" style="resize: none" cols="30" rows="3">' + item.username + ': ' + item.text +
+									'</textarea><span> Created at: ' + item.dated + '<span style="float: right">  ' +
+									'<a href="javascript:;" style="color: #fff"> Edit </a> | <a href="javascript:;" style="color: #fff"> Delete </a> </span></span>' +
+									'</div>';
+							comments.push(html);
+						});
+
+						var template = _.template(
+								'<div style="margin-left: 8vw;">' +
+								'<h1> Recent Comments </h1>' + comments + '</div>'
+						);
+						self.$('#comments').append(template(self.model.toJSON()).replace(/,/g, ""));
+					}
+				},
+				error: function (response) {
+					console.log(response);
+				}
+			});
+		}
 
 		if (this.model.id){
 			// var reviewRateView = new splat.ReviewRate();
@@ -42,9 +75,6 @@ splat.Details = Backbone.View.extend({
 			}
 		}
 
-
-
-
 		return this;    // support method chaining
     },
 
@@ -55,7 +85,8 @@ splat.Details = Backbone.View.extend({
 		"click #moviedel" : "deleteHandler",
 		"dragover #detailsImage" : "dragoverHandler",
 		"drop #detailsImage" : "dropHandler",
-		"change #uploadPic" : "selectImg"
+		"change #uploadPic" : "selectImg",
+		"click #commentAdd" : "addComment"
 	},
 
 
@@ -245,5 +276,25 @@ splat.Details = Backbone.View.extend({
 		var ctx = canvas.getContext("2d"); // get 2D rendering context
 		ctx.drawImage(image,0,0, image.width, image.height); // render
 		return canvas.toDataURL(type, quality);
+	},
+
+	addComment: function(){
+		var scope = this;
+
+		$.ajax({
+			type: 'POST',
+			url: '/comments',
+			dataType: 'text',
+			data: { movieId: this.model.attributes._id, username: $('#commentUsername').val(), text: $('#commentText').val() , dated: new Date() },
+			success: function(response){
+				splat.utils.showNotice('Success', "Successfully added comment", 'alert-success');
+				splat.utils.hideNotice();
+				scope.render();
+			},
+			error: function(response) {
+				splat.utils.showNotice('Failed', "Failed to add comment", 'alert-danger');
+				splat.utils.hideNotice();
+			}
+		});
 	}
 });
