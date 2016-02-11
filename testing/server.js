@@ -3,7 +3,7 @@ var express = require('express'),
     methodOverride  = require('method-override'),
     path = require('path'),
     app = express(),
-    open = require('open');
+    config = require('./config');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -17,9 +17,8 @@ app.get('/', function(req, res, next) {
 });
 require('./api/routes')(app);
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', config.port);
 
 app.listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + app.get('port'));
-    //open('http://127.0.0.1:3000');
+    console.log('Server listening on port ' + app.get('port'));
 });

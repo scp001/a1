@@ -1,3 +1,7 @@
+'use strict';
+
+function Parser() {}
+
 var lcomand = {words : [], comand:''};
 
 var findElement = function(input){
@@ -130,9 +134,8 @@ function findByParam(input){
     }
 }
 
-function parse() {
+Parser.prototype.start = function(str, callback) {
     lcomand.comand = '';
-    var str = document.getElementById('humanArea').value;
     var comands = str.split('\n');
     for (var i = 0; i < comands.length; i++) {
         var lwords = comands[i].match(/(?:[^\s"]+|"[^"]*")+/g);
@@ -151,29 +154,20 @@ function parse() {
             createComand(lcomand);
         }
     }
-}
+
+    if(lcomand.comand){
+        var res = 'var self = scope.wd; \n' + CompleteChain(lcomand.comand);
+        callback(null, res);
+    }
+    else {
+        callback('Error');
+    }
+};
 
 function createComand(argument) {
     while (argument.words.length!=0) {
         findByParam(argument);
     }
-    document.getElementById('aiArea').value = 'var self = scope.wd; \n' + CompleteChain(argument.comand);
 }
 
-function runTest()
-{
-    document.getElementById('status-field').innerHTML = '<p class="alert alert-info"> Pending... </p>';
-
-    $.ajax({
-     type: 'POST',
-     url: '/runTest',
-     dataType: 'text',
-     data: { address: document.getElementById('url').value, command: document.getElementById('aiArea').value, options: { closeWindow: document.getElementById("closeWindow").value} },
-     success: function(response){
-         document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response + '</p>';
-     },
-     error: function(response) {
-         document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! ' + response.status + ' ' + response.responseText + '</p>';
-     }
-    });
-}
+module.exports = new Parser();

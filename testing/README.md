@@ -2,5 +2,7 @@
 
 ###Also use chromedriver v 2.21 if running with chrome browser. [http://chromedriver.storage.googleapis.com/index.html?path=2.21](http://chromedriver.storage.googleapis.com/index.html?path=2.21)
 
-For running this you also need docker (www.docker.com)
-find instruction here: http://docs.docker.com/mac/started/
+###To start application run -
+```bash
+$ gulp
+```

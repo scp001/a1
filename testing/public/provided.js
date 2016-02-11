@@ -7,31 +7,88 @@ var links = (function () {
     };
 })();
 
-var testSplatReg = function() {
+function SplatTests(){
+    this.generate = function(text){
+        document.getElementById('url').value = links.splat();
+        document.getElementById('humanArea').value = text;
+    };
+    this.runAll = function(){
+        var testsIds = ['splatReg', 'splatAuth', 'splatOrderMoviesByTitle', 'splatOrderMoviesByDirector', 'splatAddDeleteMovie', 'splatAddUpdateDeleteMovie', 'splatAddComment'];
+        var result = { text : '-------------- tests --------------\n', total: { succed: 0, failed: 0 }};
+        var total = 0;
+        testsIds.forEach(function(item) {
+            document.getElementById(item).click();
 
-  var text = (function () {/*
-    title should be "Splat"
-    wait 0.5
-    click "Sign Up"
-    wait 0.5
-    fill Username "root"
-    wait 0.5
-    fill Email "root@gmail.com"
-    wait 0.5
-    fill Password "Testroot1"
-    wait 0.5
-    fill "Enter Password Again" "Testroot1"
-    wait 0.5
-    click element with id "singup-button"
-   */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
+            $.ajax({
+                type: 'POST',
+                url: '/parse',
+                dataType: 'text',
+                data: { 'data' : document.getElementById('humanArea').value},
+                success: function(response){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/runTest',
+                        dataType: 'text',
+                        data: {
+                            address: links.splat(),
+                            command: response,
+                            options: {closeWindow: 'true'}
+                        },
+                        success: function (response) {
+                            total += 1;
+                            result.total.succed += 1;
+                            result.text += item + ': Success\n';
+                        },
+                        error: function (response) {
+                            total += 1;
+                            result.total.failed += 1;
+                            result.text += item + ': Fail\n';
+                        }
+                    });
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        });
 
-    document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = links.splat();
+        var check = function(){
+            if(total === testsIds.length){
+                result.text+='-----------------------------------\n';
+                result.text+='Total: ' + result.total.succed + ' Success / ' + result.total.failed + ' Fail';
+                document.getElementById('status-field').innerHTML = '<pre>' + result.text + '</pre>';
+            }
+            else {
+                setTimeout(check, 1000); // check again in a second
+            }
+        };
+
+        check();
+    }
+}
+
+SplatTests.prototype.testReg = function(){
+
+    this.generate((function () {/*
+     title should be "Splat"
+     wait 0.5
+     click "Sign Up"
+     wait 0.5
+     fill Username "root"
+     wait 0.5
+     fill Email "root@gmail.com"
+     wait 0.5
+     fill Password "Testroot1"
+     wait 0.5
+     fill "Enter Password Again" "Testroot1"
+     wait 0.5
+     click element with id "singup-button"
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
 };
 
-var testSplatAuth = function() {
+SplatTests.prototype.testAuth = function(){
 
-    var text = (function () {/*
+    this.generate((function () {/*
      title should be "Splat"
      wait 0.5
      click "Sign In"
@@ -43,112 +100,94 @@ var testSplatAuth = function() {
      click element with id "remember"
      wait 0.5
      click element with id "singin-button"
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-
-    document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = links.splat();
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
 };
 
-//var testSplatAddMovie = function() {
-//    var text = (function (){/*
-//     title should be "Splat"
-//     wait 0.5
-//     click "Add Movie"
-//     wait 0.5
-//     fill element with id title "The Revenant"
-//     wait 0.5
-//     fill element with id released "2015"
-//     wait 0.5
-//     fill element with id director "Alejandro Iniarritu"
-//     wait 0.5
-//     fill element with id rating "R"
-//     wait 0.5
-//     fill element with id starring " Leonardo DiCaprio, Tom Hardy"
-//     wait 0.5
-//     fill element with id duration "154"
-//     wait 0.5
-//     fill element with id genre "adventure, drama"
-//     wait 0.5
-//     fill element with id synopsis "Description"
-//     wait 0.5
-//     fill element with id trailer "https://youtu.be/QRfj1VCg16Y"
-//     click "Save Changes"
-//    */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-//
-//    var link = 'https://localhost:41484/index.html';
-//
-//    document.getElementById('humanArea').value = text;
-//    document.getElementById('url').value = link;
-//};
+SplatTests.prototype.addMovie = function(){
 
-//var testSplatUpdateMovie = function() {
-//    var text = (function (){/*
-//     title should be "Splat"
-//     wait 0.5
-//     click "Browse Great Movies"
-//     wait 0.5
-//     click element with id "TheRevenant"
-//     wait 0.5
-//     fill element with id synopsis "summary"
-//     wait 0.5
-//     click "Save Changes"
-//     click "Save Changes"
-//     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-//
-//    var link = 'https://localhost:41484/index.html';
-//
-//    document.getElementById('humanArea').value = text;
-//    document.getElementById('url').value = link;
-//};
-
-//var testSplatDeleteMovie = function() {
-//    var text = (function (){/*
-//     title should be "Splat"
-//     wait 0.5
-//     click "Browse Great Movies"
-//     wait 0.5
-//     click element with id "TheRevenant"
-//     wait 0.5
-//     click "Delete Movie"
-//     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-//
-//    var link = 'https://localhost:41484/index.html';
-//
-//    document.getElementById('humanArea').value = text;
-//    document.getElementById('url').value = link;
-//};
-
-
-var testSpaltOrderMoviesByTitle = function() {
-    var text = (function (){/*
+    this.generate((function (){/*
      title should be "Splat"
      wait 0.5
-     click "Browse Movies"
+     click "Add Movie"
      wait 0.5
-     click element with id byTitle
+     fill element with id title "The Big Short"
      wait 0.5
-     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-
-    document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = links.splat();
+     fill element with id released "2015"
+     wait 0.5
+     fill element with id director "Adam McKay"
+     wait 0.5
+     fill element with id rating "R"
+     wait 0.5
+     fill element with id starring "Christian Bale, Steve Carell, Ryan Gosling, Brad Pitt"
+     wait 0.5
+     fill element with id duration "130"
+     wait 0.5
+     fill element with id genre "biography, drama"
+     wait 0.5
+     fill element with id synopsis "Description"
+     wait 0.5
+     fill element with id trailer "https://youtu.be/LWr8hbUkG9s"
+     click "Save Changes"
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
 };
 
-var testSpaltOrderMoviesByDirector = function() {
-    var text = (function (){/*
+SplatTests.prototype.updateMovie = function(){
+
+    this.generate((function (){/*
      title should be "Splat"
      wait 0.5
-     click "Browse Movies"
+     click "Browse Great Movies"
      wait 0.5
-     click element with id byDirector
+     click element with id "TheBigShort"
      wait 0.5
-     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-
-    document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = links.splat();
+     fill element with id synopsis " summary"
+     wait 0.5
+     click "Save Changes"
+     click "Save Changes"
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
 };
 
-var testSpalatAddDeleteMovie = function() {
-    var text = (function (){/*
+SplatTests.prototype.deleteMovie = function() {
+
+    this.generate((function () {/*
+         title should be "Splat"
+         wait 0.5
+         click "Browse Great Movies"
+         wait 0.5
+         click element with id "TheBigShort"
+         wait 0.5
+         click "Delete Movie"
+         */
+        }).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
+};
+
+SplatTests.prototype.orderMoviesByTitle = function(){
+
+    this.generate((function (){/*
+         title should be "Splat"
+         wait 0.5
+         click "Browse Movies"
+         wait 0.5
+         click element with id byTitle
+         wait 0.5
+         */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
+};
+
+SplatTests.prototype.orderMoviesByDirector = function(){
+
+    this.generate((function (){/*
+         title should be "Splat"
+         wait 0.5
+         click "Browse Movies"
+         wait 0.5
+         click element with id byDirector
+         wait 0.5
+         */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
+};
+
+SplatTests.prototype.addDeleteMovie = function(){
+
+    this.generate((function (){/*
      title should be "Splat"
      wait 0.5
      click "Add Movie"
@@ -180,35 +219,33 @@ var testSpalatAddDeleteMovie = function() {
      click element with id "TheRevenant"
      wait 0.5
      click "Delete Movie"
-     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-
-    document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = links.splat();
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
 };
 
-var testSpalatAddUpdateDeleteMovie = function() {
-    var text = (function (){/*
+SplatTests.prototype.addUpdateDeleteMovie = function() {
+
+    this.generate((function (){/*
      title should be "Splat"
      wait 0.5
      click "Add Movie"
      wait 0.5
-     fill element with id title "The Revenant"
+     fill element with id title "The Hateful Eight"
      wait 0.5
      fill element with id released "2015"
      wait 0.5
-     fill element with id director "Alejandro Iniarritu"
+     fill element with id director "Quentin Tarantino"
      wait 0.5
      fill element with id rating "R"
      wait 0.5
-     fill element with id starring " Leonardo DiCaprio, Tom Hardy"
+     fill element with id starring "Samuel Jackson, Kurt Russell"
      wait 0.5
-     fill element with id duration "154"
+     fill element with id duration "187"
      wait 0.5
-     fill element with id genre "adventure, drama"
+     fill element with id genre "crime, drama"
      wait 0.5
      fill element with id synopsis "Description"
      wait 0.5
-     fill element with id trailer "https://youtu.be/QRfj1VCg16Y"
+     fill element with id trailer "https://youtu.be/nIOmotayDMY"
      click "Save Changes"
      wait 0.5
      click "Splat!"
@@ -216,9 +253,9 @@ var testSpalatAddUpdateDeleteMovie = function() {
      wait 0.5
      click "Browse Great Movies"
      wait 0.5
-     click element with id "TheRevenant"
+     click element with id "TheHatefulEight"
      wait 0.5
-     fill element with id synopsis "summary"
+     fill element with id synopsis " summary"
      wait 0.5
      click "Save Changes"
      click "Save Changes"
@@ -228,38 +265,36 @@ var testSpalatAddUpdateDeleteMovie = function() {
      wait 0.5
      click "Browse Great Movies"
      wait 0.5
-     click element with id "TheRevenant"
+     click element with id "TheHatefulEight"
      wait 0.5
      click "Delete Movie"
-     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-
-    document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = links.splat();
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
 };
 
-var testSplatAddComment = function() {
-    var text = (function (){/*
+SplatTests.prototype.addComment = function(){
+
+    this.generate((function (){/*
      title should be "Splat"
      wait 0.5
      click "Add Movie"
      wait 0.5
-     fill element with id title "The Revenant"
+     fill element with id title "The Big Short"
      wait 0.5
      fill element with id released "2015"
      wait 0.5
-     fill element with id director "Alejandro Iniarritu"
+     fill element with id director "Adam McKay"
      wait 0.5
      fill element with id rating "R"
      wait 0.5
-     fill element with id starring " Leonardo DiCaprio, Tom Hardy"
+     fill element with id starring "Christian Bale, Steve Carell, Ryan Gosling, Brad Pitt"
      wait 0.5
-     fill element with id duration "154"
+     fill element with id duration "130"
      wait 0.5
-     fill element with id genre "adventure, drama"
+     fill element with id genre "biography, drama"
      wait 0.5
      fill element with id synopsis "Description"
      wait 0.5
-     fill element with id trailer "https://youtu.be/QRfj1VCg16Y"
+     fill element with id trailer "https://youtu.be/LWr8hbUkG9s"
      click "Save Changes"
      wait 0.5
      click "Splat!"
@@ -267,7 +302,7 @@ var testSplatAddComment = function() {
      wait 0.5
      click "Browse Great Movies"
      wait 0.5
-     click element with id "TheRevenant"
+     click element with id "TheBigShort"
      wait 0.5
      fill element with id commentUsername "user1234"
      wait 0.5
@@ -282,11 +317,63 @@ var testSplatAddComment = function() {
      wait 0.5
      click "Browse Great Movies"
      wait 0.5
-     click element with id "TheRevenant"
+     click element with id "TheBigShort"
      wait 0.5
      click "Delete Movie"
-     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim();
-
-    document.getElementById('humanArea').value = text;
-    document.getElementById('url').value = links.splat();
+     */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim());
 };
+
+SplatTests.prototype.runAll = function(){
+    this.runAll();
+};
+
+var splat = new SplatTests();
+document.getElementById("splatReg").addEventListener("click", function(){splat.testReg()});
+document.getElementById("splatAuth").addEventListener("click", function(){splat.testAuth()});
+//document.getElementById("splatAddMovie").addEventListener("click", function(){splat.addMovie()});
+//document.getElementById("splatUpdateMovie").addEventListener("click", function(){splat.updateMovie()});
+//document.getElementById("splatDeleteMovie").addEventListener("click", function(){splat.deleteMovie()});
+document.getElementById("splatOrderMoviesByTitle").addEventListener("click", function(){splat.orderMoviesByTitle()});
+document.getElementById("splatOrderMoviesByDirector").addEventListener("click", function(){splat.orderMoviesByDirector()});
+document.getElementById("splatAddDeleteMovie").addEventListener("click", function(){splat.addDeleteMovie()});
+document.getElementById("splatAddUpdateDeleteMovie").addEventListener("click", function(){splat.addUpdateDeleteMovie()});
+document.getElementById("splatAddComment").addEventListener("click", function(){splat.addComment()});
+document.getElementById("splatAll").addEventListener("click", function(){splat.runAll()});
+
+
+function parse(){
+    $.ajax({
+        type: 'POST',
+        url: '/parse',
+        dataType: 'text',
+        data: { 'data' : document.getElementById('humanArea').value},
+        success: function(response){
+            document.getElementById('aiArea').value = response;
+        },
+        error: function(response) {
+            console.log(response);
+        }
+    });
+}
+
+function runTest()
+{
+    document.getElementById('status-field').innerHTML = '<p class="alert alert-info"> Pending... </p>';
+
+    $.ajax({
+        type: 'POST',
+        url: '/runTest',
+        dataType: 'text',
+        data: {
+            address: document.getElementById('url').value,
+            command: document.getElementById('aiArea').value,
+            options: { closeWindow: document.getElementById("closeWindow").value}
+        },
+        success: function(response){
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response + '</p>';
+        },
+        error: function(response) {
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! ' + response.status + ' ' + response.responseText + '</p>';
+        }
+    });
+}

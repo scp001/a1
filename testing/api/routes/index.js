@@ -1,4 +1,5 @@
 var webdriver = require('../webdriver');
+var parser = require('../parser');
 
 module.exports = function (app) {
 
@@ -17,6 +18,20 @@ module.exports = function (app) {
             res.status(500).send('500 Internal Server Error');
           }
         }
+      })
+  });
+
+  app.post('/parse', function(req, res, next){
+      if(!req.body.data.trim()){
+          res.status(400).send('Human text is not defined');
+      }
+      parser.start(req.body.data.trim(), function(err, data){
+          res.header("Content-Type", "application/json");
+          if (!err) {
+              res.status(200).send(data);
+          } else {
+              res.status(500).send('500 Internal Server Error');
+          }
       })
   });
 
