@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Altester</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+<div class="container">
+
+    <form action="/" method="post" class="form-signin">
+        <h2 class="form-signin-heading">Log in</h2>
+        <label for="username" class="sr-only">Username</label>
+        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" name="password" class="form-control" placeholder="Password" required="">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" id="submit" type="submit">Submit</button>
+    </form>
+
+    <%if (JSON.parse(flash).length > 0) { %>
+    <p class="alert alert-danger flash"> <%- JSON.parse(flash) %> </p>
+    <% } %>
+
+</div>
+</body>
+</html>

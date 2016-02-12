@@ -22,3 +22,8 @@ button { font-family: sans-serif; padding: 20px 5px; position: relative; margin:
 .selenium-logo{ position: relative; left: 40%;}
 .selenium-logo img {width: 100px; height: 100px  }
 .main { padding-top: 20px; }
+nav {max-width: 820px}
+.logged { float: left }
+.user-menu {float: right}
+.user-menu:hover { cursor: pointer }
+#scenario { visibility: hidden }

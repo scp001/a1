@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Splat</title>
+		<title>Altester</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="assets/style.min.css" />
@@ -12,12 +12,43 @@
 		<div class="container-fluid">
 			<header class="header">
 				<div class="selenium-logo">
-					<img src="./img/selenium.png">
+					<!--<img src="img/selenium.png">-->
 				</div>
 			</header>
+			<nav>
+				<p class="logged"> Logged in as <strong> <%- user.name %> </strong> - <a href="/logout"> logout </a> </p>
+				<div class="dropdown user-menu">
+						<a class="dropdown-toggle" type="text" data-toggle="dropdown"> Menu
+							<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="javascript:;">Create account</a></li>
+							<li><a href="javascript:;">Search students</a></li>
+						</ul>
+				</div>
+			</nav>
+			<br/>
+			<br/>
 			<div class="main">
 				<div class="left-side">
-					<div><strong>Write your test: </strong></div>
+					<div><strong>Write your test: </strong> <span id="scenario"> - <a href="javascript:;" data-toggle="modal" data-target="#modal"> Save Scenario </a> </span> </div>
+					<div class="modal fade" id="modal" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Save Scenario</h4>
+								</div>
+								<div class="modal-body">
+									<p>Specify name of scenario: </p>
+									<input type="text" title="scenario-name" />
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" data-dismiss="modal"> Save </button>
+									<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div>
 						<textarea title="Human" id="humanArea" name="humanTest"  class='form-control'></textarea>
 						<button class="btn btn-primary" name="parse" id="parse" onclick="parse()">Create Test</button>
@@ -59,5 +90,7 @@
 			</div>
 	</body>
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="provided.js"></script>
+	<script src="actions.js"></script>
 </html>

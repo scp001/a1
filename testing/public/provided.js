@@ -327,6 +327,10 @@ SplatTests.prototype.runAll = function(){
     this.runAll();
 };
 
+/*******************************************************************/
+/*                      Splat Tests                                */
+/*******************************************************************/
+
 var splat = new SplatTests();
 document.getElementById("splatReg").addEventListener("click", function(){splat.testReg()});
 document.getElementById("splatAuth").addEventListener("click", function(){splat.testAuth()});
@@ -340,40 +344,9 @@ document.getElementById("splatAddUpdateDeleteMovie").addEventListener("click", f
 document.getElementById("splatAddComment").addEventListener("click", function(){splat.addComment()});
 document.getElementById("splatAll").addEventListener("click", function(){splat.runAll()});
 
+/*******************************************************************/
 
-function parse(){
-    $.ajax({
-        type: 'POST',
-        url: '/parse',
-        dataType: 'text',
-        data: { 'data' : document.getElementById('humanArea').value},
-        success: function(response){
-            document.getElementById('aiArea').value = response;
-        },
-        error: function(response) {
-            console.log(response);
-        }
-    });
-}
-
-function runTest()
-{
-    document.getElementById('status-field').innerHTML = '<p class="alert alert-info"> Pending... </p>';
-
-    $.ajax({
-        type: 'POST',
-        url: '/runTest',
-        dataType: 'text',
-        data: {
-            address: document.getElementById('url').value,
-            command: document.getElementById('aiArea').value,
-            options: { closeWindow: document.getElementById("closeWindow").value}
-        },
-        success: function(response){
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response + '</p>';
-        },
-        error: function(response) {
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! ' + response.status + ' ' + response.responseText + '</p>';
-        }
-    });
-}
+document.getElementById("humanArea").addEventListener("keyup", function(){
+    var area = $('#humanArea').val(), scenario = $('#scenario');
+    area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
+});
