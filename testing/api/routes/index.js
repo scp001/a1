@@ -1,6 +1,9 @@
 var webdriver = require('../webdriver');
 var parser = require('../parser');
 var passport = require('passport');
+var Scenarios = require('../db/models').Scenarios;
+var Users = require('../db/models').Users;
+var Tests = require('../db/models').Tests;
 require('../passport')(passport);
 
 
@@ -64,6 +67,94 @@ module.exports = function (app, passport) {
                 }
         })(req, res, next);
     });
+
+    app.get('/scenario', function(req, res){
+        Scenarios.find({}, function(err, scenarios){
+            if(!err) {
+                res.send(scenarios)
+            }
+            else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        })
+    });
+
+    app.post('/scenario', function(req, res){
+        if(!req.body.name || !req.body.text) {
+            res.status(400).send('Bad request');
+        }
+        res.header("Content-Type", "application/json");
+
+        var scenario = {
+            name: req.body.name,
+            scenario: req.body.text
+        };
+
+        Scenarios.create(scenario, function(err){
+            if (!err) {
+                res.status(200).send('Success! Scenario has been saved in the system. ');
+            } else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        });
+    });
+
+    app.put('/scenario', function(req, res){
+        if(!req.body.id){
+            res.status(400).send('Bad request');
+        }
+        res.header("Content-Type", "application/json");
+        Scenarios.update({'_id' : req.body.id}, {'name' : req.body.name, 'scenario' : req.body.scenario}, function(err){
+            if (!err) {
+                res.status(200).send('Success! Scenario has been updated. ');
+            } else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        })
+    });
+
+    app.delete('/scenario', function(req, res){
+        if(!req.body.id){
+            res.status(400).send('Bad request');
+        }
+        res.header("Content-Type", "application/json");
+        Scenarios.remove({'_id' : req.body.id}, function(err){
+            if (!err) {
+                res.status(200).send('Success! Scenario has been removed. ');
+            } else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        })
+    });
+
+    app.post('/account', function(req, res){
+        if(!req.body.user) {
+            res.status(400).send('Bad request');
+        }
+        res.header("Content-Type", "application/json");
+
+        var newUser = req.body.user;
+
+        Users.create(newUser, function(err){
+            if (!err) {
+                res.status(200).send('Success! New user has been created.');
+            } else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        })
+    });
+
+    app.get('/students', function(req, res){
+        Tests.find({}, function(err, students){
+            if(!err) {
+                res.send(students)
+            }
+            else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        })
+    });
+
 
     app.get('/logout', function(req, res){
         delete req.session.user;

@@ -346,7 +346,19 @@ document.getElementById("splatAll").addEventListener("click", function(){splat.r
 
 /*******************************************************************/
 
+function clearCreateAccForm(){
+    $('#acc-name').val('');
+    $('#acc-username').val('');
+    $('#acc-pwd').val('');
+    $('#acc-role').val('none');
+}
+
 document.getElementById("humanArea").addEventListener("keyup", function(){
+    var area = $('#humanArea').val(), scenario = $('#scenario');
+    area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
+});
+
+$( 'a[name=test]' ).on( "click", function() {
     var area = $('#humanArea').val(), scenario = $('#scenario');
     area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
 });

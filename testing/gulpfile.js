@@ -1,6 +1,7 @@
 // Gulp dependencies
 var gulp  = require('gulp');
 var rename = require('gulp-rename');
+var livereload = require('gulp-livereload');
 
 // Development Dependencies
 var jshint = require('gulp-jshint');
@@ -37,6 +38,7 @@ gulp.task('uglify-js', function() {
 });
 
 gulp.task('watch', function() {
+    livereload.listen();
     gulp.watch('public/*.js');
 });
 

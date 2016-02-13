@@ -5,6 +5,7 @@
 		<title>Altester</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="bower_components/font-awesome-bower/css/font-awesome.css" />
 		<link rel="stylesheet" href="assets/style.min.css" />
 	</head>
 
@@ -21,30 +22,114 @@
 						<a class="dropdown-toggle" type="text" data-toggle="dropdown"> Menu
 							<span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;">Create account</a></li>
-							<li><a href="javascript:;">Search students</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#modal-account">Create account</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#modal-students" onclick="getStudents()" >Search students</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#modal-scenarios" onclick="getScenarios()">Browse scenarios</a></li>
 						</ul>
+
+					<div class="modal fade" id="modal-account" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" id="close-modal-acc" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Create Account</h4>
+								</div>
+								<div class="modal-body">
+										<label for="name" class="sr-only">Name</label>
+										<input type="text" id="acc-name" name="name" class="form-control form-control-custom" placeholder="Name" required="" autofocus="">
+										<label for="username" class="sr-only">Username</label>
+										<input type="text" id="acc-username" name="username" class="form-control form-control-custom" placeholder="Username" required="" autofocus="">
+										<label for="password" class="sr-only">Password</label>
+										<input type="text" id="acc-pwd" name="password" class="form-control form-control-custom" placeholder="Password" required="">
+										<select title="acc-role" class="form-control form-control-custom" id="acc-role">
+											<option value="none"> --- Choose role --- </option>
+											<option value="admin"> Administrator </option>
+											<option value="checker"> Checker </option>
+											<option value="student"> Student </option>
+										</select>
+									<div id="create-acc-status"></div>
+									<div class="modal-footer" style="padding: 0">
+										<button type="button" class="btn btn-primary" id="account-save" onclick="newAccount()"> Save </button>
+										<button type="button" class="btn btn-danger" id="account-cancel" data-dismiss="modal"> Cancel </button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade" id="modal-students" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" id="close-modal-scenario" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Search Students</h4>
+								</div>
+								<div class="modal-body">
+									<table class="table">
+										<thead>
+										<tr>
+											<th>Name</th>
+											<th>Course</th>
+											<th>Results </th>
+											<th>Comment</th>
+										</tr>
+										</thead>
+										<tbody id="students-grid">
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal fade" id="modal-scenarios" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" id="close-modal-scenario" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Browse Scenarios</h4>
+								</div>
+								<div class="modal-body">
+									<table class="table">
+										<thead>
+										<tr>
+											<th>Name</th>
+											<th>Scenario</th>
+											<th> Edit/Remove </th>
+										</tr>
+										</thead>
+										<tbody id="scenarios-grid">
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</nav>
 			<br/>
 			<br/>
 			<div class="main">
 				<div class="left-side">
-					<div><strong>Write your test: </strong> <span id="scenario"> - <a href="javascript:;" data-toggle="modal" data-target="#modal"> Save Scenario </a> </span> </div>
+					<div><strong>Write your test: </strong> <span id="scenario"> - <a href="#" data-toggle="modal" data-target="#modal"> Save Scenario </a> </span> </div>
 					<div class="modal fade" id="modal" role="dialog">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<button type="button" class="close" id="close-modal-scenario" data-dismiss="modal">&times;</button>
 									<h4 class="modal-title">Save Scenario</h4>
 								</div>
 								<div class="modal-body">
 									<p>Specify name of scenario: </p>
-									<input type="text" title="scenario-name" />
+									<input type="text" title="scenario-name" id="scenario-name" required="" />
+									<div id="scenario-status"></div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-primary" data-dismiss="modal"> Save </button>
-									<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-primary" id="scenario-save" onclick="saveScenario()"> Save </button>
+									<button type="button" class="btn btn-danger" id="scenario-cancel" data-dismiss="modal"> Cancel </button>
 								</div>
 							</div>
 						</div>
@@ -74,17 +159,17 @@
 
 				<div class="right-side">
 					<div><strong> Provided tests: </strong></div>
-						<a href="javascript:;" id="splatReg"> Splat Registration Test </a>
-						<a href="javascript:;" id="splatAuth"> Splat Authorization Test </a>
+						<a href="javascript:;" id="splatReg" name="test"> Splat Registration Test </a>
+						<a href="javascript:;" id="splatAuth" name="test"> Splat Authorization Test </a>
 						<!--<a href="javascript:;" id="splatAddMovie"> Splat Add Movie Test </a>-->
 						<!--<a href="javascript:;" id="splatUpdateMovie"> Splat Update Movie Test </a>-->
 						<!--<a href="javascript:;" id="splatDeleteMovie"> Splat Delete Movie Test </a>-->
-						<a href="javascript:;" id="splatOrderMoviesByTitle"> Splat Order Movies By Title </a>
-						<a href="javascript:;" id="splatOrderMoviesByDirector"> Splat Order Movies By Director </a>
-						<a href="javascript:;" id="splatAddDeleteMovie"> Splat Add/Delete Movie </a>
-						<a href="javascript:;" id="splatAddUpdateDeleteMovie"> Splat Add/Update/Delete Movie </a>
-						<a href="javascript:;" id="splatAddComment"> Splat Add Movie/Add Comment/Delete Movie </a>
-						<a href="javascript:;" id="splatAll"> Splat Run All </a>
+						<a href="javascript:;" id="splatOrderMoviesByTitle" name="test"> Splat Order Movies By Title </a>
+						<a href="javascript:;" id="splatOrderMoviesByDirector" name="test"> Splat Order Movies By Director </a>
+						<a href="javascript:;" id="splatAddDeleteMovie" name="test"> Splat Add/Delete Movie </a>
+						<a href="javascript:;" id="splatAddUpdateDeleteMovie" name="test"> Splat Add/Update/Delete Movie </a>
+						<a href="javascript:;" id="splatAddComment" name="test"> Splat Add Movie/Add Comment/Delete Movie </a>
+						<a href="javascript:;" id="splatAll" name="test"> Splat Run All </a>
 					</div>
 				</div>
 			</div>
