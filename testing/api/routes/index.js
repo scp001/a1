@@ -155,6 +155,41 @@ module.exports = function (app, passport) {
         })
     });
 
+    app.post('/students', function(req, res){
+        if(!req.body.test) {
+            res.status(400).send('Bad request');
+        }
+        res.header("Content-Type", "application/json");
+
+        var test = req.body.test;
+        test.student['name'] = req.session.user.name;
+        test.student['id'] = req.session.user.id;
+        Tests.create(test, function(err){
+            if (!err) {
+                res.status(200).send('Success! Test results has been saved.');
+            } else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        });
+    });
+
+    app.post('/search', function(req, res){
+
+        if(!req.body.name) {
+            res.status(400).send('Bad request');
+        }
+        res.header("Content-Type", "application/json");
+
+        var name = req.body.name;
+        Tests.find( { 'student.name' : { $regex: new RegExp('^' + name.toLowerCase(), 'i')} }, function(err, user){
+            if(!err) {
+                res.send(user);
+            } else {
+                res.status(500).send('500 Internal Server Error');
+            }
+        })
+    });
+
 
     app.get('/logout', function(req, res){
         delete req.session.user;

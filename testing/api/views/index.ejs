@@ -58,18 +58,21 @@
 					</div>
 
 					<div class="modal fade" id="modal-students" role="dialog">
-						<div class="modal-dialog">
+						<div class="modal-dialog" style="width: 800px">
 							<div class="modal-content">
 								<div class="modal-header">
 									<button type="button" class="close" id="close-modal-scenario" data-dismiss="modal">&times;</button>
 									<h4 class="modal-title">Search Students</h4>
 								</div>
 								<div class="modal-body">
+									<input title="search" type="text" class="form-control" placeholder="Search..." id="search-students" onkeyup="searchStudents()" />
+									<br/>
 									<table class="table">
 										<thead>
 										<tr>
 											<th>Name</th>
 											<th>Course</th>
+											<th>Scenario</th>
 											<th>Results </th>
 											<th>Comment</th>
 										</tr>
@@ -155,6 +158,30 @@
 						<button class="btn btn-success" name="runTest" id="run" onclick="runTest()">Run Test</button>
 					</div>
 					<div id="status-field"></div>
+
+					<div class="modal fade" id="modal-save-test-res" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" id="close-modal-test-res" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Save Test Results</h4>
+								</div>
+								<div class="modal-body">
+									<label for="course" class="sr-only">Course</label>
+									<input type="text" id="course" name="course" class="form-control form-control-custom" placeholder="Course" required="" autofocus="">
+									<label for="comment">Comment</label>
+									<textarea class="form-control" rows="5" id="comment" style="resize: none"></textarea>
+									<label for="test-result" style="margin-top: 30px">Test Results</label>
+									<textarea class="form-control" rows="5" id="test-result" style="resize: none" disabled></textarea>
+									<div id="student-test-results"></div>
+									<div class="modal-footer" style="padding: 0">
+										<button type="button" class="btn btn-primary" onclick="saveTestResults()"> Save </button>
+										<button type="button" class="btn btn-danger"  data-dismiss="modal"> Cancel </button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<div class="right-side">

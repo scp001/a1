@@ -56,7 +56,9 @@ function SplatTests(){
             if(total === testsIds.length){
                 result.text+='-----------------------------------\n';
                 result.text+='Total: ' + result.total.succed + ' Success / ' + result.total.failed + ' Fail';
-                document.getElementById('status-field').innerHTML = '<pre>' + result.text + '</pre>';
+                document.getElementById('status-field').innerHTML = '<pre>' + result.text + '</pre>' + '<br/><a href="#" id="modal-save-all" data-toggle="modal" data-target="#modal-save-test-res"> </a>';
+                document.getElementById('test-result').value = result.text;
+                $('#modal-save-all').click();
             }
             else {
                 setTimeout(check, 1000); // check again in a second

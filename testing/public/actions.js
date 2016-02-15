@@ -26,10 +26,12 @@ function runTest() {
             options: { closeWindow: document.getElementById("closeWindow").value}
         },
         success: function(response){
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response + '</p>';
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success!' + response + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #009688"> Click to save results </a>' + '</p>';
+            document.getElementById('test-result').value = 'Success!' + response
         },
         error: function(response) {
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! ' + response.status + ' ' + response.responseText + '</p>';
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! ' + response.status + '<a href="#" style="color: #BF360C"" onclick="alert(' + '\'' + response.responseText.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/[^\w\s]/gi, '')  + '\'' + ')"> Show details </a>' + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #BF360C"> Click to save results </a>' +'</p>';
+            document.getElementById('test-result').value = 'Failed!' + response.status + ' ' + response.responseText.substring(0, response.responseText.indexOf("(Session"))
         }
     });
 }
@@ -140,16 +142,89 @@ function removeScenario(id){
     });
 }
 
-function getStudents(){
+function getStudents(filter){
+
+    function render(data){
+        var arr = [];
+        data.forEach(function(item){
+            var resp = '<tr>' +
+                '<td>' + item.student.name  + '</td>' +
+                '<td>' + item.student.course + '</td>' +
+                '<td style="max-width: 300px">' + item.scenario + '</td>' +
+                '<td style="max-width: 300px">' + item.result + '</td>' +
+                '<td>' + item.comment + '</td>' +
+                '</tr>';
+            arr.push(resp);
+        });
+        document.getElementById('students-grid').innerHTML = arr.toString().replace(/\,/g, '');
+    }
+
+    if(filter) return render(filter);
+    else {
+        $.ajax({
+            type: 'GET',
+            url: '/students',
+            dataType: 'json',
+            success: function(data){
+                render(data);
+            },
+            error: function(data) {
+                console.log(data.responseText);
+            }
+        });
+    }
+}
+
+function  saveTestResults(){
+    var course = document.getElementById('course').value,
+        scenario = document.getElementById('humanArea').value,
+        result = document.getElementById('test-result').value,
+        comment = document.getElementById('comment').value;
+
+    if(!course || !scenario || !result) return false;
+    else {
+        var test = {
+            student: {
+                course: course
+            },
+            scenario: scenario,
+            result: result,
+            comment: comment
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/students',
+            dataType: 'text',
+            data: {
+                test: test
+            },
+            success: function(response){
+                document.getElementById('student-test-results').innerHTML = '<p  style="margin-bottom: 0; margin-top: 35px" class="alert alert-success">' + response + ' </p>';
+                setTimeout(function(){ $('#close-modal-test-res').click(); }, 2000)
+            },
+            error: function(response) {
+                document.getElementById('student-test-results').innerHTML = '<p style="margin-bottom: 0; margin-top: 35px" class="alert alert-danger">' + 'Failed.'  + response + '</p>';
+                setTimeout(function(){ $('#close-modal-test-res').click(); }, 2000)
+            }
+        });
+    }
+}
+
+function searchStudents(){
+    var input = document.getElementById('search-students').value;
+    if(!input) return false;
     $.ajax({
-        type: 'GET',
-        url: '/students',
+        type: 'POST',
+        url: '/search',
         dataType: 'json',
-        success: function(data){
-           console.log(data);
+        data: {
+            name: input
         },
-        error: function(data) {
-            console.log(data.responseText);
+        success: function(response){
+            getStudents(response);
+        },
+        error: function(response) {
+            console.log(response.responseText);
         }
     });
 }
