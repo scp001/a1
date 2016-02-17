@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(methodOverride());      // simulate DELETE and PUT
-app.set('view engine', 'ejs');
+app.set('view engine', config.templateEngine);
 app.set('views',path.join(__dirname, '/api/views'));
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(compression());
@@ -26,15 +26,16 @@ app.use(session({
     secret: config.secret,
     resave: false,
     saveUninitialized: true,
-    cookie:{maxAge: 60000}
+    cookie: config.sessionCookie
 }));
 
+require('./api/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
 require('./api/routes')(app, passport);
 
-app.set('port', config.port);
+app.set('port', config.http.port);
 
 app.listen(app.get('port'), function () {
     console.log('Server listening on port ' + app.get('port'));

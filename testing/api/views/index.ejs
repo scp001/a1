@@ -17,15 +17,11 @@
 				</div>
 			</header>
 			<nav>
-				<p class="logged"> Logged in as <strong> <%- user.name %> </strong> - <a href="/logout"> logout </a> </p>
+				<p class="logged"> Logged in as <strong> <%- user %> </strong> - <a href="/logout"> logout </a> </p>
 				<div class="dropdown user-menu">
 						<a class="dropdown-toggle" type="text" data-toggle="dropdown"> Menu
 							<span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#modal-account">Create account</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#modal-students" onclick="getStudents()" >Search students</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#modal-scenarios" onclick="getScenarios()">Browse scenarios</a></li>
-						</ul>
+						<ul class="dropdown-menu" id="menu"> <%- menu %> </ul>
 
 					<div class="modal fade" id="modal-account" role="dialog">
 						<div class="modal-dialog">
@@ -40,12 +36,10 @@
 										<label for="username" class="sr-only">Username</label>
 										<input type="text" id="acc-username" name="username" class="form-control form-control-custom" placeholder="Username" required="" autofocus="">
 										<label for="password" class="sr-only">Password</label>
-										<input type="text" id="acc-pwd" name="password" class="form-control form-control-custom" placeholder="Password" required="">
+										<input type="password" id="acc-pwd" name="password" class="form-control form-control-custom" placeholder="Password" required="">
 										<select title="acc-role" class="form-control form-control-custom" id="acc-role">
 											<option value="none"> --- Choose role --- </option>
-											<option value="admin"> Administrator </option>
-											<option value="checker"> Checker </option>
-											<option value="student"> Student </option>
+											<%- options %>
 										</select>
 									<div id="create-acc-status"></div>
 									<div class="modal-footer" style="padding: 0">

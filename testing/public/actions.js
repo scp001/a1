@@ -54,7 +54,7 @@ function saveScenario(){
                 setTimeout(function(){ $('#close-modal-scenario').click(); document.getElementById('scenario-status').innerHTML = ''; document.getElementById('scenario-name').value = ''  }, 2000)
             },
             error: function(response) {
-                document.getElementById('scenario-status').innerHTML = '<p style="margin-bottom: 0; margin-top: 15px" class="alert alert-danger">' + 'Failed.'  + response + '</p>';
+                document.getElementById('scenario-status').innerHTML = '<p style="margin-bottom: 0; margin-top: 15px" class="alert alert-danger">' + 'Failed.'  + response.responseText + '</p>';
                 setTimeout(function(){ $('#close-modal-scenario').click(); document.getElementById('scenario-status').innerHTML = ''; document.getElementById('scenario-name').value = '' }, 2000)
             }
         });
@@ -90,7 +90,7 @@ function newAccount(){
                 setTimeout(function(){ $('#close-modal-acc').click(); document.getElementById('create-acc-status').innerHTML = ''; clearCreateAccForm() }, 2000)
             },
             error: function(response) {
-                document.getElementById('create-acc-status').innerHTML = '<p style="margin-bottom: 0; margin-top: 15px" class="alert alert-danger">' + 'Failed.'  + response + '</p>';
+                document.getElementById('create-acc-status').innerHTML = '<p style="margin-bottom: 0; margin-top: 15px" class="alert alert-danger">' + 'Failed.'  + response.responseText + '</p>';
                 setTimeout(function(){ $('#close-modal-acc').click(); document.getElementById('create-acc-status').innerHTML = ''; clearCreateAccForm()  }, 2000)
             }
         });
@@ -137,7 +137,7 @@ function removeScenario(id){
             getScenarios();
         },
         error: function(response) {
-            alert(response);
+            alert(response.responseText);
         }
     });
 }
@@ -203,7 +203,7 @@ function  saveTestResults(){
                 setTimeout(function(){ $('#close-modal-test-res').click(); }, 2000)
             },
             error: function(response) {
-                document.getElementById('student-test-results').innerHTML = '<p style="margin-bottom: 0; margin-top: 35px" class="alert alert-danger">' + 'Failed.'  + response + '</p>';
+                document.getElementById('student-test-results').innerHTML = '<p style="margin-bottom: 0; margin-top: 35px" class="alert alert-danger">' + 'Failed.'  + response.responseText + '</p>';
                 setTimeout(function(){ $('#close-modal-test-res').click(); }, 2000)
             }
         });
@@ -212,7 +212,7 @@ function  saveTestResults(){
 
 function searchStudents(){
     var input = document.getElementById('search-students').value;
-    if(!input) return false;
+    if(!input) return getStudents();
     $.ajax({
         type: 'POST',
         url: '/search',

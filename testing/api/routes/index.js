@@ -4,6 +4,7 @@ var passport = require('passport');
 var Scenarios = require('../db/models').Scenarios;
 var Users = require('../db/models').Users;
 var Tests = require('../db/models').Tests;
+var Roles = require('../utils').Roles;
 require('../passport')(passport);
 
 
@@ -42,11 +43,20 @@ module.exports = function (app, passport) {
     });
 
     app.get('/app', function(req, res, next) {
-        req.session.user ? res.render('../views/index', {'user': req.session.user}) : res.redirect('/')
+        if(req.session.user){
+            var roles = Roles.resolve(req.session.user.role);
+            res.render('../views/index', {'user': req.session.user.name, 'menu' : roles.menu, 'options' : roles.createOptions})
+        }
+        else res.redirect('/')
     });
 
     app.get('/', function(req, res, next){
-        req.session.user ? res.redirect('/app') : res.render('../views/auth', { flash: JSON.stringify(req.flash('msg'))})
+        if(req.session.user) {
+            res.redirect('/app')
+        }
+        else {
+            res.render('../views/auth', { flash: JSON.stringify(req.flash('msg'))})
+        }
     });
 
     app.post('/', function(req, res, next) {
@@ -63,85 +73,126 @@ module.exports = function (app, passport) {
                 }
                 if(user) {
                     req.session.user = { id: user._id, role: user.role, name: user.name };
+                    res.cookie('role', user.role);
                     res.redirect('/app');
                 }
         })(req, res, next);
     });
 
     app.get('/scenario', function(req, res){
-        Scenarios.find({}, function(err, scenarios){
-            if(!err) {
-                res.send(scenarios)
-            }
-            else {
-                res.status(500).send('500 Internal Server Error');
-            }
-        })
+        var role = req.session.user.role;
+        if(role === 'admin' || role === 'checker') {
+
+            Scenarios.find({}, function (err, scenarios) {
+                if (!err) {
+                    res.send(scenarios)
+                }
+                else {
+                    res.status(500).send('500 Internal Server Error');
+                }
+            })
+        } else {
+            res.status(550).send('Permission denied');
+        }
     });
 
     app.post('/scenario', function(req, res){
-        if(!req.body.name || !req.body.text) {
-            res.status(400).send('Bad request');
-        }
-        res.header("Content-Type", "application/json");
+        var role = req.session.user.role;
+        if(role === 'admin' || role === 'checker') {
 
-        var scenario = {
-            name: req.body.name,
-            scenario: req.body.text
-        };
-
-        Scenarios.create(scenario, function(err){
-            if (!err) {
-                res.status(200).send('Success! Scenario has been saved in the system. ');
-            } else {
-                res.status(500).send('500 Internal Server Error');
+            if (!req.body.name || !req.body.text) {
+                res.status(400).send('Bad request');
             }
-        });
+            res.header("Content-Type", "application/json");
+
+            var scenario = {
+                name: req.body.name,
+                scenario: req.body.text
+            };
+
+            Scenarios.create(scenario, function (err) {
+                if (!err) {
+                    res.status(200).send('Success! Scenario has been saved in the system. ');
+                } else {
+                    res.status(500).send('500 Internal Server Error');
+                }
+            });
+        } else {
+            res.status(550).send('Permission denied');
+        }
     });
 
     app.put('/scenario', function(req, res){
-        if(!req.body.id){
-            res.status(400).send('Bad request');
-        }
-        res.header("Content-Type", "application/json");
-        Scenarios.update({'_id' : req.body.id}, {'name' : req.body.name, 'scenario' : req.body.scenario}, function(err){
-            if (!err) {
-                res.status(200).send('Success! Scenario has been updated. ');
-            } else {
-                res.status(500).send('500 Internal Server Error');
+        var role = req.session.user.role;
+        if(role === 'admin' || role === 'checker') {
+
+            if (!req.body.id) {
+                res.status(400).send('Bad request');
             }
-        })
+            res.header("Content-Type", "application/json");
+            Scenarios.update({'_id': req.body.id}, {
+                'name': req.body.name,
+                'scenario': req.body.scenario
+            }, function (err) {
+                if (!err) {
+                    res.status(200).send('Success! Scenario has been updated. ');
+                } else {
+                    res.status(500).send('500 Internal Server Error');
+                }
+            })
+        } else {
+            res.status(550).send('Permission denied');
+        }
     });
 
-    app.delete('/scenario', function(req, res){
-        if(!req.body.id){
+    app.delete('/scenario', function(req, res) {
+        var role = req.session.user.role;
+        if (role === 'admin' || role === 'checker') {
+
+        if (!req.body.id) {
             res.status(400).send('Bad request');
         }
         res.header("Content-Type", "application/json");
-        Scenarios.remove({'_id' : req.body.id}, function(err){
+        Scenarios.remove({'_id': req.body.id}, function (err) {
             if (!err) {
                 res.status(200).send('Success! Scenario has been removed. ');
             } else {
                 res.status(500).send('500 Internal Server Error');
             }
-        })
+          })
+        } else {
+            res.status(550).send('Permission denied');
+        }
     });
 
     app.post('/account', function(req, res){
-        if(!req.body.user) {
-            res.status(400).send('Bad request');
-        }
-        res.header("Content-Type", "application/json");
 
-        var newUser = req.body.user;
+        var role = req.session.user.role;
+        if (role === 'admin' || role === 'checker') {
 
-        Users.create(newUser, function(err){
-            if (!err) {
-                res.status(200).send('Success! New user has been created.');
-            } else {
-                res.status(500).send('500 Internal Server Error');
+            if (!req.body.user) {
+                res.status(400).send('Bad request');
             }
-        })
+
+            res.header("Content-Type", "application/json");
+
+            var newUser = req.body.user;
+
+            if(role === 'checker' && (newUser.role === 'admin' || newUser.role === 'checker')) {
+                res.status(550).send('Permission denied');
+            }
+            else {
+                Users.create(newUser, function (err) {
+                    if (!err) {
+                        res.status(200).send('Success! New user has been created.');
+                    } else {
+                        res.status(500).send('500 Internal Server Error');
+                    }
+                })
+            }
+        } else {
+            res.status(550).send('Permission denied');
+        }
     });
 
     app.get('/students', function(req, res){

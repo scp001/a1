@@ -347,6 +347,12 @@ document.getElementById("splatAddComment").addEventListener("click", function(){
 document.getElementById("splatAll").addEventListener("click", function(){splat.runAll()});
 
 /*******************************************************************/
+function getCookie(name) {
+    var matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
 function clearCreateAccForm(){
     $('#acc-name').val('');
@@ -357,10 +363,16 @@ function clearCreateAccForm(){
 
 document.getElementById("humanArea").addEventListener("keyup", function(){
     var area = $('#humanArea').val(), scenario = $('#scenario');
-    area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
+    var role = getCookie('role');
+    if(role && role === 'admin' || role === 'checker') {
+        area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
+    }
 });
 
 $( 'a[name=test]' ).on( "click", function() {
     var area = $('#humanArea').val(), scenario = $('#scenario');
-    area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
+    var role = getCookie('role');
+    if(role && role === 'admin' || role === 'checker') {
+        area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
+    }
 });
