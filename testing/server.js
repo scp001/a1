@@ -8,7 +8,8 @@ var express = require('express'),
     compression = require("compression"),
     session = require("express-session"),
     passport = require('passport'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    timeout = require('connect-timeout');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -21,6 +22,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use(compression());
 app.use(cookieParser(config.secret));
 app.use(flash());
+
+app.use(timeout(15000));
 
 app.use(session({
     secret: config.secret,

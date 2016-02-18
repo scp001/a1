@@ -334,17 +334,17 @@ SplatTests.prototype.runAll = function(){
 /*******************************************************************/
 
 var splat = new SplatTests();
-document.getElementById("splatReg").addEventListener("click", function(){splat.testReg()});
-document.getElementById("splatAuth").addEventListener("click", function(){splat.testAuth()});
-//document.getElementById("splatAddMovie").addEventListener("click", function(){splat.addMovie()});
-//document.getElementById("splatUpdateMovie").addEventListener("click", function(){splat.updateMovie()});
-//document.getElementById("splatDeleteMovie").addEventListener("click", function(){splat.deleteMovie()});
-document.getElementById("splatOrderMoviesByTitle").addEventListener("click", function(){splat.orderMoviesByTitle()});
-document.getElementById("splatOrderMoviesByDirector").addEventListener("click", function(){splat.orderMoviesByDirector()});
-document.getElementById("splatAddDeleteMovie").addEventListener("click", function(){splat.addDeleteMovie()});
-document.getElementById("splatAddUpdateDeleteMovie").addEventListener("click", function(){splat.addUpdateDeleteMovie()});
-document.getElementById("splatAddComment").addEventListener("click", function(){splat.addComment()});
-document.getElementById("splatAll").addEventListener("click", function(){splat.runAll()});
+//document.getElementById("splatReg").addEventListener("click", function(){splat.testReg()});
+//document.getElementById("splatAuth").addEventListener("click", function(){splat.testAuth()});
+////document.getElementById("splatAddMovie").addEventListener("click", function(){splat.addMovie()});
+////document.getElementById("splatUpdateMovie").addEventListener("click", function(){splat.updateMovie()});
+////document.getElementById("splatDeleteMovie").addEventListener("click", function(){splat.deleteMovie()});
+//document.getElementById("splatOrderMoviesByTitle").addEventListener("click", function(){splat.orderMoviesByTitle()});
+//document.getElementById("splatOrderMoviesByDirector").addEventListener("click", function(){splat.orderMoviesByDirector()});
+//document.getElementById("splatAddDeleteMovie").addEventListener("click", function(){splat.addDeleteMovie()});
+//document.getElementById("splatAddUpdateDeleteMovie").addEventListener("click", function(){splat.addUpdateDeleteMovie()});
+//document.getElementById("splatAddComment").addEventListener("click", function(){splat.addComment()});
+//document.getElementById("splatAll").addEventListener("click", function(){splat.runAll()});
 
 /*******************************************************************/
 function getCookie(name) {

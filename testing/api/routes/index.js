@@ -1,10 +1,12 @@
 var webdriver = require('../webdriver');
 var parser = require('../parser');
 var passport = require('passport');
+var config = require('../config');
 var Scenarios = require('../db/models').Scenarios;
 var Users = require('../db/models').Users;
 var Tests = require('../db/models').Tests;
 var Roles = require('../utils').Roles;
+var _ = require('lodash');
 require('../passport')(passport);
 
 
@@ -165,6 +167,26 @@ module.exports = function (app, passport) {
         }
     });
 
+    app.post('/script', function(req, res){
+        var role = req.session.user.role;
+        if (role === 'admin' || role === 'checker') {
+
+            if (!req.body.id) {
+                res.status(400).send('Bad request');
+            }
+            res.header("Content-Type", "application/json");
+            Scenarios.find({'_id': req.body.id}, function (err, data) {
+                if (!err) {
+                    res.status(200).send(data);
+                } else {
+                    res.status(500).send('500 Internal Server Error');
+                }
+            })
+        } else {
+            res.status(550).send('Permission denied');
+        }
+    });
+
     app.post('/account', function(req, res){
 
         var role = req.session.user.role;
@@ -241,6 +263,17 @@ module.exports = function (app, passport) {
         })
     });
 
+    app.post('/restore', function(req, res){
+        var names = config.scenarios.names;
+        _.each(names, function(item){
+            Scenarios.remove({'name' : item}, function(err){
+                if(err) console.error(err);
+            })
+        });
+        config.scenarios.insert();
+        res.header("Content-Type", "application/json");
+        res.status(200).send('Default scenarios data has been restored');
+    });
 
     app.get('/logout', function(req, res){
         delete req.session.user;

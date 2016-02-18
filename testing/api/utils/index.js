@@ -5,7 +5,7 @@ Roles.prototype.resolve = function(role){
     if(role && (role === 'admin' || role === 'checker')){
         menu =  '<li><a href="#" data-toggle="modal" data-target="#modal-account">Create account</a></li>' +
             '<li><a href="#" data-toggle="modal" data-target="#modal-students" onclick="getStudents()"> Search students </a></li>' +
-            '<li><a href="#" data-toggle="modal" data-target="#modal-scenarios" onclick="getScenarios()"> Browse scenarios </a></li>';
+            '<li><a href="#" onclick="restoreScenarios()"> Restore default scenarios </a> </li>';
 
         if(role === 'admin') {
 
@@ -19,7 +19,8 @@ Roles.prototype.resolve = function(role){
         }
     }
     else if(role && role === 'student') {
-        menu = '<li><a href="#" data-toggle="modal" data-target="#modal-students" onclick="getStudents()"> Search students </a></li>'
+        menu = '<li><a href="#" data-toggle="modal" data-target="#modal-students" onclick="getStudents()"> Search students </a></li>'+
+            '<li><a href="#" onclick="restoreScenarios()"> Restore default scenarios </a> </li>';
     }
     return {
         menu: menu,

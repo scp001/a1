@@ -55,7 +55,7 @@
 						<div class="modal-dialog" style="width: 800px">
 							<div class="modal-content">
 								<div class="modal-header">
-									<button type="button" class="close" id="close-modal-scenario" data-dismiss="modal">&times;</button>
+									<button type="button" class="close" id="close-modal-search" data-dismiss="modal">&times;</button>
 									<h4 class="modal-title">Search Students</h4>
 								</div>
 								<div class="modal-body">
@@ -84,7 +84,7 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<button type="button" class="close" id="close-modal-scenario" data-dismiss="modal">&times;</button>
+									<button type="button" class="close" id="close-modal-browse" data-dismiss="modal">&times;</button>
 									<h4 class="modal-title">Browse Scenarios</h4>
 								</div>
 								<div class="modal-body">
@@ -93,7 +93,7 @@
 										<tr>
 											<th>Name</th>
 											<th>Scenario</th>
-											<th> Edit/Remove </th>
+											<th> Edit/Remove/Start </th>
 										</tr>
 										</thead>
 										<tbody id="scenarios-grid">
@@ -111,7 +111,7 @@
 			<br/>
 			<div class="main">
 				<div class="left-side">
-					<div><strong>Write your test: </strong> <span id="scenario"> - <a href="#" data-toggle="modal" data-target="#modal"> Save Scenario </a> </span> </div>
+					<div><strong>Write your test: </strong> </div>
 					<div class="modal fade" id="modal" role="dialog">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -134,6 +134,7 @@
 					<div>
 						<textarea title="Human" id="humanArea" name="humanTest"  class='form-control'></textarea>
 						<button class="btn btn-primary" name="parse" id="parse" onclick="parse()">Create Test</button>
+						<span id="scenario"> <a class="btn btn-link btn-save-scenario" href="#" data-toggle="modal" data-target="#modal"> Save Scenario </a> </span>
 					</div>
 					<div>
 						<textarea title="AI" id="aiArea" name="aiTest" class='form-control' wrap="soft"></textarea>
@@ -180,17 +181,15 @@
 
 				<div class="right-side">
 					<div><strong> Provided tests: </strong></div>
-						<a href="javascript:;" id="splatReg" name="test"> Splat Registration Test </a>
-						<a href="javascript:;" id="splatAuth" name="test"> Splat Authorization Test </a>
-						<!--<a href="javascript:;" id="splatAddMovie"> Splat Add Movie Test </a>-->
-						<!--<a href="javascript:;" id="splatUpdateMovie"> Splat Update Movie Test </a>-->
-						<!--<a href="javascript:;" id="splatDeleteMovie"> Splat Delete Movie Test </a>-->
-						<a href="javascript:;" id="splatOrderMoviesByTitle" name="test"> Splat Order Movies By Title </a>
-						<a href="javascript:;" id="splatOrderMoviesByDirector" name="test"> Splat Order Movies By Director </a>
-						<a href="javascript:;" id="splatAddDeleteMovie" name="test"> Splat Add/Delete Movie </a>
-						<a href="javascript:;" id="splatAddUpdateDeleteMovie" name="test"> Splat Add/Update/Delete Movie </a>
-						<a href="javascript:;" id="splatAddComment" name="test"> Splat Add Movie/Add Comment/Delete Movie </a>
-						<a href="javascript:;" id="splatAll" name="test"> Splat Run All </a>
+						<a href="#" data-toggle="modal" data-target="#modal-scenarios" onclick="getScenarios()"> Browse scenarios </a>
+						<!--<a href="javascript:;" id="splatReg" name="test"> Splat Registration Test </a>-->
+						<!--<a href="javascript:;" id="splatAuth" name="test"> Splat Authorization Test </a>-->
+						<!--<a href="javascript:;" id="splatOrderMoviesByTitle" name="test"> Splat Order Movies By Title </a>-->
+						<!--<a href="javascript:;" id="splatOrderMoviesByDirector" name="test"> Splat Order Movies By Director </a>-->
+						<!--<a href="javascript:;" id="splatAddDeleteMovie" name="test"> Splat Add/Delete Movie </a>-->
+						<!--<a href="javascript:;" id="splatAddUpdateDeleteMovie" name="test"> Splat Add/Update/Delete Movie </a>-->
+						<!--<a href="javascript:;" id="splatAddComment" name="test"> Splat Add Movie/Add Comment/Delete Movie </a>-->
+						<!--<a href="javascript:;" id="splatAll" name="test"> Splat Run All </a>-->
 					</div>
 				</div>
 			</div>

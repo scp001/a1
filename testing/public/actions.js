@@ -114,6 +114,7 @@ function getScenarios(){
                 '<td> ' +
                     '<div class="btn btn-warning btn-custom"> <i class="fa fa-pencil"></i> </div> ' +
                     '<div class="btn btn-danger btn-custom" onclick="removeScenario(' + '\'' + item._id + '\'' + ')"> <i class="fa fa-trash"></i> </div>  ' +
+                    '<div class="btn btn-success btn-custom" onclick="startScenario(' + '\'' + item._id + '\'' + ')"> <i class="fa fa-play"></i> </div> ' +
                     '</td></tr>';
                 arr.push(resp);
             });
@@ -124,6 +125,28 @@ function getScenarios(){
         }
     });
 }
+
+function startScenario(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/script',
+        dataType: 'json',
+        data: {
+            id: id
+        },
+        success: function(response){
+            var body = response[0];
+            document.getElementById('humanArea').value = body.scenario;
+            document.getElementById('url').value = body.url;
+            $('#parse').click();
+            $('#close-modal-browse').click();
+        },
+        error: function(response) {
+            console.log(response.responseText);
+        }
+    });
+}
+
 
 function removeScenario(id){
     $.ajax({
@@ -222,6 +245,21 @@ function searchStudents(){
         },
         success: function(response){
             getStudents(response);
+        },
+        error: function(response) {
+            console.log(response.responseText);
+        }
+    });
+}
+
+
+function restoreScenarios(){
+    $.ajax({
+        type: 'POST',
+        url: '/restore',
+        dataType: 'json',
+        success: function(response){
+            console.log(response);
         },
         error: function(response) {
             console.log(response.responseText);
