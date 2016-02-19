@@ -5,14 +5,14 @@ body,div,html,nav{display:block}
 body,html{background-color:#f8f8f8;font-family:Titillium-Regular,sans-serif;color:#333332;margin:0}
 body{overflow-x:hidden!important;}
 .container-fluid { max-width: 1000px; margin: 0 auto; }
-.left-side { max-width: 80%; position: relative; float: left; display: inline-block }
-.right-side { max-width: 20%; position: relative; display: inline-block }
+.left-side { max-width: 52%; position: relative; float: left; display: inline-block }
+.right-side { max-width: 20%; position: relative; float: right; right: 25px; display: inline-block }
 body { padding: 20px 0 }
 textarea {top: 20px; position: relative; white-space: nowrap;  overflow-y: auto; overflow-x: hidden }
 #aiArea { width: 750px;  margin: 0; height: 150px; resize: none; }
 #humanArea {width: 500px;  margin: 0;height: 300px; resize: none; }
 button { font-family: sans-serif; padding: 20px 5px; position: relative; margin: 30px 0; }
-#url { margin: 20px 0; }
+#url { margin-top: 40px; margin-bottom: 20px }
 #run { margin: 5px 5px; }
 #close {margin-top: 50px}
 #closeWindow {width: 70px; height : 30px; margin-left: 10px; display: inline-block}
@@ -24,13 +24,16 @@ button { font-family: sans-serif; padding: 20px 5px; position: relative; margin:
 .main { padding-top: 20px; }
 nav {max-width: 820px}
 .logged { float: left }
-.user-menu {float: right; margin-right: 25px;}
+.user-menu {float: right;}
 .user-menu:hover { cursor: pointer }
-#scenario { visibility: hidden }
+#scenario { visibility: hidden; }
 .modal-header { padding-bottom: 0 }
 .close { margin-bottom: 5px }
 .modal-footer { padding-top: 0 }
 #scenario-save, #scenario-cancel { margin-top: 15px }
 .form-control-custom { width: 40%; margin-bottom: 10px; }
 .btn-custom { padding: 3px 8px; }
-.btn-save-scenario{margin-top: 30px;font-family: sans-serif;}
+.btn-save-scenario{ margin-top: 30px;font-family: sans-serif; }
+.dropdown-custom { padding: 0 20px }
+#scenario { float: right}
+#notifications {  cursor: pointer;  position: fixed;  right: 0;  z-index: 9999;  bottom: 0;  margin-bottom: 22px;  margin-right: 15px;  max-width: 300px;}

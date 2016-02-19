@@ -132,21 +132,16 @@
 						</div>
 					</div>
 					<div>
-						<textarea title="Human" id="humanArea" name="humanTest"  class='form-control'></textarea>
-						<button class="btn btn-primary" name="parse" id="parse" onclick="parse()">Create Test</button>
-						<span id="scenario"> <a class="btn btn-link btn-save-scenario" href="#" data-toggle="modal" data-target="#modal"> Save Scenario </a> </span>
+						<textarea title="Human" id="humanArea" name="humanTest"  class='form-control' wrap="hard"></textarea>
+						<button class="btn btn-primary" id="parse" onclick="parse()">Create Test</button>
+						<span id="scenario">
+							<button class="btn btb-primary" onclick="reset()"> Reset </button>
+							<button class="btn btn-success btn-custom" data-toggle="modal" data-target="#modal"> <i class="fa fa-floppy-o"></i> </button>
+							<button class="btn btn-danger btn-custom" onclick="removeScenario()"> <i class="fa fa-trash"></i> </button>
+						</span>
 					</div>
 					<div>
-						<textarea title="AI" id="aiArea" name="aiTest" class='form-control' wrap="soft"></textarea>
-					</div>
-					<div id="close">
-						<div class="form-group">
-							<label for="closeWindow">Close browser window automatically when test will be finished:</label>
-							<select class="form-control" id="closeWindow">
-								<option value="true"> Yes  </option>
-								<option value="false"> No </option>
-							</select>
-						</div>
+						<textarea title="AI" id="aiArea" name="aiTest" class='form-control' wrap="hard"></textarea>
 					</div>
 					<div>
 						<input title="URL" id="url" name="urlInput" type="text" value="https://www.google.ca/" />
@@ -165,7 +160,7 @@
 									<label for="course" class="sr-only">Course</label>
 									<input type="text" id="course" name="course" class="form-control form-control-custom" placeholder="Course" required="" autofocus="">
 									<label for="comment">Comment</label>
-									<textarea class="form-control" rows="5" id="comment" style="resize: none"></textarea>
+									<textarea class="form-control" rows="5" id="comment" wrap="hard" style="resize: none"></textarea>
 									<label for="test-result" style="margin-top: 30px">Test Results</label>
 									<textarea class="form-control" rows="5" id="test-result" style="resize: none" disabled></textarea>
 									<div id="student-test-results"></div>
@@ -180,22 +175,17 @@
 				</div>
 
 				<div class="right-side">
-					<div><strong> Provided tests: </strong></div>
-						<a href="#" data-toggle="modal" data-target="#modal-scenarios" onclick="getScenarios()"> Browse scenarios </a>
-						<!--<a href="javascript:;" id="splatReg" name="test"> Splat Registration Test </a>-->
-						<!--<a href="javascript:;" id="splatAuth" name="test"> Splat Authorization Test </a>-->
-						<!--<a href="javascript:;" id="splatOrderMoviesByTitle" name="test"> Splat Order Movies By Title </a>-->
-						<!--<a href="javascript:;" id="splatOrderMoviesByDirector" name="test"> Splat Order Movies By Director </a>-->
-						<!--<a href="javascript:;" id="splatAddDeleteMovie" name="test"> Splat Add/Delete Movie </a>-->
-						<!--<a href="javascript:;" id="splatAddUpdateDeleteMovie" name="test"> Splat Add/Update/Delete Movie </a>-->
-						<!--<a href="javascript:;" id="splatAddComment" name="test"> Splat Add Movie/Add Comment/Delete Movie </a>-->
-						<!--<a href="javascript:;" id="splatAll" name="test"> Splat Run All </a>-->
+					<div><strong> Provided tests: </strong> <a href="javascript:;" id="runAll"> Run All </a> </div>
+						<div id="provided-scenarios"></div>
 					</div>
+				<div id="notifications"></div>
 				</div>
 			</div>
 	</body>
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="provided.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="notify.js"></script>
+	<script src="assets/provided.min.js"></script>
 	<script src="actions.js"></script>
 </html>

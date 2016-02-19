@@ -16,10 +16,23 @@ var uglify = require('gulp-uglify');
 var express = require('express');
 var nodemon = require('gulp-nodemon');
 
+
 function swallowError (error) {
     console.log(error.toString());
     this.emit('end');
 }
+
+gulp.task('browserify-uglify-js', function() {
+    return gulp.src('public/provided.js')
+        .pipe(browserify({
+            insertGlobals : true,
+            debug : !gulp.env.production
+         }))
+        .pipe(uglify())
+        .on('error', swallowError)
+        .pipe(rename('provided.min.js'))
+        .pipe(gulp.dest('public/assets'))
+});
 
 gulp.task('minify-css', function() {
     return gulp.src('public/css/style.css')
@@ -29,13 +42,6 @@ gulp.task('minify-css', function() {
         .pipe(gulp.dest('public/assets'));
 });
 
-gulp.task('uglify-js', function() {
-    return gulp.src('public/provided.js')
-        .pipe(uglify({ preserveComments:'all'}))
-        .on('error', swallowError)
-        .pipe(rename('provided.min.js'))
-        .pipe(gulp.dest('public/assets'));
-});
 
 gulp.task('watch', function() {
     livereload.listen();
@@ -55,4 +61,4 @@ gulp.task('nodemon', function() {
         });
 });
 
-gulp.task('default', ['nodemon', 'watch', 'minify-css']);
+gulp.task('default', ['nodemon', 'watch', 'minify-css', 'browserify-uglify-js']);

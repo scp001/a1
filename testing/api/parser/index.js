@@ -98,7 +98,7 @@ var findElement = function(input){
 var CompleteChain = function(command){
     var length = command.split(/\n/).length;
     for(var i = 0; i < length-1; i++) {
-        command += ' }, function(err){ return scope.callback(true, err) }) \n '
+        command += ' }, function(err){ scope.callback(true, err); driver.sleep(2000); return driver.quit() }) \n '
     }
     return command;
 };

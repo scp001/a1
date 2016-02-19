@@ -9,12 +9,14 @@ var express = require('express'),
     session = require("express-session"),
     passport = require('passport'),
     flash = require('connect-flash'),
-    timeout = require('connect-timeout');
+    timeout = require('connect-timeout'),
+    webdriver = require('./api/webdriver');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 app.use(methodOverride());      // simulate DELETE and PUT
 app.set('view engine', config.templateEngine);
 app.set('views',path.join(__dirname, '/api/views'));
@@ -40,6 +42,33 @@ require('./api/routes')(app, passport);
 
 app.set('port', config.http.port);
 
-app.listen(app.get('port'), function () {
+io = require('socket.io').listen(app.listen(app.get('port'), function () {
     console.log('Server listening on port ' + app.get('port'));
+}));
+
+io.on('connection', function(socket){
+
+    socket.on('run test', function(data){
+        var address = data.address;
+        var command = data.command;
+        var status = 'Script or url is not defined';
+
+        if(!address.trim() || !command.trim()){
+            io.emit('send status', status);
+        }
+        else {
+            webdriver.test(address, command, function (err, message) {
+                if (!err) {
+                    status = '200 OK';
+                } else {
+                    if (message) {
+                        status = message.message;
+                    } else {
+                        status = '500 Internal Server Error';
+                    }
+                }
+                io.emit('send status', status);
+            });
+        }
+    });
 });
