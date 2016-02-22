@@ -61,4 +61,4 @@ gulp.task('nodemon', function() {
         });
 });
 
-gulp.task('default', ['nodemon', 'watch', 'minify-css', 'browserify-uglify-js']);
+gulp.task('default', ['nodemon', 'watch', 'minify-css']);

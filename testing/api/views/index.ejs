@@ -43,7 +43,7 @@
 										</select>
 									<div id="create-acc-status"></div>
 									<div class="modal-footer" style="padding: 0">
-										<button type="button" class="btn btn-primary" id="account-save" onclick="newAccount()"> Save </button>
+										<button type="button" class="btn btn-primary" id="account-save"> Save </button>
 										<button type="button" class="btn btn-danger" id="account-cancel" data-dismiss="modal"> Cancel </button>
 									</div>
 								</div>
@@ -59,7 +59,7 @@
 									<h4 class="modal-title">Search Students</h4>
 								</div>
 								<div class="modal-body">
-									<input title="search" type="text" class="form-control" placeholder="Search..." id="search-students" onkeyup="searchStudents()" />
+									<input title="search" type="text" class="form-control" placeholder="Search..." id="search-students" />
 									<br/>
 									<table class="table">
 										<thead>
@@ -111,7 +111,8 @@
 			<br/>
 			<div class="main">
 				<div class="left-side">
-					<div><strong>Write your test: </strong> </div>
+					<div><a id="newScenario">Create new scenario </a>  </div>
+					<div><strong id="test-header">Write your test: </strong> </div>
 					<div class="modal fade" id="modal" role="dialog">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -125,7 +126,7 @@
 									<div id="scenario-status"></div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-primary" id="scenario-save" onclick="saveScenario()"> Save </button>
+									<button type="button" class="btn btn-primary" id="scenario-save"> Save </button>
 									<button type="button" class="btn btn-danger" id="scenario-cancel" data-dismiss="modal"> Cancel </button>
 								</div>
 							</div>
@@ -133,11 +134,11 @@
 					</div>
 					<div>
 						<textarea title="Human" id="humanArea" name="humanTest"  class='form-control' wrap="hard"></textarea>
-						<button class="btn btn-primary" id="parse" onclick="parse()">Create Test</button>
+						<button class="btn btn-primary" id="parse">Generate Test</button>
 						<span id="scenario">
-							<button class="btn btb-primary" onclick="reset()"> Reset </button>
-							<button class="btn btn-success btn-custom" data-toggle="modal" data-target="#modal"> <i class="fa fa-floppy-o"></i> </button>
-							<button class="btn btn-danger btn-custom" onclick="removeScenario()"> <i class="fa fa-trash"></i> </button>
+							<button class="btn btb-primary" id="reset"> Reset </button>
+							<button class="btn btn-success btn-custom" id="saveScenario"  data-toggle="modal" data-target="#modal"> <i class="fa fa-floppy-o"></i> </button>
+							<button class="btn btn-danger btn-custom" id="removeScenario"> <i class="fa fa-trash"></i> </button>
 						</span>
 					</div>
 					<div>
@@ -145,7 +146,7 @@
 					</div>
 					<div>
 						<input title="URL" id="url" name="urlInput" type="text" value="https://www.google.ca/" />
-						<button class="btn btn-success" name="runTest" id="run" onclick="runTest()">Run Test</button>
+						<button class="btn btn-success" name="runTest" id="run">Run Test</button>
 					</div>
 					<div id="status-field"></div>
 
@@ -165,7 +166,7 @@
 									<textarea class="form-control" rows="5" id="test-result" style="resize: none" disabled></textarea>
 									<div id="student-test-results"></div>
 									<div class="modal-footer" style="padding: 0">
-										<button type="button" class="btn btn-primary" onclick="saveTestResults()"> Save </button>
+										<button type="button" class="btn btn-primary" id="save-test-results"> Save </button>
 										<button type="button" class="btn btn-danger"  data-dismiss="modal"> Cancel </button>
 									</div>
 								</div>
@@ -186,6 +187,5 @@
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="notify.js"></script>
-	<script src="assets/provided.min.js"></script>
-	<script src="actions.js"></script>
+	<script src="provided.js"></script>
 </html>

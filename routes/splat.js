@@ -324,7 +324,14 @@ exports.deleteComment = function(req, res) {
 var mongoose = require('mongoose'); // MongoDB integration
 
 // Connect to database, using credentials specified in your config module
-mongoose.connect('mongodb://localhost/splat');
+mongoose.connect('mongodb://localhost/splat', function(err) {
+	if (err){
+		console.error('Unable connect to database('+err+'), check database is up and running. Exiting.');
+		process.exit(1);
+	};
+});
+
+
 
 // Schemas
 var MovieSchema = new mongoose.Schema({
