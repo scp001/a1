@@ -4,7 +4,7 @@
 //var testsMap = Immutable.Map();
 
 var testsMap = new Map();
-var current = { provided: false, name: null };
+var current = { provided: false, name: null, scenario: null };
 
 function Tests(){
     this.runAll = function(){
@@ -58,29 +58,33 @@ function getCookie(name) {
 }
 
 document.getElementById("humanArea").addEventListener("keyup", function(){
-    var area = $('#humanArea').val(), scenario = $('#scenario'), remove = $('#removeScenario');
+    var area = $('#humanArea').val(), scenario = $('#scenario'), save = $('#saveScenario'),
+        remove = $('#removeScenario'), discard = $('#discard'), reset = $('#reset');
     var role = getCookie('role');
     if(role && role === 'admin' || role === 'checker') {
-        area.trim().length > 'wait 0.5'.length ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
-    }
 
-    if(testsMap.has(area.trim())){
-        remove.show(); $('#saveScenario').hide(); }
-    else {
-        remove.hide();
-        $('#saveScenario').show();
+        area ? scenario.css('visibility', 'visible') && reset.css('visibility', 'visible')
+             : scenario.css('visibility', 'hidden') && reset.css('visibility', 'hidden') ;
+        current.provided ? scenario.css('visibility', 'visible')  : false;
+
+        if (testsMap.has(area)) {
+            remove.show();
+            save.hide();
+            discard.hide()
+        }
+        else {
+            current.provided ? remove.show() : remove.hide();
+            current.scenario ? discard.show() : discard.hide();
+            save.show();
+        }
     }
 });
 
-$( 'a[name=test]' ).on( "click", function() {
-    var area = $('#humanArea').val(), scenario = $('#scenario');
-    var role = getCookie('role');
-    if(role && role === 'admin' || role === 'checker') {
-        area.trim().indexOf('\n') > -1 ? scenario.css('visibility', 'visible') : scenario.css('visibility', 'hidden');
-    }
-});
 
 document.addEventListener("DOMContentLoaded", function(e) {
+    var role = getCookie('role');
+    var newScenario = $('#newScenario');
+    (role && role === 'admin' || role === 'checker') ? newScenario.show() : newScenario.hide();
     getScenarios();
 });
 
@@ -191,12 +195,6 @@ document.getElementById('newScenario').addEventListener('click', function(){
         confirm('Are you sure? Changes will be discarded.') : true;
 
     if(confirmed) {
-
-        current = {
-            provided: false,
-            name: null
-        };
-
         reset();
     }
 });
@@ -256,10 +254,10 @@ function getScenarios(){
             var arr = [];
             testsMap.clear();
             data.forEach(function(item){
-                var id =  item._id;
+                var name =  item.name;
                 var selector = item.name.replace(/ /g, "");
                 testsMap.set(item.scenario, selector);
-                var resp = '<a href="javascript:;" id='+ '\'' + selector + '\'' + ' onclick="startScenario(' + '\'' + id + '\'' + ')">'  + item.name  + '</a>';
+                var resp = '<a href="javascript:;" id='+ '\'' + selector + '\'' + ' onclick="startScenario(' + '\'' + name + '\'' + ')">'  + item.name  + '</a>';
                 arr.push(resp);
             });
             document.getElementById('provided-scenarios').innerHTML = arr.toString().replace(/\,/g, '');
@@ -270,31 +268,39 @@ function getScenarios(){
     });
 }
 
-function startScenario(id) {
-    var humanArea = document.getElementById('humanArea').value;
-    var confirmed = humanArea.trim() && !testsMap.has(humanArea) ?
-        confirm('Are you sure? Changes will be discarded.') : true;
+function startScenario(name) {
+    var role = getCookie('role');
+    if (role && role === 'admin' || role === 'checker') {
+        var humanArea = document.getElementById('humanArea').value;
+        var confirmed = humanArea.trim() && !testsMap.has(humanArea) && !(current.name === name) ?
+            confirm('Are you sure? Changes will be discarded.') : true;
+    }
 
-    if(confirmed) {
+    if(confirmed || role==='student') {
         $.ajax({
             type: 'POST',
             url: '/script',
             dataType: 'json',
             data: {
-                id: id
+                name: name
             },
             success: function(response){
                 document.getElementById('humanArea').value = response[0].scenario;
                 document.getElementById('url').value  = response[0].url;
-                current = {
-                    provided: true,
-                    name: response[0].name
-                };
-                $('#test-header').text('Update ' + '[' + response[0].name + ']' + ' test:');
-                $('#scenario-name').val(response[0].name).prop('disabled', true);
-                $('#scenario').css('visibility', 'visible');
-                $('#saveScenario').hide();
-                $('#removeScenario').show();
+                if (role && role === 'admin' || role === 'checker') {
+                    current = {
+                        provided: true,
+                        name: response[0].name,
+                        scenario: response[0].scenario
+                    };
+                    $('#test-header').text('Update ' + '[' + response[0].name + ']' + ' test:');
+                    $('#scenario-name').val(response[0].name).prop('disabled', true);
+                    $('#scenario').css('visibility', 'visible');
+                    $('#reset').css('visibility', 'visible');
+                    $('#saveScenario').hide();
+                    $('#discard').hide();
+                    $('#removeScenario').show();
+                }
             },
             error: function(response) {
                 console.log(response.responseText);
@@ -323,8 +329,14 @@ document.getElementById('scenario-save').addEventListener('click', function(){
             },
             success: function(response){
                 getScenarios();
+                current = {
+                    provided: true,
+                    name: name,
+                    scenario: scenario
+                };
                 $('#close-modal-scenario').click();
                 Notify(response, null, null, 'success');
+                setTimeout( function(){ var id = name.replace(/ /g, ''); if(id) document.getElementById(id).click() }, 250);
             },
             error: function(response) {
                 $('#close-modal-scenario').click();
@@ -341,14 +353,13 @@ document.getElementById('removeScenario').addEventListener('click', function(){
     var confirmed = confirm('Are you sure?');
 
     if (confirmed) {
-        var scenario = document.getElementById('humanArea').value.trim();
-        if (testsMap.has(scenario)) {
+        if (current.provided) {
             $.ajax({
                 type: 'DELETE',
                 url: '/scenario',
                 dataType: 'text',
                 data: {
-                    scenario: scenario
+                    scenario: current.scenario
                 },
                 success: function(response){
                     if(response) getScenarios();
@@ -484,11 +495,28 @@ function reset(){
         document.getElementById(item).value = value;
     });
 
+    current = {
+        provided: false,
+        name: null,
+        scenario: null
+    };
+
     $('#test-header').text('Write your test:');
     $('#scenario-name').val('').prop('disabled', false);
     $('#scenario').css('visibility', 'hidden');
+    $('#reset').css('visibility', 'hidden');
 }
 
 document.getElementById('reset').addEventListener('click', function(){
     reset()
+});
+
+document.getElementById('discard').addEventListener('click', function(){
+    var discard = current.scenario;
+    if(discard) {
+        document.getElementById('humanArea').value = discard;
+        $('#discard').hide();
+        $('#saveScenario').hide();
+        $('#reset').css('visibility', 'visible');
+    }
 });

@@ -68,8 +68,6 @@ module.exports = function (app, passport) {
     });
 
     app.get('/scenario', function(req, res){
-        var role = req.session.user.role;
-        if(role === 'admin' || role === 'checker') {
 
             Scenarios.find({}, function (err, scenarios) {
                 if (!err) {
@@ -79,9 +77,6 @@ module.exports = function (app, passport) {
                     res.status(500).send('500 Internal Server Error');
                 }
             })
-        } else {
-            res.status(550).send('Permission denied');
-        }
     });
 
     app.post('/scenario', function(req, res){
@@ -143,33 +138,13 @@ module.exports = function (app, passport) {
         var role = req.session.user.role;
         if (role === 'admin' || role === 'checker') {
 
-        if (!req.body.scenario) {
-            res.status(400).send('Bad request');
-        }
-        res.header("Content-Type", "application/json");
-        Scenarios.remove({'scenario': req.body.scenario}, function (err) {
-            if (!err) {
-                res.status(200).send('Success! Scenario has been removed. ');
-            } else {
-                res.status(500).send('500 Internal Server Error');
-            }
-          })
-        } else {
-            res.status(550).send('Permission denied');
-        }
-    });
-
-    app.post('/script', function(req, res){
-        var role = req.session.user.role;
-        if (role === 'admin' || role === 'checker') {
-
-            if (!req.body.id) {
+            if (!req.body.scenario) {
                 res.status(400).send('Bad request');
             }
             res.header("Content-Type", "application/json");
-            Scenarios.find({'_id': req.body.id}, function (err, data) {
+            Scenarios.remove({'scenario': req.body.scenario}, function (err) {
                 if (!err) {
-                    res.status(200).send(data);
+                    res.status(200).send('Success! Scenario has been removed. ');
                 } else {
                     res.status(500).send('500 Internal Server Error');
                 }
@@ -177,6 +152,21 @@ module.exports = function (app, passport) {
         } else {
             res.status(550).send('Permission denied');
         }
+    });
+
+    app.post('/script', function(req, res){
+
+            if (!req.body.name) {
+                res.status(400).send('Bad request');
+            }
+            res.header("Content-Type", "application/json");
+            Scenarios.find({'name': req.body.name}, function (err, data) {
+                if (!err) {
+                    res.status(200).send(data);
+                } else {
+                    res.status(500).send('500 Internal Server Error');
+                }
+            })
     });
 
     app.post('/account', function(req, res){

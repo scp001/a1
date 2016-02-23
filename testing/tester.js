@@ -1,7 +1,7 @@
 var webdriver = require('selenium-webdriver');
 
-webdriver.logging.installConsoleHandler();
-webdriver.logging.getLogger().setLevel(webdriver.logging.Level.ALL);
+//webdriver.logging.installConsoleHandler();
+//webdriver.logging.getLogger().setLevel(webdriver.logging.Level.ALL);
 
 
 var scope = {};
@@ -27,7 +27,7 @@ driver.getTitle().then(function(title) { return title === 'Splat';}).then(functi
   if(el) el.sendKeys("The Revenant");
   return driver.sleep(0.5*1000);
 }).then(function(){
-  driver.findElement(self.By.xpath("//*[@id = 'released']"))
+  return driver.findElement(self.By.xpath("//*[@id = 'released']"))
 }).then(function(el){
   if(el) el.sendKeys("2015");
   return driver.sleep(0.5*1000);
@@ -37,7 +37,7 @@ driver.getTitle().then(function(title) { return title === 'Splat';}).then(functi
   if(el) el.sendKeys("Alejandro Iniarritu");
   return driver.sleep(0.5*1000)
 }).then(function(){
-  driver.findElement(self.By.xpath("//*[@id = 'rating']"));
+  return driver.findElement(self.By.xpath("//*[@id = 'rating']"));
 }).then(function(el){
   if(el) el.sendKeys("R");
   return driver.sleep(0.5*1000);
@@ -91,12 +91,12 @@ driver.getTitle().then(function(title) { return title === 'Splat';}).then(functi
   if(el) el.click();
   return driver.sleep(0.5*1000)
 }).then(function(){
-  driver.findElement(self.By.xpath("//*[@id = 'TheRevenant']"));
+  return driver.findElement(self.By.xpath("//*[@id = 'TheRevenant']"));
 }).then(function(el){
   if(el) el.click();
   return driver.sleep(0.5*1000)
 }).then(function(){
-  driver.findElement(self.By.xpath("//*[text()='Delete Movie']"))
+  return driver.findElement(self.By.xpath("//*[text()='Delete Movie']"))
 }).then(function(el){
   if(el) el.click();
 }, function(err){
