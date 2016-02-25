@@ -46,29 +46,37 @@ io = require('socket.io').listen(app.listen(app.get('port'), function () {
     console.log('Server listening on port ' + app.get('port'));
 }));
 
+util = require('util');
+
 io.on('connection', function(socket){
 
     socket.on('run test', function(data){
         var address = data.address;
+        var testname = data.testname;
         var command = data.command;
-        var status = 'Script or url is not defined';
+        var result = {testname: testname, code: 400, msg: 'Script or url is not defined'};
 
         if(!address.trim() || !command.trim()){
-            io.emit('send status', status);
+            io.emit('send status', result);
         }
         else {
             webdriver.test(address, command, function (err, message) {
                 if (!err) {
-                    status = '200 OK';
+                    result = {testname: testname, code: 200, msg: 'OK'};
                 } else {
                     if (message) {
-                        status = message.message;
+                        result = message.message;
                     } else {
-                        status = '500 Internal Server Error';
+                        result = {testname: testname, code: 500, msg: 'Internal Server Error'};
                     }
                 }
-                io.emit('send status', status);
+                io.emit('send status', result);
             });
         }
+    });
+
+    socket.on('error', function(err){
+        console.log('socket err');
+        console.log(util.inspect(err, { showHidden: true, depth: null }));
     });
 });

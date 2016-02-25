@@ -39,7 +39,7 @@ Users.update({'name' : 'root'}, {'name' : 'root', 'username' : 'root', 'password
 
 Metadata.findOne({'name' : 'default'}, function(err, data){
     if(!data) {
-        Metadata.create({'name' : 'default' ,'scenarios.defaultInserted' : true}, function(err){
+        Metadata.create({'name' : 'default', 'scenarios.defaultInserted' : true}, function(err){
             if(!err) insertScenarios();
             else console.error(err);
         });
@@ -57,7 +57,7 @@ function insertScenarios(){
         Scenarios.create(item, function(err){
             if(err) console.error(err);
         });
-        Metadata.update({'name' : 'default'}, {'name' : 'default' ,'scenarios.defaultInserted' : true}, function(err){
+        Metadata.update({'name' : 'default'}, {'name' : 'default', 'scenarios.defaultInserted' : true}, function(err){
             if(err) console.error(err);
         });
     });

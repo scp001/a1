@@ -10,24 +10,41 @@ function Tests(){
     this.runAll = function(){
         var result = { text : '-------------- tests --------------\n', total: { succed: 0, failed: 0 }};
         var total = 0;
-        testsMap.forEach(function(value, key){
+        testsMap.forEach(function(key, value){
 
-            socket.emit('run test', {
-                address: 'http://localhost:41484/index.html',
-                command: key
-            });
+          $.ajax({
+              type: 'POST',
+              url: '/parse',
+              dataType: 'text',
+              data: { 'data' : value},
+              success: function(response){
+                  socket.emit('run test', {
+                      address: 'http://localhost:41484/index.html',
+                      testname: key,
+                      command: response
+                  });
+              },
+              error: function(response) {
+                  console.log(response);
+              }
+          });
+        });
 
-            socket.on('send status', function(response){
-                total+=1;
-                if(response === '200 OK') {
-                    result.text += value + ': Success';
-                    result.total.succed+=1;
-                }
-                else {
-                    result.text += value + ': Failed';
-                    result.total.failed+=1;
-                }
-            });
+        socket.on('send status', function(response){
+            total+=1;
+            if(response.code === 200) {
+                result.text += response.testname + ': Success\n';
+                result.total.succed+=1;
+            }
+            else {
+                result.text += response.testname + ': Failed\n';
+                result.total.failed+=1;
+            }
+        });
+
+        socket.on('error', function(err){
+            console.log('socket err');
+            console.log(err);
         });
 
         var check = function(){
@@ -124,13 +141,13 @@ document.getElementById('run').addEventListener('click', function(){
     });
 
     socket.on('send status', function(response){
-        if(response === '200 OK') {
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success!' + response + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #3c763d"> Click to save results </a>' + '</p>';
-            document.getElementById('test-result').value = 'Success! ' + response
+        if(response.code === 200) {
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success!' + response.msg + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #3c763d"> Click to save results </a>' + '</p>';
+            document.getElementById('test-result').value = 'Success! ' + response.msg
         }
         else {
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! '  + '<a href="#" style="color: #BF360C"" onclick="alert(' + '\'' + response.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/[^\w\s]/gi, '')  + '\'' + ')"> Show details </a>' + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #BF360C"> Click to save results </a>' +'</p>';
-            document.getElementById('test-result').value = 'Failed! ' + response
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! '  + '<a href="#" style="color: #BF360C"" onclick="alert(' + '\'' + response.msg.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/[^\w\s]/gi, '')  + '\'' + ')"> Show details </a>' + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #BF360C"> Click to save results </a>' +'</p>';
+            document.getElementById('test-result').value = 'Failed! ' + response.msg
         }
     });
 });
