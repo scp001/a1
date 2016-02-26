@@ -294,6 +294,7 @@ function startScenario(name) {
     }
 
     if(confirmed || role==='student') {
+        reset();
         $.ajax({
             type: 'POST',
             url: '/script',
@@ -522,6 +523,7 @@ function reset(){
     $('#scenario-name').val('').prop('disabled', false);
     $('#scenario').css('visibility', 'hidden');
     $('#reset').css('visibility', 'hidden');
+    $('#status-field').html('');
 }
 
 document.getElementById('reset').addEventListener('click', function(){
