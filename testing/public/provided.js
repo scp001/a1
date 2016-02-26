@@ -65,7 +65,10 @@ function Tests(){
 
 
 var tests = new Tests();
-document.getElementById("runAll").addEventListener("click", function(){tests.runAll()});
+document.getElementById("runAll").addEventListener("click", function(){
+  tests.runAll();
+  $('#status-field').html('<p class="alert alert-info"> Pending... </p>');
+});
 
 function getCookie(name) {
     var matches = document.cookie.match(new RegExp(
@@ -133,7 +136,7 @@ document.getElementById('parse').addEventListener('click', function(){
 
 var socket = io.connect('http://localhost:3000');
 document.getElementById('run').addEventListener('click', function(){
-    document.getElementById('status-field').innerHTML = '<p class="alert alert-info"> Pending... </p>';
+    $('#status-field').html('<p class="alert alert-info"> Pending... </p>');
 
     socket.emit('run test', {
         address: document.getElementById('url').value,
