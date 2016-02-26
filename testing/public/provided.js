@@ -51,8 +51,9 @@ function Tests(){
             if(total === testsMap.size){
                 result.text+='-----------------------------------\n';
                 result.text+='Total: ' + result.total.succed + ' Success / ' + result.total.failed + ' Fail';
-                document.getElementById('status-field').innerHTML = '<pre>' + result.text + '</pre>' + '<br/><a href="#" id="modal-save-all" data-toggle="modal" data-target="#modal-save-test-res"> </a>';
+                document.getElementById('status-field').innerHTML = '<pre>' + result.text + '<br/><a href="#" id="modal-save-all" data-toggle="modal" data-target="#modal-save-test-res">Save result</a>' + '</pre>';
                 document.getElementById('test-result').value = result.text;
+
             }
             else {
                 setTimeout(check, 1000); // check again in a second
