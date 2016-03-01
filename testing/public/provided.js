@@ -10,6 +10,40 @@ function Tests(){
     this.runAll = function(){
         var result = { text : '-------------- tests --------------\n', total: { succed: 0, failed: 0 }};
         var total = 0;
+
+        var limit = 1;
+        var counter = 0;
+        var pending = [];
+
+        var addToSendQueue = function(test){
+          var sent = sendIfPossible(test);
+          if(!sent){
+            pending.push(test);
+          }
+        }
+
+        var sendNext = function(){
+          var test = pending.shift();
+
+          if(test){
+            return sendIfPossible(test);
+          }
+          else {
+            return true;
+          }
+        }
+
+        var sendIfPossible = function(test){
+          if (counter < limit) {
+            socket.emit('run test', test);
+            counter++;
+            return true;
+          }
+          else {
+            return false;
+          }
+        }
+
         testsMap.forEach(function(key, value){
 
           $.ajax({
@@ -18,10 +52,10 @@ function Tests(){
               dataType: 'text',
               data: { 'data' : value},
               success: function(response){
-                  socket.emit('run test', {
-                      address: 'http://localhost:41484/index.html',
-                      testname: key,
-                      command: response
+                  addToSendQueue({
+                    address: 'http://localhost:41484/index.html',
+                    testname: key,
+                    command: response
                   });
               },
               error: function(response) {
@@ -32,6 +66,10 @@ function Tests(){
 
         socket.on('send status', function(response){
             total+=1;
+
+            counter--;
+            sendNext();
+
             if(response.code === 200) {
                 result.text += response.testname + ': Success\n';
                 result.total.succed+=1;
