@@ -73,6 +73,14 @@ Instructions have to be defined as list of steps written in the same order they 
 
 * [Submit](#submit)
 
+* [Press key](#press-key)
+
+* [RadioGroup select](#radiogroup-select)
+
+* [Dropdown select](#dropdown-select)
+
+* [Property should be](#property-should-be) 
+
 example
 ```
 #Test
@@ -83,7 +91,7 @@ Fill input having id "email" with email
 Fill placeholder "Password" with password
 Fill placeholder "Enter Password Again" with password
 Wait for 1 min
-Click on element having id "singup-button"
+Click on element having id "signup-button"
 ```
 ## **Commands:**
 
@@ -240,6 +248,43 @@ Press key “Ctrl”
 Press key “A”
 ```
 
+#### **RadioGroup select**
+*selects an option from radio-button group*
+##### usage
+```
+RadioGroup <name> select <value>
+```
+##### example
+```
+RadioGroup "switch" select "on"
+RadioGroup "switch" select "off"
+```
+
+### **Dropdown select**
+*selects value from dropdown list*
+##### usage
+```
+Dropdown <name> select <value>
+```
+##### example
+```
+Dropdown "fruits" select "apple"
+Dropdown "fruits" select "lemon"
+```
+
+### **Property should be**
+*check if property of element has expected value*
+##### usage
+```
+ <element> <property> Property should be <value>
+```
+##### example
+```
+"button1" "value" Property should be "Click me!"
+"placeholder-image" "style" Property should be "width:220px;height:280px;"
+```
+
+
 
 ### **General commands list**
 
@@ -278,4 +323,3 @@ Fill placeholder "Enter Password Again" with password
 Wait for 1 min
 Click on element having id "singup-button"
 ```
-
