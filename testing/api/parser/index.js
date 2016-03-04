@@ -22,7 +22,7 @@ var findElement = function(input){
 
     if(elements.indexOf(value) > -1) {
         if(value === 'title') {
-            comand+='driver.getTitle().then(function(title) { return title === ' + '\''+words[3]+'\'' +';}).then(function(){ ';
+            comand+='driver.getTitle().then(function(title) { if(title !== ' + '\''+words[3]+'\'' +') throw\'titles mismatch\'; return true;}).then(function(){ ';
             count+=4;
         }
         else if(value === 'page') {
