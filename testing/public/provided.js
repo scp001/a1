@@ -1,8 +1,8 @@
 'use strict';
 
-//var Immutable = require('immutable');
-//var testsMap = Immutable.Map();
-
+/****************************************************************/
+/*                display tests results                         */
+/****************************************************************/
 var testsMap = new Map();
 var current = { provided: false, name: null, scenario: null };
 
@@ -109,6 +109,7 @@ document.getElementById("runAll").addEventListener("click", function(){
   $('#status-field').html('<p class="alert alert-info"> Pending... </p>');
 });
 
+//cookie parser
 function getCookie(name) {
     var matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -152,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
 /*                       ACTIONS                                */
 /****************************************************************/
 
+//"Generate test" click listener
 document.getElementById('parse').addEventListener('click', function(){
     var data = document.getElementById('humanArea').value;
 
@@ -172,7 +174,7 @@ document.getElementById('parse').addEventListener('click', function(){
     else return false;
 });
 
-
+//run tests
 var socket = io.connect('http://localhost:3000');
 document.getElementById('run').addEventListener('click', function(){
     $('#status-field').html('<p class="alert alert-info"> Pending... </p>');
@@ -184,7 +186,7 @@ document.getElementById('run').addEventListener('click', function(){
 
     socket.on('send status', function(response){
         if(response.code === 200) {
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success!' + response.msg + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #3c763d"> Click to save results </a>' + '</p>';
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response.msg + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" style="float: right; color: #3c763d"> Click to save results </a>' + '</p>';
             document.getElementById('test-result').value = 'Success! ' + response.msg
         }
         else {
@@ -248,6 +250,7 @@ document.getElementById('run').addEventListener('click', function(){
  });
  } */
 
+//Create new scenario
 document.getElementById('newScenario').addEventListener('click', function(){
     var humanArea = document.getElementById('humanArea').value;
     var confirmed = humanArea.trim() && !testsMap.has(humanArea) ?
@@ -303,7 +306,7 @@ document.getElementById('account-save').addEventListener('click', function(){
     }
 });
 
-
+//scenario actions
 function getScenarios(){
     $.ajax({
         type: 'GET',
@@ -434,7 +437,7 @@ document.getElementById('removeScenario').addEventListener('click', function(){
     }
 });
 
-
+//students actions
 function getStudents(filter){
 
     function render(data){
@@ -546,6 +549,7 @@ function restoreScenarios(){
     });
 }
 
+//set human and AI fields empty, testing url to default value
 function reset(){
     var fields = ['humanArea', 'aiArea', 'url'];
 
@@ -568,10 +572,12 @@ function reset(){
     $('#status-field').html('');
 }
 
+//action for reset button
 document.getElementById('reset').addEventListener('click', function(){
     reset()
 });
 
+//"discard changes" button click
 document.getElementById('discard').addEventListener('click', function(){
     var discard = current.scenario;
     if(discard) {

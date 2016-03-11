@@ -1,3 +1,4 @@
+//component for display notifications
 Notify = function(text, callback, close_callback, style) {
 
     var time = '10000';

@@ -9,6 +9,7 @@ var links = (function () {
     };
 })();
 
+//define test scenarios (if not exists in db)
 var defaultScenarios = [
 
     {

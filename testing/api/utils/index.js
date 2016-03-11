@@ -1,5 +1,6 @@
 function Roles(){}
 
+//forming menu items based on current user role
 Roles.prototype.resolve = function(role){
     var menu = '', createOptions = '';
     if(role && (role === 'admin' || role === 'checker')){

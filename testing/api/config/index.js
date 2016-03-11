@@ -9,6 +9,7 @@ var Users = require('../db/models').Users,
 var path = require('path'),
     rootPath = path.normalize(__dirname + '/../..');
 
+//initialize start configuration (host, port, database, cookies lifetime, template, etc)
 module.exports = {
     root: rootPath,
     http: {

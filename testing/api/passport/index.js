@@ -1,3 +1,4 @@
+//authentication block
 var LocalStrategy = require('passport-local').Strategy;
 var Users = require('../db/models').Users;
 

@@ -5,6 +5,7 @@ var webdriver = require('selenium-webdriver');
 webdriver.logging.installConsoleHandler();
 webdriver.logging.getLogger().setLevel(webdriver.logging.Level.ALL);
 
+//initialize webdriver engine and run a Selenium script <command>
 function WebDriver() {}
 
 WebDriver.prototype.test = function(address, command, callback) {

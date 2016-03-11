@@ -12,6 +12,13 @@ require('../passport')(passport);
 
 module.exports = function (app, passport) {
 
+/*
+  /parse - endpoint for receive text in human language
+  status codes:
+  200 - ok;
+  400 - undefined data;
+  500 - internal server error;
+*/
     app.post('/parse', function(req, res, next){
         if(!req.body.data.trim()){
             res.status(400).send('Human text is not defined');
@@ -26,6 +33,10 @@ module.exports = function (app, passport) {
         })
     });
 
+/*
+  /app - main endpoint, returns main page
+*/
+
     app.get('/app', function(req, res, next) {
         if(req.session.user){
             var roles = Roles.resolve(req.session.user.role);
@@ -38,6 +49,11 @@ module.exports = function (app, passport) {
         else res.redirect('/')
     });
 
+/*
+  default route - if user logged in that redirects to /app
+  and redirects to authorization page if user not authorized
+*/
+
     app.get('/', function(req, res, next){
         if(req.session.user) {
             res.redirect('/app')
@@ -46,6 +62,10 @@ module.exports = function (app, passport) {
             res.render('../views/auth', { flash: JSON.stringify(req.flash('msg'))})
         }
     });
+
+/*
+  authentication route
+*/
 
     app.post('/', function(req, res, next) {
 
@@ -66,6 +86,20 @@ module.exports = function (app, passport) {
                 }
         })(req, res, next);
     });
+
+/*
+  endpoints for CRUD operations on scenarios
+  get /scenario - returns all scenarios in database;
+  post /scenario - update existing scenario;
+  put /scenario - create new scenario;
+  delete /scenario - deleting selected scenario;
+  get /script - return specified scenario;
+  status codes:
+  200 - ok;
+  400 - something wrong wit request;
+  500 - internal server error;
+  550 - permission denied;
+*/
 
     app.get('/scenario', function(req, res){
 
@@ -168,7 +202,14 @@ module.exports = function (app, passport) {
                 }
             })
     });
-
+/*
+  /account - create a new account in system
+  status codes:
+  200 - ok;
+  400 - something wrong wit request;
+  500 - internal server error;
+  550 - permission denied;
+*/
     app.post('/account', function(req, res){
 
         var role = req.session.user.role;
@@ -199,6 +240,12 @@ module.exports = function (app, passport) {
         }
     });
 
+    /*
+        /students
+        get - returns all tests
+        post - create new test assigned for current student
+    */
+
     app.get('/students', function(req, res){
         Tests.find({}, function(err, students){
             if(!err) {
@@ -228,6 +275,7 @@ module.exports = function (app, passport) {
         });
     });
 
+    // search students in database
     app.post('/search', function(req, res){
 
         if(!req.body.name) {
@@ -261,6 +309,6 @@ module.exports = function (app, passport) {
         delete req.session.user;
         res.redirect('/');
     });
-
+//if specified route not matches with routes above, then redirect it to default
     app.get('*', function(req, res){res.redirect('/')});
 };

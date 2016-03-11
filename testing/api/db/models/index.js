@@ -2,6 +2,7 @@ var db = require('../index.js'),
     Schema = require('mongoose').Schema,
     mongoose = require('mongoose');
 
+//data models definition
 var usersSchema = new Schema({
     name: String,
     username: String,
