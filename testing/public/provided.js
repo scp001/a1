@@ -1,5 +1,18 @@
 'use strict';
 
+/********code highlighting options*******/
+// trigger extension
+ace.require("ace/ext/chromevox");
+var aiAreaEditor = ace.edit("aiArea");
+aiAreaEditor.session.setMode("ace/mode/javascript");
+aiAreaEditor.setTheme("ace/theme/tomorrow");
+aiAreaEditor.$blockScrolling = Infinity;
+
+
+var humanAreaEditor = ace.edit("humanArea");
+humanAreaEditor.session.setMode("ace/mode/humanlanguage");
+humanAreaEditor.setTheme("ace/theme/tomorrow");
+humanAreaEditor.$blockScrolling = Infinity;
 /****************************************************************/
 /*                display tests results                         */
 /****************************************************************/
@@ -155,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
 
 //"Generate test" click listener
 document.getElementById('parse').addEventListener('click', function(){
-    var data = document.getElementById('humanArea').value;
+    var data = humanAreaEditor.getValue();
 
     if(data){
         $.ajax({
@@ -164,7 +177,8 @@ document.getElementById('parse').addEventListener('click', function(){
             dataType: 'text',
             data: { 'data' : data},
             success: function(response){
-                document.getElementById('aiArea').value = response;
+                aiAreaEditor.setValue(response);
+                aiAreaEditor.gotoLine(0);
             },
             error: function(response) {
                 console.log(response);
@@ -181,7 +195,7 @@ document.getElementById('run').addEventListener('click', function(){
 
     socket.emit('run test', {
         address: document.getElementById('url').value,
-        command: document.getElementById('aiArea').value
+        command: aiAreaEditor.getValue()
     });
 
     socket.on('send status', function(response){
@@ -252,7 +266,7 @@ document.getElementById('run').addEventListener('click', function(){
 
 //Create new scenario
 document.getElementById('newScenario').addEventListener('click', function(){
-    var humanArea = document.getElementById('humanArea').value;
+    var humanArea = humanAreaEditor.getValue();
     var confirmed = humanArea.trim() && !testsMap.has(humanArea) ?
         confirm('Are you sure? Changes will be discarded.') : true;
 
@@ -333,7 +347,7 @@ function getScenarios(){
 function startScenario(name) {
     var role = getCookie('role');
     if (role && role === 'admin' || role === 'checker') {
-        var humanArea = document.getElementById('humanArea').value;
+        var humanArea = humanAreaEditor.getValue();
         var confirmed = humanArea.trim() && !testsMap.has(humanArea) && !(current.name === name) ?
             confirm('Are you sure? Changes will be discarded.') : true;
     }
@@ -348,7 +362,8 @@ function startScenario(name) {
                 name: name
             },
             success: function(response){
-                document.getElementById('humanArea').value = response[0].scenario;
+                humanAreaEditor.setValue(response[0].scenario);
+                humanAreaEditor.gotoLine(0);
                 document.getElementById('url').value  = response[0].url;
                 if (role && role === 'admin' || role === 'checker') {
                     current = {
@@ -374,7 +389,7 @@ function startScenario(name) {
 
 document.getElementById('scenario-save').addEventListener('click', function(){
     var name = current.provided ? current.name : document.getElementById('scenario-name').value.trim();
-    var scenario = document.getElementById('humanArea').value.trim();
+    var scenario = humanAreaEditor.getValue().trim();
     var url = document.getElementById('url').value.trim();
 
     if(name && scenario && url) {
@@ -474,7 +489,7 @@ function getStudents(filter){
 
 document.getElementById('save-test-results').addEventListener('click', function(){
     var course = document.getElementById('course').value,
-        scenario = document.getElementById('humanArea').value,
+        scenario = humanAreaEditor.getValue(),
         result = document.getElementById('test-result').value,
         comment = document.getElementById('comment').value;
 
@@ -551,13 +566,13 @@ function restoreScenarios(){
 
 //set human and AI fields empty, testing url to default value
 function reset(){
-    var fields = ['humanArea', 'aiArea', 'url'];
 
-    fields.forEach(function(item){
-        var value = '';
-        if(item === 'url') value = 'https://www.google.ca/';
-        document.getElementById(item).value = value;
-    });
+    var value = '';
+    aiAreaEditor.setValue(value);
+    aiAreaEditor.gotoLine(0);
+    humanAreaEditor.setValue(value);
+    humanAreaEditor.gotoLine(0);
+    document.getElementById('url').value = value;
 
     current = {
         provided: false,
@@ -581,7 +596,7 @@ document.getElementById('reset').addEventListener('click', function(){
 document.getElementById('discard').addEventListener('click', function(){
     var discard = current.scenario;
     if(discard) {
-        document.getElementById('humanArea').value = discard;
+        humanAreaEditor.setValue(discard);
         $('#discard').hide();
         $('#saveScenario').hide();
         $('#reset').css('visibility', 'visible');

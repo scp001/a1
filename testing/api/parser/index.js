@@ -29,12 +29,12 @@ var CommandBuilder = {
   },
 
   fillWith : function(selector, value){
-    var command = CommandBuilder.formsAction.fillWithValue(value,selector,"Id")  + '.then(function () {';
+    var command = CommandBuilder.formsAction.fillWithValue(value,selector,"id")  + '.then(function () {';
     return command;
   },
 
   shouldBe : function(value1, value2){
-    var command = 'assert.equal( \' ' + value1 + ' \' , ' + ' \' '+ value2 + '\'' + ' ).then(function(){';
+    var command = 'if( \'' + value1 + '\' !== ' + '\''+ value2 + '\'' + ' ) throw \'values mismatch\';';
     return command;
   },
 
@@ -51,13 +51,13 @@ var CommandBuilder = {
 
   focusOn : function(element){
     var command = '';
-    command = 'driver.move(' + CommandBuilder.findElementBy.Text(element) + ').then(function () {';
+    command =  CommandBuilder.findElementBy.Text(element) + '.then(function (el) { if(el) driver.move(el); }).then(function () {';
     return command;
   },
 
   submit : function(element, selector){
     var command = '';
-    command = CommandBuilder.eventsEmitter.elementEvent("submit", selector, "Id") + '.then(function () {';
+    command = CommandBuilder.eventsEmitter.elementEvent("submit", selector, "value") + '.then(function () {';
     return command;
   },
 
@@ -67,8 +67,8 @@ var CommandBuilder = {
   },
 
   pressKey : function(key){
-    var command = 'driver.findElement(self.By.xpath("//body")).then(function(el){ if (el) el.sendKeys(\''+key+'\');}).then(function(){';
-
+    //var command = 'driver.findElement(self.By.xpath("//body")).then(function(el){ if (el) el.sendKeys(\''+key+'\');}).then(function(){';
+    var command = 'driver.keyDown('+ key +').then(driver.sleep(500)).then(function(){';
     return command;
   },
 
@@ -120,7 +120,7 @@ var CommandBuilder = {
     },
 
     pageShouldContains : function(value){
-      return CommandBuilder.findElementBy.Text(value)+'.then(function () {';
+      return CommandBuilder.findElementBy.Text(value)+'.then(function (el) { if(!el) throw \"page not contains: (' + value + ')\"}).then(function(){';
     }
   },
 
@@ -130,10 +130,14 @@ var CommandBuilder = {
     },
 
     elementEvent : function(eventType, value, selector){
-      if (selector === "Id")
+      if (selector === "id")
        return CommandBuilder.findElementBy.Id(value) + CommandBuilder.eventsEmitter.emitEvent(eventType);
       if (selector === "text")
         return CommandBuilder.findElementBy.Text(value) + CommandBuilder.eventsEmitter.emitEvent(eventType);
+      if (selector === "name")
+        return CommandBuilder.findElementBy.Name(value) + CommandBuilder.eventsEmitter.emitEvent(eventType);
+      if (selector === "value")
+        return CommandBuilder.findElementBy.Value(value) + CommandBuilder.eventsEmitter.emitEvent(eventType);
     },
 
     emitEvent : function(eventType,parameter){
@@ -203,7 +207,7 @@ var CommandBuilder = {
   },
 
   getValueAndCompare : function(keys){
-    return '.getAttribute(\'value\').then(function(value){ assert.equal(value, '+ '\''+keys+'\'' + ');}).then(null, function(e){return callback(true, e.stack)});';
+    return '.getAttribute(\'value\').then(function(value){ if(value !==\''+keys+'\') throw \'values mismatch\';}).then(null, function(e){return callback(true, e.stack)})';
   },
 
 
@@ -239,7 +243,7 @@ var CommandBuilder = {
      found = true;
    }
    if(assertion.indexOf(words[1]) > -1){
-       if (words[1] === 'should' && words[0] !== 'title'){
+       if (words[1] === 'should' && elements.indexOf(words[0]) === -1){
          comand += CommandBuilder.shouldBe(words[0], words[2]);
          count += 4;
        }else{
@@ -308,8 +312,12 @@ var CommandBuilder = {
        } else if(words[1] === 'element'){
            if (words[2] === 'with'){
                if(words[3] === 'id'){
-                   comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "Id");
+                   comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "id");
                    count+=5;
+               }
+               if(words[3] === 'text'){
+                 comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "text");
+                 count+=5;
                }
            }
        } else {

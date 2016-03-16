@@ -133,7 +133,7 @@
 						</div>
 					</div>
 					<div>
-						<textarea title="Human" id="humanArea" name="humanTest"  class='form-control' wrap="hard"></textarea>
+						<div title="Human" id="humanArea" name="humanTest"  class='form-control' wrap="hard"></div>
 						<button class="btn btn-primary" id="parse">Generate Test</button>
 						<span id="scenario">
 							<button class="btn" id="reset"> Reset </button>
@@ -143,7 +143,7 @@
 						</span>
 					</div>
 					<div>
-						<textarea title="AI" id="aiArea" name="aiTest" class='form-control' wrap="hard"></textarea>
+						<div title="AI" id="aiArea" name="aiTest" class='form-control' wrap="hard"></div>
 					</div>
 					<div>
 						<input title="URL" id="url" name="urlInput" type="text" value="https://www.google.ca/" />
@@ -186,6 +186,8 @@
 	</body>
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/ace/build/src/ace.js"></script>
+	<script src="bower_components/ace/build/src/ext-chromevox.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="notify.js"></script>
 	<script src="provided.js"></script>
