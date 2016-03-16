@@ -215,7 +215,135 @@ var defaultScenarios = [
  wait 0.5
  click "Delete Movie"
          */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+      name: 'SplatOrderMoviesByTitleDropdown',
+      url: links.splat(),
+      scenario: ( function(){/*
+title should be "Splat"
+wait 0.5
+radiogroup "Browse Movies" select "title"
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+      name: 'SplatAddUpdateDeleteMovieWaitUntilAJAX',
+      url: links.splat(),
+      scenario: ( function(){/*
+title should be "Splat"
+wait 0.5
+click "Add Movie"
+wait on response 500
+fill element with id title "The Hateful Eight"
+wait 0.5
+fill element with id released "2015"
+wait 0.5
+fill element with id director "Quentin Tarantino"
+wait 0.5
+fill element with id rating "R"
+wait 0.5
+fill element with id starring "Samuel Jackson, Kurt Russell"
+wait 0.5
+fill element with id duration "187"
+wait 0.5
+fill element with id genre "crime, drama"
+wait 0.5
+fill element with id synopsis "Description"
+wait 0.5
+fill element with id trailer "https://youtu.be/nIOmotayDMY"
+click "Save Changes"
+wait on response 500
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "TheHatefulEight"
+wait 0.5
+fill element with id synopsis " summary"
+wait 0.5
+click "Save Changes"
+wait 0.5
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait on response 500
+click element with id "TheHatefulEight"
+wait on response 500
+click "Delete Movie"
+wait on response 500
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+      name: 'SplatAddUpdateDeleteMovieCheckRegex',
+      url: links.splat(),
+      scenario: ( function(){/*
+title should be "Splat"
+wait 0.5
+click "Add Movie"
+wait on response 500
+fill element with id title "The Hateful Eight"
+wait 0.5
+fill element with id released "2015"
+wait 0.5
+released check regex "[15]"
+wait 0.5
+fill element with id director "Quentin Tarantino"
+wait 0.5
+director check regex "[Quentin]"
+wait 0.5
+fill element with id rating "R"
+wait 0.5
+fill element with id starring "Samuel Jackson, Kurt Russell"
+wait 0.5
+starring check regex "[J]"
+wait 0.5
+fill element with id duration "187"
+wait 0.5
+fill element with id genre "crime, drama"
+wait 0.5
+genre check regex "[a-r]"
+wait 0.5
+fill element with id synopsis "Description"
+wait 0.5
+fill element with id trailer "https://youtu.be/nIOmotayDMY"
+click "Save Changes"
+wait on response 500
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "TheHatefulEight"
+wait 0.5
+fill element with id synopsis " summary"
+wait 0.5
+click "Save Changes"
+wait 0.5
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait on response 500
+click element with id "TheHatefulEight"
+wait on response 500
+click "Delete Movie"
+wait on response 500
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+        name: 'CheckProperty',
+        url: links.splat(),
+        scenario:  (function () {/*
+title should be "Splat"
+wait 0.5
+"nav-collapse" "className" property should be "collapse navbar-collapse"
+wait 0.5
+"singindrop" "contentEditable" property should be "inherit"
+wait 0.5
+         */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     }
+
 
 ];
 

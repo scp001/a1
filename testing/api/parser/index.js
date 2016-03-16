@@ -95,7 +95,7 @@ var CommandBuilder = {
   },
 
   waitOnResponse : function(time){
-    var command = CommandBuilder.timeManager.waitUntilAjaxComplete(1000);
+    var command = CommandBuilder.timeManager.waitUntilAjaxComplete(time);
     return command;
   },
 
@@ -197,7 +197,7 @@ var CommandBuilder = {
     },
 
     waitUntilAjaxComplete : function(timeout){
-      return 'driver.wait(driver.executeScript("return jQuery.active == 0"), ' + timeout*1000 + ').then(function () {';
+      return 'driver.wait(driver.executeScript("return jQuery.active == 0"), ' + timeout + ').then(function () {';
     }
 
   },
@@ -278,8 +278,11 @@ var CommandBuilder = {
          count += 5;
        }
        else if(words[0] === 'title') {
+         if(words[1] === 'should')
+          if(words[2] === 'be'){
            comand+= CommandBuilder.elementsChecker.titleShouldBe(words[3]);
            count+=4;
+         }
        }
        else if(words[0] === 'page') {
            if(words[1] === 'should') {
@@ -353,7 +356,7 @@ var CommandBuilder = {
            comand += CommandBuilder.waitOnResponse(words[3]);
            count += 4;
          }else{
-           comand+= CommandBuilder.timeManager.waitUntilTitleIs(words[0], words[4]);
+           comand+= CommandBuilder.timeManager.actionUntilTitleIs(words[0], words[4]);
            count+=5;
          }
        }
