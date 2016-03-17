@@ -134,7 +134,7 @@ define("ace/mode/humanlanguage_highlight_rules",["require","exports","module","a
 
       var buildinConstants = lang.arrayToMap(
             ("is|id|be|on|with|title|element|key|radiogroup|dropdown|mouse|should|be|regex|response|" +
-             "having").split("|")
+             "having|property").split("|")
             );
 
       // regexp must not have capturing parentheses. Use (?:) instead.

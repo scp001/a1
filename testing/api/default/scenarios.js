@@ -341,6 +341,12 @@ wait 0.5
 wait 0.5
 "singindrop" "contentEditable" property should be "inherit"
 wait 0.5
+"content" "font-size" property should be "14px"
+wait 0.5
+"content" "font-family" property should be "\'Helvetica Neue\', Helvetica, Arial, sans-serif"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
          */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     }
 

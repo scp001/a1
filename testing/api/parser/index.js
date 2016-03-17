@@ -89,7 +89,15 @@ var CommandBuilder = {
   propertyShouldBe : function(element, propertyName, expectedValue){
     var assertion = 'if(value !== \''+ expectedValue +'\'){throw \'unexpected property value\'}';
     var command  = CommandBuilder.findElementBy.Id(element) +
-    '.getAttribute(\''+propertyName+'\').then(function(value) {if(value) ' + assertion + ' }).then(function () {';
+    '.getAttribute(\''+propertyName+'\').then(function(value) {if(value){' + assertion + '}else{' + CommandBuilder.cssPropertyShouldBe(element, propertyName, expectedValue) + ';} }).then(function () {';
+
+    return command;
+  },
+
+  cssPropertyShouldBe : function(element, propertyName, expectedValue){
+    var assertion = 'if(value !== \''+ expectedValue +'\'){throw \'unexpected property value\'}';
+    var command  = CommandBuilder.findElementBy.Id(element) +
+    '.getCssValue(\''+propertyName+'\').then(function(value) {if(value) ' + assertion + ' })';
 
     return command;
   },
@@ -221,7 +229,7 @@ var CommandBuilder = {
    //keywords in human language
    var controls = ['move', 'mouse', 'focus', 'press'];
 
-   var assertion = ['property', 'should','check'];
+   var assertion = ['css-property','property', 'should','check'];
 
    var events = ['click', 'doubleClick', 'change', 'blur', 'contextmenu', 'keydown', 'keypress', 'keyup', 'mouseenter', 'mouseDown',
        'mouseUp', 'mouseleave', 'mouseover', 'mouseMove', 'scroll', 'select', 'submit', 'hover', 'ready', 'resize'];
@@ -238,7 +246,7 @@ var CommandBuilder = {
      if(words[2] === 'property'){
        comand += CommandBuilder.propertyShouldBe(words[0], words[1], words[5]);
        count += 6;
-     }
+     }    
 
      found = true;
    }
