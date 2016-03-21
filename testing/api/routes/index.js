@@ -26,6 +26,7 @@ module.exports = function (app, passport) {
         parser.start(req.body.data.trim(), function(err, data){
           res.header("Content-Type", "application/json");
           if (!err) {
+              console.log("parse success");
               res.status(200).send(data);
           } else {
               res.status(500).send('500 Internal Server Error');
@@ -90,8 +91,8 @@ module.exports = function (app, passport) {
 /*
   endpoints for CRUD operations on scenarios
   get /scenario - returns all scenarios in database;
-  post /scenario - update existing scenario;
-  put /scenario - create new scenario;
+  post /scenario - create new scenario;
+  put /scenario - update existing scenario;
   delete /scenario - deleting selected scenario;
   get /script - return specified scenario;
   status codes:
@@ -105,6 +106,7 @@ module.exports = function (app, passport) {
 
             Scenarios.find({}, function (err, scenarios) {
                 if (!err) {
+                    console.log("get scenarios");
                     res.send(scenarios)
                 }
                 else {
@@ -131,6 +133,7 @@ module.exports = function (app, passport) {
 
             Scenarios.update({'name' : scenario.name}, scenario, { upsert: true }, function (err) {
                 if (!err) {
+                    console.log("create scenario success. Scenario: ", JSON.stringify(scenario));
                     res.status(200).send('Success! Scenario has been saved in the system. ');
                 } else {
                     res.status(500).send('500 Internal Server Error');
@@ -152,12 +155,14 @@ module.exports = function (app, passport) {
                 res.status(400).send('Bad request');
             }
             res.header("Content-Type", "application/json");
-            Scenarios.update({'name': req.body.name}, {
+            var scenario = {
                 'name': req.body.name,
                 'scenario': req.body.text,
                 'url' : req.body.url
-            }, function (err) {
+            };
+            Scenarios.update({'name': req.body.name}, scenario, function (err) {
                 if (!err) {
+                  console.log("update scenario success. Scenario: ", JSON.stringify(scenario));
                     res.status(200).send('Success! Scenario has been updated. ');
                 } else {
                     res.status(500).send('500 Internal Server Error');

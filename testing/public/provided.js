@@ -3,6 +3,7 @@
 /********code highlighting options*******/
 // trigger extension
 ace.require("ace/ext/chromevox");
+
 var aiAreaEditor = ace.edit("aiArea");
 aiAreaEditor.session.setMode("ace/mode/javascript");
 aiAreaEditor.setTheme("ace/theme/tomorrow");
@@ -131,28 +132,32 @@ function getCookie(name) {
 }
 
 document.getElementById("humanArea").addEventListener("keyup", function(){
-    var area = $('#humanArea').val(), scenario = $('#scenario'), save = $('#saveScenario'),
-        remove = $('#removeScenario'), discard = $('#discard'), reset = $('#reset');
-    var role = getCookie('role');
-    if(role && role === 'admin' || role === 'checker') {
+  var area = $('#humanArea').val(), scenario = $('#scenario'), save = $('#saveScenario'),
+      remove = $('#removeScenario'), discard = $('#discard'), reset = $('#reset');
+  save.css('visibility', 'visible');
+  var role = getCookie('role');
+  if(role && role === 'admin' || role === 'checker') {
 
-        area ? scenario.css('visibility', 'visible') && reset.css('visibility', 'visible')
-             : scenario.css('visibility', 'hidden') && reset.css('visibility', 'hidden') ;
-        current.provided ? scenario.css('visibility', 'visible')  : false;
+      area ? scenario.css('visibility', 'visible') && reset.css('visibility', 'visible')
+           : scenario.css('visibility', 'hidden') && reset.css('visibility', 'hidden') ;
+      current.provided ? scenario.css('visibility', 'visible')  : false;
 
-        if (testsMap.has(area)) {
-            remove.show();
-            save.hide();
-            discard.hide()
-        }
-        else {
-            current.provided ? remove.show() : remove.hide();
-            current.scenario ? discard.show() : discard.hide();
-            save.show();
-        }
-    }
+      if (testsMap.has(area)) {
+          remove.show();
+          save.hide();
+          discard.hide();
+      }
+      else {
+          current.provided ? remove.show() : remove.hide();
+          current.scenario ? discard.show() : discard.hide();
+          save.show();
+      }
+  }
 });
 
+// document.getElementById("humanArea").addEventListener("keypress", function(){
+//
+// });
 
 document.addEventListener("DOMContentLoaded", function(e) {
     var role = getCookie('role');
@@ -272,6 +277,7 @@ document.getElementById('newScenario').addEventListener('click', function(){
 
     if(confirmed) {
         reset();
+        $('#saveScenario').css('visibility', 'hidden');
     }
 });
 
@@ -372,7 +378,7 @@ function startScenario(name) {
                         scenario: response[0].scenario
                     };
                     $('#test-header').text('Update ' + '[' + response[0].name + ']' + ' test:');
-                    $('#scenario-name').val(response[0].name).prop('disabled', true);
+                    $('#scenario-name').val(response[0].name).prop('disabled', false);
                     $('#scenario').css('visibility', 'visible');
                     $('#reset').css('visibility', 'visible');
                     $('#saveScenario').hide();
@@ -386,6 +392,10 @@ function startScenario(name) {
         });
     }
 }
+
+document.getElementById('scenario-name').addEventListener('change', function(){
+  current.provided = false;
+});
 
 document.getElementById('scenario-save').addEventListener('click', function(){
     var name = current.provided ? current.name : document.getElementById('scenario-name').value.trim();
@@ -423,7 +433,9 @@ document.getElementById('scenario-save').addEventListener('click', function(){
         });
     }
     else {
-        Notify('Scenario name, text or url is not specified', null, null, 'danger');
+      if(!name) Notify('Scenario name is not specified', null, null, 'danger');
+      if(!scenario) Notify('Scenario text is not specified', null, null, 'danger');
+      if(!url) Notify('Scenario url is not specified', null, null, 'danger');
     }
 });
 
