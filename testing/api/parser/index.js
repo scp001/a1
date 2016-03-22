@@ -81,7 +81,7 @@ var CommandBuilder = {
   selectFromDropdown : function(name, value){
     var command = '';
     command = CommandBuilder.findElementBy.Text(name) + '.then(function(el) { if(el) el.click(); driver.sleep(500);' +
-              CommandBuilder.findElementBy.Value(value) + '.then(function(el) { if(el) el.click(); })).then( function(){';
+              CommandBuilder.findElementBy.Value(value) + '.then(function(el) { if(el) el.click(); });}).then( function(){';
     return command;
 
   },
@@ -246,7 +246,7 @@ var CommandBuilder = {
      if(words[2] === 'property'){
        comand += CommandBuilder.propertyShouldBe(words[0], words[1], words[5]);
        count += 6;
-     }    
+     }
 
      found = true;
    }
