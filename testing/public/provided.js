@@ -503,16 +503,18 @@ function getStudents(filter){
 // get list of students and return option list
 function getStudentsList(){
   var studentList = $('#studentList');
-  var studentListCount = $('#studentList option');
+  studentList.empty();
   function render(data){
+    studentList.append(
+        $('<option></option>').val("null").html(" --- Choose student --- ")
+    )
     data.forEach(function(item){
       studentList.append(
         $('<option></option>').val(item._id).html(item.name)
       );
     });
   }
-  if(studentListCount.length <= 1){
-    $.ajax({
+  $.ajax({
       type: 'GET',
       url: '/studentslist',
       dataType: 'json',
@@ -522,8 +524,8 @@ function getStudentsList(){
       error: function(data) {
           console.log(data.responseText);
       }
-    });
-  }
+  });
+
 }
 
 document.getElementById('save-test-results').addEventListener('click', function(){
