@@ -269,8 +269,8 @@ module.exports = function (app, passport) {
         res.header("Content-Type", "application/json");
 
         var test = req.body.test;
-        test.student['name'] = req.session.user.name;
-        test.student['id'] = req.session.user.id;
+        // test.student['name'] = req.session.user.name;
+        // test.student['id'] = req.session.user.id;
         Tests.create(test, function(err){
             if (!err) {
                 res.status(200).send('Success! Test results has been saved.');
@@ -280,7 +280,19 @@ module.exports = function (app, passport) {
         });
     });
 
-    // search students in database
+    // return students list
+    app.get('/studentslist', function(req, res){
+      Users.find({}, function(err, students){
+        if(!err){
+          console.log("get students list", JSON.stringify(students));
+          res.send(students);
+        }else{
+          res.status(500).send('500 Internal Server Error');
+        }
+      })
+    });
+
+    // search test results in database
     app.post('/search', function(req, res){
 
         if(!req.body.name) {

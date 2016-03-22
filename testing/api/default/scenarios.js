@@ -151,7 +151,6 @@ var defaultScenarios = [
  fill element with id synopsis " summary"
  wait 0.5
  click "Save Changes"
- click "Save Changes"
  wait 0.5
  click "Splat!"
  title should be "Splat"
