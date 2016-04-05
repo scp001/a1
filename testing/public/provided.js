@@ -8,12 +8,13 @@ var aiAreaEditor = ace.edit("aiArea");
 aiAreaEditor.session.setMode("ace/mode/javascript");
 aiAreaEditor.setTheme("ace/theme/tomorrow");
 aiAreaEditor.$blockScrolling = Infinity;
-
+$("#aiArea").on("resize", function() { aiAreaEditor.resize() });
 
 var humanAreaEditor = ace.edit("humanArea");
 humanAreaEditor.session.setMode("ace/mode/humanlanguage");
 humanAreaEditor.setTheme("ace/theme/tomorrow");
 humanAreaEditor.$blockScrolling = Infinity;
+$("#humanArea").on("resize", function() { humanAreaEditor.resize() });
 /****************************************************************/
 /*                display tests results                         */
 /****************************************************************/
@@ -646,7 +647,7 @@ function reset(){
 
 //action for reset button
 document.getElementById('reset').addEventListener('click', function(){
-    reset()
+    reset();
 });
 
 //"discard changes" button click

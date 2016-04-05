@@ -6,7 +6,12 @@ var lcomand = {words : [], comand:''};
 
 //builds commands for AI
 var CommandBuilder = {
-
+//common properties
+  isSettingsArea : false,
+  isGivenArea : false,
+  isTestArea : true,
+  waitInterval : 2000,
+  given : '',
 //test commands
   clickOn : function(element, selector){
     var command = '';
@@ -218,6 +223,25 @@ var CommandBuilder = {
     return '.getAttribute(\'value\').then(function(value){ if(value !==\''+keys+'\') throw \'values mismatch\';}).then(null, function(e){return callback(true, e.stack)})';
   },
 
+  endpoint : function(inputData, assertOutputData){
+    if(inputData.requestBody) inputData.requestBody = ',' + inputData.requestBody;
+    else inputData.requestBody = '';
+    var checkResponse = '';
+    if(assertOutputData.statusCode){
+      checkResponse += 'if(res.response.statusCode !== '+assertOutputData.statusCode+'){driver.error.WebDriverError(13);}';
+    }
+    if(assertOutputData.responseJSON){
+      checkResponse += 'if(!scope._.isEqual(res.body,'+assertOutputData.responseJSON+')){driver.error.WebDriverError(13);}';
+    }
+    if(assertOutputData.contentType){
+      checkResponse += 'if(res.response.rawHeaders.indexOf(\''+assertOutputData.contentType+'\') < 0){driver.error.WebDriverError(13);}';
+    }
+    return 'driver.wait(scope.chakram.'+ inputData.requestType +'('+
+    inputData.address + inputData.requestBody + ').then(function(res){'+
+        checkResponse +
+    '}), 5000).then(function(){';
+  },
+
 
 //search command keywords in current line <input.words> and if founded, return this command
  findElement : function(input){
@@ -231,7 +255,7 @@ var CommandBuilder = {
 
    var assertion = ['css-property','property', 'should','check'];
 
-   var events = ['click', 'doubleClick', 'change', 'blur', 'contextmenu', 'keydown', 'keypress', 'keyup', 'mouseenter', 'mouseDown',
+   var events = ['click', 'doubleclick', 'change', 'blur', 'contextmenu', 'keydown', 'keypress', 'keyup', 'mouseenter', 'mousedown',
        'mouseUp', 'mouseleave', 'mouseover', 'mouseMove', 'scroll', 'select', 'submit', 'hover', 'ready', 'resize'];
 
    var elements =  ['name', 'id', 'title', 'page', 'radiogroup', 'dropdown'];
@@ -240,102 +264,148 @@ var CommandBuilder = {
 
    var time = ['wait'];
 
+   var endpoint = ['endpoint', 'data', 'response', 'status','content-type', 'return',
+        'get', 'post', 'put', 'patch', 'delete'];
+
    //search commands by defined keywords
+
+   if(words[0] === '#Settings' && !CommandBuilder.isSettingsArea){
+     CommandBuilder.isSettingsArea = true;
+     CommandBuilder.isGivenArea = false;
+     CommandBuilder.isTestArea = false;
+
+     found = true;
+   }
+
+   if(time.indexOf(words[0]) > -1 && CommandBuilder.isSettingsArea){
+     if(words[5] === 's') CommandBuilder.waitInterval = parseFloat(words[4])*1000;
+     else if(words[5] === 'ms') CommandBuilder.waitInterval = words[4];
+     else if(words[5] === 'min') CommandBuilder.waitInterval = parseFloat(words[4])*1000*60;
+     else CommandBuilder.waitInterval = words[4];
+
+     found = true;
+   }
+
+   if(words[0] === '#Given'){
+     CommandBuilder.isSettingsArea = false;
+     CommandBuilder.isGivenArea = true;
+     CommandBuilder.isTestArea = false;
+
+     found = true;
+
+     console.log('entered #Given area');
+   }
+
+   if(words[1] === 'is' && CommandBuilder.isGivenArea){
+     CommandBuilder.given += 'var ' + words[0] + ' = ' + words[2] + ';';
+
+     found = true;
+
+     console.log('founded definition');
+   }
+
+   if(words[0] === "#Test"){
+     CommandBuilder.isTestArea = true;
+     CommandBuilder.isGivenArea = false;
+     CommandBuilder.isSettingsArea = false;
+
+     found = true;
+   }
 
    if(assertion.indexOf(words[2]) > -1){
      if(words[2] === 'property'){
        comand += CommandBuilder.propertyShouldBe(words[0], words[1], words[5]);
-       count += 6;
+       //count += 6;
      }
-
+     count += words.length;
      found = true;
    }
    if(assertion.indexOf(words[1]) > -1){
        if (words[1] === 'should' && elements.indexOf(words[0]) === -1){
          comand += CommandBuilder.shouldBe(words[0], words[2]);
-         count += 4;
+         //count += 4;
        }else{
          if(words[1] === 'check'){
            comand += CommandBuilder.checkRegex(words[0],words[3]);
-           count += 3;
+           //count += 3;
          }
        }
-
+     count += words.length;
      found = true;
    }
 
    if(controls.indexOf(words[0]) > -1) {
       if(words[0] === 'move'){
          comand += CommandBuilder.moveMouseTo(words[3]);
-         count += 4;
+         //count += 4;
       }
       else if(words[0] === 'focus'){
         comand += CommandBuilder.focusOn(words[2]);
-        count += 3;
+        //count += 3;
       }else if(words[0] === 'press'){
           comand += CommandBuilder.pressKey(words[2]);
-          count += 3;
+          //count += 3;
       }
-
+      count += words.length;
       found = true;
    }
 
    if(elements.indexOf(words[0]) > -1) {
        if(words[0] === 'submit'){
          comand += CommandBuilder.findElementBy.Id(word[4]) + CommandBuilder.emitEvent(words[0]);
-         count += 5;
+         //count += 5;
        }
        else if(words[0] === 'title') {
          if(words[1] === 'should')
           if(words[2] === 'be'){
            comand+= CommandBuilder.elementsChecker.titleShouldBe(words[3]);
-           count+=4;
+           //count+=4;
          }
        }
        else if(words[0] === 'page') {
            if(words[1] === 'should') {
                if(words[2] === 'contains') {
                    comand+= CommandBuilder.elementsChecker.pageShouldContains(words[3]);
-                   count+=4;
+                   //count+=4;
                }
            }
        }
        else if(words[0] === 'dropdown'){
          comand += CommandBuilder.selectFromDropdown(words[1], words[3]);
-         count += 4;
+         //count += 4;
        }
        else if(words[0] === 'radiogroup'){
          comand += CommandBuilder.radiogroupSelect(words[1], words[3]);
-         count += 4;
+         //count += 4;
        }
        else {
            comand+= CommandBuilder.elementsChecker.findElementBy.Value(words[0]);
-           count+=1;
+           //count+=2;
        }
-
+       count += words.length;
        found = true;
    }
 
    if(events.indexOf(words[0]) > -1) {
        if(words[1] === 'button'){
            comand += CommandBuilder.eventsEmitter.buttonEvent(words[0], words[2]);
-           count+=3;
+           //count+=3;
        } else if(words[1] === 'element'){
            if (words[2] === 'with'){
                if(words[3] === 'id'){
                    comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "id");
-                   count+=5;
+                   //count+=5;
                }
                if(words[3] === 'text'){
                  comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "text");
-                 count+=5;
+                 //count+=5;
                }
            }
        } else {
            comand += CommandBuilder.eventsEmitter.elementEvent(words[0],words[1],"text");
-           count+=2;
+           //count+=2;
        }
-
+       count += words.length;
        found = true;
    }
 
@@ -344,40 +414,74 @@ var CommandBuilder = {
            if (words[2] === 'with') {
                if(words[3] === 'id') {
                    comand += CommandBuilder.formsAction.fillWithValue(words[5], words[4],"Id");
-                   count += 6;
+                   //count += 6;
                }
            }
        } else {
            comand+= CommandBuilder.formsAction.fillWithValue(words[2],words[1],"placeholder")
-           count+=2;
+           //count+=2;
        }
-
+       count += words.length;
        found = true;
    }
 
-   if(time.indexOf(words[0]) > -1) {
+   if(time.indexOf(words[0]) > -1 && CommandBuilder.isTestArea) {
        if(words.length === 2){
            comand+= CommandBuilder.timeManager.sleep(words[1]);
-           count+=2;
+           //count+=2;
        } else {
          if(words.length === 4){
            comand += CommandBuilder.waitOnResponse(words[3]);
-           count += 4;
+           //count += 4;
          }else{
            comand+= CommandBuilder.timeManager.actionUntilTitleIs(words[0], words[4]);
-           count+=5;
+           //count+=5;
          }
        }
+       count += words.length;
        found = true;
    }
 
-   //return result
-   return {
+   if(endpoint.indexOf(words[0]) > -1) {
+     var expectedJSON, expectedContentType, expectedStatus, index,
+         requestBody;
+     if(words[3] === 'should' && words[4] === 'return'){
+       index = 5; // after this word we specify expected values from response only
+     }
+     if(words[3] === 'data'){
+       requestBody = words[4];
+       if(words[5] === 'should' && words[6] === 'return') index = 7;
+     }
+     while(index < words.length){ //parse expected response
+       console.log(words[index],index);
+       if(words[index] === 'data') expectedJSON = words[index+1];
+       if(words[index] === 'status') expectedStatus = words[index+1];
+       if(words[index] === 'content-type') expectedContentType = words[index+1];
+       index++;
+       console.log(words[index],index);
+     }
+
+     var request = {
+       requestType : words[0],
+       address : words[2],
+       requestBody : requestBody
+     }
+     var expectedResponse = {
+       statusCode : expectedStatus,
+       responseJSON : expectedJSON,
+       contentType : expectedContentType
+     }
+     console.log(request, expectedResponse);
+     comand += CommandBuilder.endpoint(request, expectedResponse);
+     count += words.length;
+   }
+   var result = {
        comand: comand,
        words: words,
        count: count,
        found: found
-   }
+   };
+   return result;
   },
 
   findByParam : function(input){
@@ -424,7 +528,7 @@ var CommandBuilder = {
   finalize : function(command){
       var length = command.split(/\n/).length;
       for(var i = 0; i < length-1; i++) {
-          command += ' }, function(err){ scope.callback(true, err); driver.sleep(2000); return driver.quit() }) \n ';
+          command += ' }, function(err){ scope.callback(true, err); driver.sleep('+ CommandBuilder.waitInterval +'); return driver.quit() }) \n ';
       }
       return command;
   }
@@ -435,7 +539,8 @@ var CommandBuilder = {
 
 //parser initialize
 Parser.prototype.start = function(str, callback) {
-
+    CommandBuilder.waitInterval = 2000;
+    CommandBuilder.given = '';
     lcomand.comand = '';
     var comands = str.split('\n');//every human command must be in single line
     for (var i = 0; i < comands.length; i++) {
@@ -458,7 +563,7 @@ Parser.prototype.start = function(str, callback) {
 
     //forming command from input
     if(lcomand.comand){
-        var res = 'var self = scope.wd; \n' + CommandBuilder.finalize(lcomand.comand);
+        var res = 'var self = scope.wd; \n' + CommandBuilder.given +'\n'+ CommandBuilder.finalize(lcomand.comand);
         callback(null, res);
     }
     else {

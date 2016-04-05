@@ -128,13 +128,13 @@ define("ace/mode/humanlanguage_highlight_rules",["require","exports","module","a
    {
 
       var keywords = lang.arrayToMap(
-            ("fill|wait|check|click|with|click|double|focus|submit|press|select")
-                  .split("|")
+            ("fill|wait|check|click|with|click|double|focus|submit|press|select"+
+                  "endpoint|data|response|status|content-type|return").split("|")
             );
 
       var buildinConstants = lang.arrayToMap(
             ("is|id|be|on|with|title|element|key|radiogroup|dropdown|mouse|should|be|regex|response|" +
-             "having|property").split("|")
+             "having|property|get|post|put|patch|delete").split("|")
             );
 
       // regexp must not have capturing parentheses. Use (?:) instead.

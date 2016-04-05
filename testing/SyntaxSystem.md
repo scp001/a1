@@ -134,11 +134,11 @@ email is "[root@mail.com](mailto:root@mail.com)"
 
 ##### usage
 ```
-Click on <element>
+click on <element>
 ```
 ##### example
 ```
-Click on "Sign Up" button
+click on "Sign Up" button
 ```
 #### **Double click on**
 
@@ -146,11 +146,11 @@ Click on "Sign Up" button
 
 ##### usage
 ```
-Double click on <element>
+double click on <element>
 ```
 ##### example
 ```
-Double click on "About" link
+double click on "About" link
 ```
 #### **Fill with**
 
@@ -158,12 +158,12 @@ Double click on "About" link
 
 ##### usage
 ```
-Fill <element> with <value>
+fill <element> with <value>
 ```
 ##### example
 ```
-Fill placeholder "Username" with “John”
-Fill input having id "email" with email
+fill placeholder "Username" with “John”
+fill input having id "email" with email
 ```
 #### **should be**
 
@@ -187,13 +187,13 @@ Title should be "Splat"
 ##### usage
 
 ```
-Wait for <number> [ ms | s | min ]
+wait for <number> [ ms | s | min ]
 ```
 
 ##### example
 
 ```
-Wait for 1
+wait for 1
 ```
 
 #### **Move mouse to**
@@ -201,13 +201,13 @@ Wait for 1
 ##### usage
 
 ```
-Move mouse to <element>
+move mouse to <element>
 ```
 
 ##### example
 
 ```
-Move mouse to link having id "menu-option-about"
+move mouse to link having id "menu-option-about"
 ```
 
 #### **Focus on**
@@ -216,13 +216,13 @@ Move mouse to link having id "menu-option-about"
 ##### usage
 
 ```
-Focus on <element>
+focus on <element>
 ```
 
 ##### example
 
 ```
-Focus on input having id "username-field"
+focus on input having id "username-field"
 ```
 
 #### **Submit**
@@ -231,83 +231,83 @@ Focus on input having id "username-field"
 ##### usage
 
 ```
-Submit <element>
+submit <element>
 ```
 
 ##### example
 
 ```
-Submit form having id “user-login”
+submit form having id “user-login”
 ```
 
 #### **Press key**
 *simulates key press event*
 ##### usage
 ```
-Press key <key>
+press key <key>
 ```
 ##### example
 ```
-Press key “Ctrl”
-Press key “A”
+press key “Ctrl”
+press key “A”
 ```
 
 #### **RadioGroup select**
 *selects an option from radio-button group*
 ##### usage
 ```
-RadioGroup <name> select <value>
+radiogroup <name> select <value>
 ```
 ##### example
 ```
-RadioGroup "switch" select "on"
-RadioGroup "switch" select "off"
+radiogroup "switch" select "on"
+radiogroup "switch" select "off"
 ```
 
 ### **Dropdown select**
 *selects value from dropdown list*
 ##### usage
 ```
-Dropdown <name> select <value>
+dropdown <name> select <value>
 ```
 ##### example
 ```
-Dropdown "fruits" select "apple"
-Dropdown "fruits" select "lemon"
+dropdown "fruits" select "apple"
+dropdown "fruits" select "lemon"
 ```
 
 ### **Property should be**
 *check if property of element has expected value*
 ##### usage
 ```
- <element> <property> Property should be <value>
+ <element> <property> property should be <value>
 ```
 ##### example
 ```
-"button1" "value" Property should be "Click me!"
-"placeholder-image" "style" Property should be "width:220px;height:280px;"
+"button1" "value" property should be "Click me!"
+"placeholder-image" "style" property should be "width:220px;height:280px;"
 ```
 
 ### **Wait on response**
 *waits a* \<number\> *of milliseconds / second / minutes while all ajax requests return response*
 ##### usage
 ```
- Wait on response <number> [ ms | s | min ]
+ wait on response <number> [ ms | s | min ]
 ```
 ##### example
 ```
- Wait on response 500
+ wait on response 500
 ```
 
 ### **Check regex**
 *Check if value in* \<element\> *matches given* \<regex\>
 ##### usage
 ```
-<element> Check regex <regex>
+<element> check regex <regex>
 ```
 ##### example
 ```
-"textBox1" Check regex ":^[A-Z0-9+_.-]+@[A-Z0-9.-]+$"
+"textBox1" check regex ":^[A-Z0-9+_.-]+@[A-Z0-9.-]+$"
 ```
 
 
@@ -335,18 +335,18 @@ input having id "username-field"
 # **Example of test written in human language**
 ```
 #Settings
-Wait between operations for 0.5 s
+wait between operations for 0.5 s
 #Given
 username is "root"
 email is "[root@mail.com](mailto:root@mail.com)"
 password is "Testroot1"
 #Test
-Title should be "Splat"
-Click on "Sign Up" button
-Fill placeholder "Username" with username
-Fill input having id "email" with email
-Fill placeholder "Password" with password
-Fill placeholder "Enter Password Again" with password
-Wait for 1 min
-Click on element having id "singup-button"
+title should be "Splat"
+click on "Sign Up" button
+fill placeholder "Username" with username
+fill input having id "email" with email
+fill placeholder "Password" with password
+fill placeholder "Enter Password Again" with password
+wait for 1 min
+click on element having id "singup-button"
 ```

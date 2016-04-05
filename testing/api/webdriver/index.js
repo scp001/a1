@@ -1,6 +1,11 @@
 'use strict';
 
 var webdriver = require('selenium-webdriver');
+var assert = require('assert');
+var chakram = require('chakram');
+var _ = require('lodash');
+
+
 
 webdriver.logging.installConsoleHandler();
 webdriver.logging.getLogger().setLevel(webdriver.logging.Level.ALL);
@@ -13,8 +18,12 @@ WebDriver.prototype.test = function(address, command, callback) {
     if(address && command) {
 
         var scope = {
-            wd: webdriver,
-            callback: callback
+           wd: webdriver,
+           callback: callback,
+           assert: assert,
+           chakram: chakram,
+           expect: chakram.expect,
+           _ : _
         };
 
         var script = 'var driver = new scope.wd.Builder().usingServer().forBrowser("chrome").setChromeOptions()' +

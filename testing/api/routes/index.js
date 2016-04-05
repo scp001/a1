@@ -39,6 +39,7 @@ module.exports = function (app, passport) {
 */
 
     app.get('/app', function(req, res, next) {
+
         if(req.session.user){
             var roles = Roles.resolve(req.session.user.role);
             res.render('../views/index', {
