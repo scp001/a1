@@ -349,7 +349,7 @@ wait 0.5
          */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     },
     {
-        name: 'TestEndpoints'
+        name: 'TestEndpoints',
         url: links.splat(),
         scenario:  (function () {/*
 #Settings
@@ -361,7 +361,7 @@ get endpoint moviesEndpoint should return status 200 content-type "application/j
 post endpoint moviesEndpoint data "{'title':'CSI: Las Vegas','director':'J.Bruckheimer','released':2010-01-01,'duration':186,'genre':'criminal','synopsis':'detective','freshTotal':'gfngf','freshVotes':100500,'poster':'csi-lv.jpg','dated':2010-01-01}" should return status 500
         */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     },
-    name: 'SplatAddMovieByEndpoint'
+    name: 'SplatAddMovieByEndpoint',
     url: links.splat(),
     scenario:  (function () {/*
 #Settings
