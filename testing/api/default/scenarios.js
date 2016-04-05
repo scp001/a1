@@ -347,9 +347,42 @@ wait 0.5
 click "Browse Great Movies"
 wait 0.5
          */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+        name: 'TestEndpoints'
+        url: links.splat(),
+        scenario:  (function () {/*
+#Settings
+wait between operations for 0.1 s
+#Given
+moviesEndpoint is 'http://localhost:41484/movies'
+#Test
+get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8"
+post endpoint moviesEndpoint data "{'title':'CSI: Las Vegas','director':'J.Bruckheimer','released':2010-01-01,'duration':186,'genre':'criminal','synopsis':'detective','freshTotal':'gfngf','freshVotes':100500,'poster':'csi-lv.jpg','dated':2010-01-01}" should return status 500
+        */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    name: 'SplatAddMovieByEndpoint'
+    url: links.splat(),
+    scenario:  (function () {/*
+#Settings
+wait between operations for 0.15 s
+#Given
+moviesEndpoint is 'http://localhost:41484/movies'
+#Test
+title should be "Splat"
+wait 0.3
+get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8"
+post endpoint moviesEndpoint data "{'title':'CSI','director':'Jerry Bruckheimer','released':2010-01-01,'duration':148,'genre':'criminal','synopsis':'not bad','freshTotal':50,'freshVotes':150,'poster':'csi.jpg','dated':2010-01-01, 'genre':['detective'],'starring':['John Smith, Vasyl Vasylenko, Rachel Tudor']}" should return status 200
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
+wait 0.5
+click "Delete Movie"
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     }
-
-
 ];
 
 var defaultScenariosNames = (function(){
