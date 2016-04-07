@@ -15,6 +15,18 @@ humanAreaEditor.session.setMode("ace/mode/humanlanguage");
 humanAreaEditor.setTheme("ace/theme/tomorrow");
 humanAreaEditor.$blockScrolling = Infinity;
 $("#humanArea").on("resize", function() { humanAreaEditor.resize() });
+
+// function resizeAll() {
+//   //$('#humanArea').height($(window).height()/3);
+//   //$('#humanArea').width($(window).width()/2.6);
+//
+//   //$('#right-side').height($(window).height()/3);
+//   //$('#right-side').width($(window).width()/5);
+// };
+// //listen for changes
+// $(window).resize(resizeAll);
+// //set initially
+// resizeAll();
 /****************************************************************/
 /*                display tests results                         */
 /****************************************************************/
@@ -341,10 +353,10 @@ function getScenarios(){
                 var name =  item.name;
                 var selector = item.name.replace(/ /g, "");
                 testsMap.set(item.scenario, selector);
-                var resp = '<a href="javascript:;" id='+ '\'' + selector + '\'' + ' onclick="startScenario(' + '\'' + name + '\'' + ')">'  + item.name  + '</a>';
+                var resp = '<li><a style="word-wrap: break-word;" href="javascript:;" id='+ '\'' + selector + '\'' + ' onclick="startScenario(' + '\'' + name + '\'' + ')">'  + item.name  + '</a></li>';
                 arr.push(resp);
             });
-            document.getElementById('provided-scenarios').innerHTML = arr.toString().replace(/\,/g, '');
+            document.getElementById('provided-scenarios').innerHTML = '<ul><a href="javascript:;" id="runAll"> Run All </a>' + arr.toString().replace(/\,/g, '') + '</ul>';
         },
         error: function(data) {
             console.log(data.responseText);

@@ -383,6 +383,25 @@ click element with id "CSI"
 wait 0.5
 click "Delete Movie"
       */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+      name: 'Get and check props in response body',
+      url: links.splat(),
+      scenario:  (function () {/*
+#Settings
+wait between operations for 0.1 s
+#Given
+moviesEndpoint is 'http://localhost:41484/movies'
+movies is 'http://localhost:41484/movies/'
+movie is 'http://localhost:41484/movies/56d95606cd776f4a05ba55e8'
+#Test
+get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8" save [0]._id
+get endpoint movies+saved._id should return dataProperty "duration" 130
+get endpoint moviesEndpoint should return status 200 save ALL_BODY
+get endpoint movies+saved[0]._id should return status 200
+get endpoint movies+saved[1]._id should return status 200
+get endpoint moviesEndpoint+'/'+saved[0]._id should return dataProperty "duration" 130
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     }
 ];
 

@@ -226,19 +226,34 @@ var CommandBuilder = {
   endpoint : function(inputData, assertOutputData){
     if(inputData.requestBody) inputData.requestBody = ',' + inputData.requestBody;
     else inputData.requestBody = '';
-    var checkResponse = '';
+    var responseOps = '';
     if(assertOutputData.statusCode){
-      checkResponse += 'if(res.response.statusCode !== '+assertOutputData.statusCode+'){driver.error.WebDriverError(13);}';
+      responseOps += 'if(res.response.statusCode !== '+assertOutputData.statusCode+'){driver.error.WebDriverError(13);}';
     }
     if(assertOutputData.responseJSON){
-      checkResponse += 'if(!scope._.isEqual(res.body,'+assertOutputData.responseJSON+')){driver.error.WebDriverError(13);}';
+      responseOps += 'if(!scope._.isEqual(res.body,'+assertOutputData.responseJSON+')){driver.error.WebDriverError(13);}';
+    }
+    if(assertOutputData.dataProperty){
+      responseOps += 'if(res.body.' + assertOutputData.dataProperty.name + ' !== ' + assertOutputData.dataProperty.value + '){driver.error.WebDriverError(13);}'
     }
     if(assertOutputData.contentType){
-      checkResponse += 'if(res.response.rawHeaders.indexOf(\''+assertOutputData.contentType+'\') < 0){driver.error.WebDriverError(13);}';
+      responseOps += 'if(res.response.rawHeaders.indexOf(\''+assertOutputData.contentType+'\') < 0){driver.error.WebDriverError(13);}';
+    }
+    if(assertOutputData.saveVar){
+      var variable = assertOutputData.saveVar;
+      if(variable.indexOf("[") === 0 && variable.indexOf("]") === 2){
+        responseOps += 'saved = {'+ assertOutputData.saveVar.slice(4, assertOutputData.saveVar.length) + ' : res.body' + assertOutputData.saveVar + '};';
+      }else{
+        if(variable === 'ALL_BODY'){
+          responseOps += 'saved = res.body;';
+        }else{
+          responseOps += 'saved = {'+ assertOutputData.saveVar + ' : res.body.' + assertOutputData.saveVar + '};'
+        }
+      }
     }
     return 'driver.wait(scope.chakram.'+ inputData.requestType +'('+
     inputData.address + inputData.requestBody + ').then(function(res){'+
-        checkResponse +
+        responseOps +
     '}), 5000).then(function(){';
   },
 
@@ -264,7 +279,7 @@ var CommandBuilder = {
 
    var time = ['wait'];
 
-   var endpoint = ['endpoint', 'data', 'response', 'status','content-type', 'return',
+   var endpoint = ['endpoint', 'data', 'dataProperty', 'response', 'status','content-type', 'return', 'save',
         'get', 'post', 'put', 'patch', 'delete'];
 
    //search commands by defined keywords
@@ -292,16 +307,12 @@ var CommandBuilder = {
      CommandBuilder.isTestArea = false;
 
      found = true;
-
-     console.log('entered #Given area');
    }
 
    if(words[1] === 'is' && CommandBuilder.isGivenArea){
      CommandBuilder.given += 'var ' + words[0] + ' = ' + words[2] + ';';
 
      found = true;
-
-     console.log('founded definition');
    }
 
    if(words[0] === "#Test"){
@@ -443,7 +454,8 @@ var CommandBuilder = {
    }
 
    if(endpoint.indexOf(words[0]) > -1) {
-     var expectedJSON, expectedContentType, expectedStatus, index,
+     var expectedJSON, expectedContentType, expectedStatus, expectedProperty, saveVar,
+         index,
          requestBody;
      if(words[3] === 'should' && words[4] === 'return'){
        index = 5; // after this word we specify expected values from response only
@@ -453,12 +465,15 @@ var CommandBuilder = {
        if(words[5] === 'should' && words[6] === 'return') index = 7;
      }
      while(index < words.length){ //parse expected response
-       console.log(words[index],index);
        if(words[index] === 'data') expectedJSON = words[index+1];
+       if(words[index] === 'dataProperty') expectedProperty = {
+                                             name : words[index+1],
+                                             value : words[index+2]
+                                           }
        if(words[index] === 'status') expectedStatus = words[index+1];
        if(words[index] === 'content-type') expectedContentType = words[index+1];
+       if(words[index] === 'save') saveVar = words[index+1];
        index++;
-       console.log(words[index],index);
      }
 
      var request = {
@@ -469,9 +484,10 @@ var CommandBuilder = {
      var expectedResponse = {
        statusCode : expectedStatus,
        responseJSON : expectedJSON,
-       contentType : expectedContentType
+       contentType : expectedContentType,
+       dataProperty : expectedProperty,
+       saveVar : saveVar
      }
-     console.log(request, expectedResponse);
      comand += CommandBuilder.endpoint(request, expectedResponse);
      count += words.length;
    }
@@ -563,7 +579,7 @@ Parser.prototype.start = function(str, callback) {
 
     //forming command from input
     if(lcomand.comand){
-        var res = 'var self = scope.wd; \n' + CommandBuilder.given +'\n'+ CommandBuilder.finalize(lcomand.comand);
+        var res = 'var self = scope.wd; var saved; \n' + CommandBuilder.given +'\n'+ CommandBuilder.finalize(lcomand.comand);
         callback(null, res);
     }
     else {

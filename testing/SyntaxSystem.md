@@ -85,6 +85,8 @@ Instructions have to be defined as list of steps written in the same order they 
 
 * [Check regex](#check-regex)
 
+* [Test API](#test-api)
+
 example
 ```
 #Test
@@ -309,9 +311,21 @@ dropdown "fruits" select "lemon"
 ```
 "textBox1" check regex ":^[A-Z0-9+_.-]+@[A-Z0-9.-]+$"
 ```
-
-
-
+### **Test API**
+*Send GET, POST, PUT or DELETE request to specified* \<endpoint\> *and check response from it*
+##### usage
+```
+<requestType> endpoint <endpoint> data <JSON> should return status <status code> content-type <content-type> data <JSON> dataProperty <value> save <property>
+```
+##### examples
+```
+#Given
+moviesEndpoint is 'http://localhost:41484/movies'
+#Test
+post endpoint moviesEndpoint data "{'title':'CSI: Las Vegas','director':'J.Bruckheimer','released':2010-01-01}" should return status 500
+get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8" save ALL_BODY
+get endpoint moviesEndpoint+'/'+saved[0]._id should return dataProperty "duration" 130
+```
 
 ### **General commands list**
 

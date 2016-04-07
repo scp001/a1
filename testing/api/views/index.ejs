@@ -132,22 +132,22 @@
 							</div>
 						</div>
 					</div>
-					<div>
+					<div class="row">
 						<div title="Human" id="humanArea" name="humanTest"  class='form-control' wrap="hard"></div>
-						<button class="btn btn-primary" id="parse">Generate Test</button>
-						<span id="scenario">
-							<button class="btn" id="reset"> Reset </button>
-							<button class="btn btn-default" id="discard"> Discard Changes </button>
-							<button class="btn btn-success btn-custom" id="saveScenario"  data-toggle="modal" data-target="#modal"> <i class="fa fa-floppy-o"></i> </button>
-							<button class="btn btn-danger btn-custom" id="removeScenario"> <i class="fa fa-trash"></i> </button>
-						</span>
+							<button class="btn btn-primary" id="parse">Generate Test</button>
+							<span id="scenario">
+								<button class="btn" id="reset"> Reset </button>
+								<button class="btn btn-default" id="discard"> Discard Changes </button>
+								<button class="btn btn-success btn-custom" id="saveScenario"  data-toggle="modal" data-target="#modal"> <i class="fa fa-floppy-o"></i> </button>
+								<button class="btn btn-danger btn-custom" id="removeScenario"> <i class="fa fa-trash"></i> </button>
+							</span>
 					</div>
-					<div>
+					<div class="row">
 						<div title="AI" id="aiArea" name="aiTest" class='form-control' wrap="hard"></div>
 					</div>
-					<div>
-						<input title="URL" id="url" name="urlInput" type="text" value="https://www.google.ca/" />
-						<button class="btn btn-success" name="runTest" id="run">Run Test</button>
+					<div class="bottomBlock">
+						<input class="form-control" style="max-width:75%" title="URL" id="url" name="urlInput" type="text" value="https://www.google.ca/" />
+						<button class="form-control btn btn-success" style="margin-top:40px;max-width:25%;" name="runTest" id="run">Run Test</button>
 					</div>
 					<div id="status-field"></div>
 
@@ -177,9 +177,11 @@
 					</div>
 				</div>
 
-				<div class="right-side">
-					<div><strong> Provided tests: </strong> <a href="javascript:;" id="runAll"> Run All </a> </div>
-						<div id="provided-scenarios"></div>
+				<div class="right-side panel panel-default" id="right-side">
+					<div class="panel panel-heading"><strong> Provided tests: </strong></div>
+						<div class"panel panel-body" id="provided-scenarios">
+							<a href="javascript:;" id="runAll"> Run All </a>
+						</div>
 					</div>
 				<div id="notifications"></div>
 				</div>
