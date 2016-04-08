@@ -129,7 +129,7 @@ define("ace/mode/humanlanguage_highlight_rules",["require","exports","module","a
 
       var keywords = lang.arrayToMap(
             ("fill|wait|check|click|with|click|double|focus|submit|press|select"+
-                  "endpoint|data|response|status|content-type|should|return|save").split("|")
+                  "endpoint|data|response|status|content-type|should|return|save|content-type|dataProperty").split("|")
             );
 
       var buildinConstants = lang.arrayToMap(

@@ -225,7 +225,7 @@ radiogroup "Browse Movies" select "title"
       */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     },
     {
-      name: 'SplatAddUpdateDeleteMovieWaitUntilAJAX',
+      name: 'SplatAddUpdDelMovieWaitUntilAJAX',
       url: links.splat(),
       scenario: ( function(){/*
 title should be "Splat"
@@ -349,31 +349,41 @@ wait 0.5
          */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     },
     {
-        name: 'TestEndpoints',
+        name: 'TestSplatAPI',
         url: links.splat(),
         scenario:  (function () {/*
 #Settings
 wait between operations for 0.1 s
 #Given
 moviesEndpoint is 'http://localhost:41484/movies'
+movies is 'http://localhost:41484/movies/'
+comments is 'http://localhost:41484/comments'
+CSI is "{'title':'CSI','director':'Jerry Bruckheimer','released':'2010-01-01','duration':148,'synopsis':'not bad','freshTotal':50,'freshVotes':150,'poster':'csi.jpg','dated':'2010-01-01', 'genre':['detective'],'starring':['John Smith, Vasyl Vasylenko, Rachel Tudor']}"
+CSIedited is "{'title':'CSI','director':'Jerry Bruckheimer, Eddy Murphy','released':'2010-01-02','duration':141,'synopsis':'good','freshTotal':4,'freshVotes':15,'poster':'csi.jpg','dated':'2010-01-31', 'genre':['detective'],'starring':['John Smith, Vasyl Vasylenko, Rachel Tudor, Tom and Jerry']}"
 #Test
-get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8"
-post endpoint moviesEndpoint data "{'title':'CSI: Las Vegas','director':'J.Bruckheimer','released':2010-01-01,'duration':186,'genre':'criminal','synopsis':'detective','freshTotal':'gfngf','freshVotes':100500,'poster':'csi-lv.jpg','dated':2010-01-01}" should return status 500
-        */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
-    },
-    {
-      name: 'SplatAddMovieByEndpoint',
-      url: links.splat(),
-      scenario:  (function () {/*
-#Settings
-wait between operations for 0.15 s
-#Given
-moviesEndpoint is 'http://localhost:41484/movies'
-#Test
-title should be "Splat"
 wait 0.3
 get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8"
-post endpoint moviesEndpoint data "{'title':'CSI','director':'Jerry Bruckheimer','released':2010-01-01,'duration':148,'genre':'criminal','synopsis':'not bad','freshTotal':50,'freshVotes':150,'poster':'csi.jpg','dated':2010-01-01, 'genre':['detective'],'starring':['John Smith, Vasyl Vasylenko, Rachel Tudor']}" should return status 200
+post endpoint moviesEndpoint data CSI should return status 200 dataProperty "n" 1 save ALL_BODY
+get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
+post endpoint movies+saved._id+'/reviews' data "{'freshness':3,'reviewName':'test','reviewAffil':'testtext12','reviewText':'abcdef','movieId':saved._id}" should return status 200 dataProperty "freshness" 3
+get endpoint movies+saved._id+'/reviews' should return content-type "application/json; charset=utf-8"
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+delete endpoint movies+saved._id should return status 200
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+post endpoint moviesEndpoint data CSI should return status 200 dataProperty "n" 1 save ALL_BODY
+get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
+put endpoint movies+saved._id data CSIedited should return status 200 dataProperty "nModified" 1
+post endpoint comments data "{'text':'Great movie. Highly recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved._id}" should return status 200 content-type "application/json; charset=utf-8" save ALL_BODY
+put endpoint comments+'/'+saved[0]._id data "{'text':'I changed my mind. Highly-HIIIIIGHLY recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved[0]._id}" should return status 200 dataProperty "nModified" 1
+delete endpoint comments+'/'+saved[0]._id should return status 200
 click "Splat!"
 title should be "Splat"
 wait 0.5
@@ -382,7 +392,7 @@ wait 0.5
 click element with id "CSI"
 wait 0.5
 click "Delete Movie"
-      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+        */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     },
     {
       name: 'Get and check props in response body',

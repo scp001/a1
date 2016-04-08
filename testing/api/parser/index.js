@@ -202,7 +202,7 @@ var CommandBuilder = {
     },
 
     wait : function(value){
-      return 'driver.sleep('+value+'*1000);';
+      return 'driver.sleep('+value+').then(function(){';
     },
 
     actionUntilTitleIs : function(action, condition){
@@ -437,17 +437,22 @@ var CommandBuilder = {
    }
 
    if(time.indexOf(words[0]) > -1 && CommandBuilder.isTestArea) {
-       if(words.length === 2){
-           comand+= CommandBuilder.timeManager.sleep(words[1]);
-           //count+=2;
-       } else {
-         if(words.length === 4){
-           comand += CommandBuilder.waitOnResponse(words[3]);
-           //count += 4;
-         }else{
-           comand+= CommandBuilder.timeManager.actionUntilTitleIs(words[0], words[4]);
-           //count+=5;
-         }
+      switch(words.length){
+          case(2):
+            comand+= CommandBuilder.timeManager.sleep(words[1]);
+            break;
+          case(3):
+            if(words[2] === 'ms') comand += CommandBuilder.timeManager.wait(words[1]);
+            if(words[2] === 's') comand += CommandBuilder.timeManager.wait(words[1]*1000);
+            if(words[2] === 'min') comand += CommandBuilder.timeManager.wait(words[1]*1000*60);
+            else comand += CommandBuilder.timeManager.wait(words[1]*1000);
+            break;
+          case(4):
+            comand += CommandBuilder.waitOnResponse(words[3]);
+            break;
+          default:
+            comand+= CommandBuilder.timeManager.actionUntilTitleIs(words[0], words[4]);
+            break;
        }
        count += words.length;
        found = true;
