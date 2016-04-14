@@ -363,7 +363,7 @@ CSIedited is "{'title':'CSI','director':'Jerry Bruckheimer, Eddy Murphy','releas
 #Test
 wait 0.3
 get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8"
-post endpoint moviesEndpoint data CSI should return status 200 dataProperty "n" 1 save ALL_BODY
+post endpoint moviesEndpoint data CSI should return status 200 dataProperty "upserted[0].index" 0 save ALL_BODY
 get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
 post endpoint movies+saved._id+'/reviews' data "{'freshness':3,'reviewName':'test','reviewAffil':'testtext12','reviewText':'abcdef','movieId':saved._id}" should return status 200 dataProperty "freshness" 3
 get endpoint movies+saved._id+'/reviews' should return content-type "application/json; charset=utf-8"
@@ -378,7 +378,7 @@ title should be "Splat"
 wait 0.5
 click "Browse Great Movies"
 wait 0.5
-post endpoint moviesEndpoint data CSI should return status 200 dataProperty "n" 1 save ALL_BODY
+post endpoint moviesEndpoint data CSI should return status 200 dataProperty "nModified" 0 save ALL_BODY
 get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
 put endpoint movies+saved._id data CSIedited should return status 200 dataProperty "nModified" 1
 post endpoint comments data "{'text':'Great movie. Highly recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved._id}" should return status 200 content-type "application/json; charset=utf-8" save ALL_BODY
@@ -403,7 +403,6 @@ wait between operations for 0.1 s
 #Given
 moviesEndpoint is 'http://localhost:41484/movies'
 movies is 'http://localhost:41484/movies/'
-movie is 'http://localhost:41484/movies/56d95606cd776f4a05ba55e8'
 #Test
 get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8" save [0]._id
 get endpoint movies+saved._id should return dataProperty "duration" 130

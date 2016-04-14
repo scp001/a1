@@ -61,12 +61,13 @@ io.on('connection', function(socket){
             io.emit('send status', result);
         }
         else {
-            webdriver.test(address, command, function (err, message) {
+            webdriver.test(address, command, function (err, message, currentRow) {
                 if (!err) {
                     result = {testname: testname, code: 200, msg: 'OK'};
                 } else {
+
                     if (message) {
-                        result = message.message;
+                        result = {testname: testname, code: 310, msg: message.message, atRow : currentRow};
                     } else {
                         result = {testname: testname, code: 500, msg: 'Internal Server Error'};
                     }

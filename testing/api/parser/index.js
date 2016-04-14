@@ -39,7 +39,7 @@ var CommandBuilder = {
   },
 
   shouldBe : function(value1, value2){
-    var command = 'if( \'' + value1 + '\' !== ' + '\''+ value2 + '\'' + ' ) throw \'values mismatch\';';
+    var command = 'if( \'' + value1 + '\' !== ' + '\''+ value2 + '\'' + ' ) '+ CommandBuilder.emitError('Values not match. Expected: ' + value1 + ' Got: '+ value2) +';';
     return command;
   },
 
@@ -92,7 +92,7 @@ var CommandBuilder = {
   },
 
   propertyShouldBe : function(element, propertyName, expectedValue){
-    var assertion = 'if(value !== \''+ expectedValue +'\'){throw \'unexpected property value\'}';
+    var assertion = 'if(value !== \''+ expectedValue +'\'){'+CommandBuilder.emitError('Unexpected property. Expected: ' + expectedValue)+'}';
     var command  = CommandBuilder.findElementBy.Id(element) +
     '.getAttribute(\''+propertyName+'\').then(function(value) {if(value){' + assertion + '}else{' + CommandBuilder.cssPropertyShouldBe(element, propertyName, expectedValue) + ';} }).then(function () {';
 
@@ -100,7 +100,7 @@ var CommandBuilder = {
   },
 
   cssPropertyShouldBe : function(element, propertyName, expectedValue){
-    var assertion = 'if(value !== \''+ expectedValue +'\'){throw \'unexpected property value\'}';
+    var assertion = 'if(value !== \''+ expectedValue +'\'){'+ CommandBuilder.emitError('Unexpected css property. Expected: ' + expectedValue) +'}';
     var command  = CommandBuilder.findElementBy.Id(element) +
     '.getCssValue(\''+propertyName+'\').then(function(value) {if(value) ' + assertion + ' })';
 
@@ -114,7 +114,7 @@ var CommandBuilder = {
 
   checkRegex : function(element, regex){
     var regexp = new RegExp(regex);
-    var assertion = 'if(' + regexp + '.test(value)!==true){throw \'regex check failed\'}';
+    var assertion = 'if(' + regexp + '.test(value)!==true){'+ CommandBuilder.emitError('regexp '+ regexp + ' test() returned false') +'}';
     var command = CommandBuilder.findElementBy.Id(element) + '.getAttribute(\'value\')' +
     '.then(function(value){ if(value) '+ assertion +' }).then(function(){'
     return command;
@@ -129,11 +129,11 @@ var CommandBuilder = {
 //internal objects for forming commands
   elementsChecker : {
     titleShouldBe : function(value){
-      return 'driver.getTitle().then(function(title) { if(title !== ' + '\''+value+'\'' +') throw\'titles mismatch\'; return true;}).then(function(){ ';
+      return 'driver.getTitle().then(function(title) { if(title !== ' + '\''+value+'\'' +')' + CommandBuilder.emitError('Titles mismatch! Expected: \''+ value +'\'') + ' }).then(function(){ ';
     },
 
     pageShouldContains : function(value){
-      return CommandBuilder.findElementBy.Text(value)+'.then(function (el) { if(!el) throw \"page not contains: (' + value + ')\"}).then(function(){';
+      return CommandBuilder.findElementBy.Text(value)+'.then(function (el) { if(!el) '+ CommandBuilder.emitError('Page not contains ' + value) +'}).then(function(){';
     }
   },
 
@@ -166,7 +166,7 @@ var CommandBuilder = {
 
   findElementBy : {
     Id : function(value){
-      return 'driver.findElement(self.By.xpath("//*[@id = \''+value+'\'' +']"))';
+      return 'driver.findElement(self.By.xpath("//*[@id=\''+value+'\''+']"))';
     },
     Name : function(value){
       return 'driver.findElement(self.By.name(\''+value+'\'))';
@@ -181,7 +181,7 @@ var CommandBuilder = {
       return 'driver.findElement(self.By.xpath("//button[text()=\''+value+'\']"))';
     },
     Value : function(value){
-      return 'driver.findElement(self.By.xpath("//*[@value=\'' + value + '\']"))';
+      return 'driver.findElement(self.By.xpath("//*[@value=\''+value+'\']"))';
     }
   },
 
@@ -220,7 +220,15 @@ var CommandBuilder = {
   },
 
   getValueAndCompare : function(keys){
-    return '.getAttribute(\'value\').then(function(value){ if(value !==\''+keys+'\') throw \'values mismatch\';}).then(null, function(e){return callback(true, e.stack)})';
+    return '.getAttribute(\'value\').then(function(value){ if(value !==\''+keys+'\') '+ CommandBuilder.emitError('Attribute mismatch. Expected: ' + keys) +'}).then(null, function(e){return callback(true, e.stack)})';
+  },
+
+  emitError : function(message){
+    return 'throw new self.error.WebDriverError("' + message + '");';
+  },
+
+  setIndex : function(index){
+    return 'index = ' + index + ';';
   },
 
   endpoint : function(inputData, assertOutputData){
@@ -228,16 +236,16 @@ var CommandBuilder = {
     else inputData.requestBody = '';
     var responseOps = '';
     if(assertOutputData.statusCode){
-      responseOps += 'if(res.response.statusCode !== '+assertOutputData.statusCode+'){driver.error.WebDriverError(13);}';
+      responseOps += 'if(res.response.statusCode !== '+assertOutputData.statusCode+'){'+ CommandBuilder.emitError('Unexpected status code in response. Expected: ' + assertOutputData.statusCode) +'}';
     }
     if(assertOutputData.responseJSON){
-      responseOps += 'if(!scope._.isEqual(res.body,'+assertOutputData.responseJSON+')){driver.error.WebDriverError(13);}';
+      responseOps += 'if(!scope._.isEqual(res.body,'+assertOutputData.responseJSON+')){'+ CommandBuilder.emitError('Unexpected data in response. Expected: ' + assertOutputData.responseJSON) +'}';
     }
     if(assertOutputData.dataProperty){
-      responseOps += 'if(res.body.' + assertOutputData.dataProperty.name + ' !== ' + assertOutputData.dataProperty.value + '){driver.error.WebDriverError(13);}'
+      responseOps += 'if(res.body.' + assertOutputData.dataProperty.name + ' !== ' + assertOutputData.dataProperty.value + '){'+ CommandBuilder.emitError('Unexpected \''+ assertOutputData.dataProperty.name +'\' property value in response data. Expected: ' + assertOutputData.dataProperty.value) +'}'
     }
     if(assertOutputData.contentType){
-      responseOps += 'if(res.response.rawHeaders.indexOf(\''+assertOutputData.contentType+'\') < 0){driver.error.WebDriverError(13);}';
+      responseOps += 'if(res.response.rawHeaders.indexOf(\''+assertOutputData.contentType+'\') < 0){'+ CommandBuilder.emitError('Unexpected content-type in response. Expected: ' + assertOutputData.contentType) +'}';
     }
     if(assertOutputData.saveVar){
       var variable = assertOutputData.saveVar;
@@ -259,7 +267,7 @@ var CommandBuilder = {
 
 
 //search command keywords in current line <input.words> and if founded, return this command
- findElement : function(input){
+ findElement : function(input, currentRow){
    var count = 0; //var for calculating words in human command
    var found = false; //found command indicator
    var words = input.words; //input human command
@@ -325,7 +333,7 @@ var CommandBuilder = {
 
    if(assertion.indexOf(words[2]) > -1){
      if(words[2] === 'property'){
-       comand += CommandBuilder.propertyShouldBe(words[0], words[1], words[5]);
+       comand += CommandBuilder.propertyShouldBe(words[0], words[1], words[5]) + CommandBuilder.setIndex(currentRow);
        //count += 6;
      }
      count += words.length;
@@ -333,11 +341,11 @@ var CommandBuilder = {
    }
    if(assertion.indexOf(words[1]) > -1){
        if (words[1] === 'should' && elements.indexOf(words[0]) === -1){
-         comand += CommandBuilder.shouldBe(words[0], words[2]);
+         comand += CommandBuilder.shouldBe(words[0], words[2]) + CommandBuilder.setIndex(currentRow);
          //count += 4;
        }else{
          if(words[1] === 'check'){
-           comand += CommandBuilder.checkRegex(words[0],words[3]);
+           comand += CommandBuilder.checkRegex(words[0],words[3]) + CommandBuilder.setIndex(currentRow);
            //count += 3;
          }
        }
@@ -347,14 +355,14 @@ var CommandBuilder = {
 
    if(controls.indexOf(words[0]) > -1) {
       if(words[0] === 'move'){
-         comand += CommandBuilder.moveMouseTo(words[3]);
+         comand += CommandBuilder.moveMouseTo(words[3]) + CommandBuilder.setIndex(currentRow);
          //count += 4;
       }
       else if(words[0] === 'focus'){
-        comand += CommandBuilder.focusOn(words[2]);
+        comand += CommandBuilder.focusOn(words[2]) + CommandBuilder.setIndex(currentRow);
         //count += 3;
       }else if(words[0] === 'press'){
-          comand += CommandBuilder.pressKey(words[2]);
+          comand += CommandBuilder.pressKey(words[2]) + CommandBuilder.setIndex(currentRow);
           //count += 3;
       }
       count += words.length;
@@ -363,34 +371,34 @@ var CommandBuilder = {
 
    if(elements.indexOf(words[0]) > -1) {
        if(words[0] === 'submit'){
-         comand += CommandBuilder.findElementBy.Id(word[4]) + CommandBuilder.emitEvent(words[0]);
+         comand += CommandBuilder.findElementBy.Id(word[4]) + CommandBuilder.emitEvent(words[0]) + CommandBuilder.setIndex(currentRow);
          //count += 5;
        }
        else if(words[0] === 'title') {
          if(words[1] === 'should')
           if(words[2] === 'be'){
-           comand+= CommandBuilder.elementsChecker.titleShouldBe(words[3]);
+           comand+= CommandBuilder.elementsChecker.titleShouldBe(words[3]) + CommandBuilder.setIndex(currentRow);
            //count+=4;
          }
        }
        else if(words[0] === 'page') {
            if(words[1] === 'should') {
                if(words[2] === 'contains') {
-                   comand+= CommandBuilder.elementsChecker.pageShouldContains(words[3]);
+                   comand+= CommandBuilder.elementsChecker.pageShouldContains(words[3]) + CommandBuilder.setIndex(currentRow);
                    //count+=4;
                }
            }
        }
        else if(words[0] === 'dropdown'){
-         comand += CommandBuilder.selectFromDropdown(words[1], words[3]);
+         comand += CommandBuilder.selectFromDropdown(words[1], words[3]) + CommandBuilder.setIndex(currentRow);
          //count += 4;
        }
        else if(words[0] === 'radiogroup'){
-         comand += CommandBuilder.radiogroupSelect(words[1], words[3]);
+         comand += CommandBuilder.radiogroupSelect(words[1], words[3]) + CommandBuilder.setIndex(currentRow);
          //count += 4;
        }
        else {
-           comand+= CommandBuilder.elementsChecker.findElementBy.Value(words[0]);
+           comand+= CommandBuilder.elementsChecker.findElementBy.Value(words[0]) + CommandBuilder.setIndex(currentRow);
            //count+=2;
        }
        count += words.length;
@@ -399,21 +407,21 @@ var CommandBuilder = {
 
    if(events.indexOf(words[0]) > -1) {
        if(words[1] === 'button'){
-           comand += CommandBuilder.eventsEmitter.buttonEvent(words[0], words[2]);
+           comand += CommandBuilder.eventsEmitter.buttonEvent(words[0], words[2]) + CommandBuilder.setIndex(currentRow);
            //count+=3;
        } else if(words[1] === 'element'){
            if (words[2] === 'with'){
                if(words[3] === 'id'){
-                   comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "id");
+                   comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "id") + CommandBuilder.setIndex(currentRow);
                    //count+=5;
                }
                if(words[3] === 'text'){
-                 comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "text");
+                 comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "text") + CommandBuilder.setIndex(currentRow);
                  //count+=5;
                }
            }
        } else {
-           comand += CommandBuilder.eventsEmitter.elementEvent(words[0],words[1],"text");
+           comand += CommandBuilder.eventsEmitter.elementEvent(words[0],words[1],"text") + CommandBuilder.setIndex(currentRow);
            //count+=2;
        }
        count += words.length;
@@ -424,12 +432,12 @@ var CommandBuilder = {
        if(words[1] === 'element'){
            if (words[2] === 'with') {
                if(words[3] === 'id') {
-                   comand += CommandBuilder.formsAction.fillWithValue(words[5], words[4],"Id");
+                   comand += CommandBuilder.formsAction.fillWithValue(words[5], words[4],"Id") + CommandBuilder.setIndex(currentRow);
                    //count += 6;
                }
            }
        } else {
-           comand+= CommandBuilder.formsAction.fillWithValue(words[2],words[1],"placeholder")
+           comand+= CommandBuilder.formsAction.fillWithValue(words[2],words[1],"placeholder") + CommandBuilder.setIndex(currentRow)
            //count+=2;
        }
        count += words.length;
@@ -439,19 +447,19 @@ var CommandBuilder = {
    if(time.indexOf(words[0]) > -1 && CommandBuilder.isTestArea) {
       switch(words.length){
           case(2):
-            comand+= CommandBuilder.timeManager.sleep(words[1]);
+            comand+= CommandBuilder.timeManager.sleep(words[1]) + CommandBuilder.setIndex(currentRow);
             break;
           case(3):
-            if(words[2] === 'ms') comand += CommandBuilder.timeManager.wait(words[1]);
-            if(words[2] === 's') comand += CommandBuilder.timeManager.wait(words[1]*1000);
-            if(words[2] === 'min') comand += CommandBuilder.timeManager.wait(words[1]*1000*60);
-            else comand += CommandBuilder.timeManager.wait(words[1]*1000);
+            if(words[2] === 'ms') comand += CommandBuilder.timeManager.wait(words[1]) + CommandBuilder.setIndex(currentRow);
+            if(words[2] === 's') comand += CommandBuilder.timeManager.wait(words[1]*1000) + CommandBuilder.setIndex(currentRow);
+            if(words[2] === 'min') comand += CommandBuilder.timeManager.wait(words[1]*1000*60) + CommandBuilder.setIndex(currentRow);
+            else comand += CommandBuilder.timeManager.wait(words[1]*1000) + CommandBuilder.setIndex(currentRow);
             break;
           case(4):
-            comand += CommandBuilder.waitOnResponse(words[3]);
+            comand += CommandBuilder.waitOnResponse(words[3]) + CommandBuilder.setIndex(currentRow);
             break;
           default:
-            comand+= CommandBuilder.timeManager.actionUntilTitleIs(words[0], words[4]);
+            comand+= CommandBuilder.timeManager.actionUntilTitleIs(words[0], words[4]) + CommandBuilder.setIndex(currentRow);
             break;
        }
        count += words.length;
@@ -493,21 +501,22 @@ var CommandBuilder = {
        dataProperty : expectedProperty,
        saveVar : saveVar
      }
-     comand += CommandBuilder.endpoint(request, expectedResponse);
+     comand += CommandBuilder.endpoint(request, expectedResponse) + CommandBuilder.setIndex(currentRow);
      count += words.length;
    }
    var result = {
        comand: comand,
        words: words,
        count: count,
-       found: found
+       found: found,
+       row : currentRow
    };
    return result;
   },
 
-  findByParam : function(input){
+  findByParam : function(input, currentRow){
 
-      var result = CommandBuilder.findElement(input);
+      var result = CommandBuilder.findElement(input, currentRow);
 
       if(result.found){
           switch (result.words[2]) {
@@ -539,17 +548,18 @@ var CommandBuilder = {
   },
 
   //launch command search
-  createComand : function(argument) {
+  createComand : function(argument, currentRow) {
       while (argument.words.length!=0) {
-          CommandBuilder.findByParam(argument);
+          CommandBuilder.findByParam(argument, currentRow);
       }
   },
 
   //add closing brackets and timeout for all AI commands and return this commands
   finalize : function(command){
+    console.log(command);
       var length = command.split(/\n/).length;
       for(var i = 0; i < length-1; i++) {
-          command += ' }, function(err){ scope.callback(true, err); driver.sleep('+ CommandBuilder.waitInterval +'); return driver.quit() }) \n ';
+          command += ' }, function(err){ scope.callback(true, err, index); driver.sleep('+ CommandBuilder.waitInterval +'); return driver.quit() }) \n ';
       }
       return command;
   }
@@ -578,13 +588,13 @@ Parser.prototype.start = function(str, callback) {
         }
         if(lwords.length!=0){
             lcomand.words = lwords;
-            CommandBuilder.createComand(lcomand);
+            CommandBuilder.createComand(lcomand, i + 2);//currentRow needs increment, because loop starting from 0
         }
     }
 
     //forming command from input
     if(lcomand.comand){
-        var res = 'var self = scope.wd; var saved; \n' + CommandBuilder.given +'\n'+ CommandBuilder.finalize(lcomand.comand);
+        var res = 'var self = scope.wd; var saved; var index = 1;\n' + CommandBuilder.given +'\n'+ CommandBuilder.finalize(lcomand.comand);
         callback(null, res);
     }
     else {

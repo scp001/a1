@@ -15,7 +15,11 @@ humanAreaEditor.session.setMode("ace/mode/humanlanguage");
 humanAreaEditor.setTheme("ace/theme/tomorrow");
 humanAreaEditor.$blockScrolling = Infinity;
 $("#humanArea").on("resize", function() { humanAreaEditor.resize() });
-
+var Range = require("ace/range").Range;
+var humanAreaHighlightRange = new Range(0, 0, 0, 1)
+var humanAreaHighlightMarker = humanAreaEditor.getSession().addMarker(humanAreaHighlightRange, 'ace_highlight-marker', 'fullLine');
+humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+humanAreaEditor.getSession().clearAnnotations();
 // function resizeAll() {
 //   //$('#humanArea').height($(window).height()/3);
 //   //$('#humanArea').width($(window).width()/2.6);
@@ -187,6 +191,8 @@ document.addEventListener("DOMContentLoaded", function(e) {
 
 //"Generate test" click listener
 document.getElementById('parse').addEventListener('click', function(){
+    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+    humanAreaEditor.getSession().clearAnnotations();
     var data = humanAreaEditor.getValue();
 
     if(data){
@@ -218,13 +224,51 @@ document.getElementById('run').addEventListener('click', function(){
     });
 
     socket.on('send status', function(response){
+      console.log(response);
+      humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+      humanAreaEditor.getSession().clearAnnotations();
         if(response.code === 200) {
             document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response.msg + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" onClick="getStudentsList()" style="float: right; color: #3c763d"> Click to save results </a>' + '</p>';
-            document.getElementById('test-result').value = 'Success! ' + response.msg
+            document.getElementById('test-result').value = 'Success! \n' + response.msg
         }
         else {
-            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! '  + '<a href="#" style="color: #BF360C"" onclick="alert(' + '\'' + response.msg.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/[^\w\s]/gi, '')  + '\'' + ')"> Show details </a>' + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" onClick="getStudentsList()" style="float: right; color: #BF360C"> Click to save results </a>' +'</p>';
-            document.getElementById('test-result').value = 'Failed! ' + response.msg
+          if(!response.msg)
+            response.msg = 'unknown error';
+          if(!response.atRow)
+            response.atRow = 1;
+          if(response.msg.indexOf('no such element:') > -1){
+            console.log('webdriver error');
+            var message = response.msg.split(' ');
+            var errorMsg = "somewhere on this page";
+            console.log(message);
+
+            for (var i = 0; i < message.length; i++){
+              console.log(message[i]);
+              if(message[i].indexOf("{") > -1)
+                errorMsg = message[i];
+              if(errorMsg.indexOf("}") > -1) break;
+              if(message[i].indexOf("}") > -1)
+                errorMsg += message[i].replace(/\0\[\]\/\*/g,'');
+            }
+            errorMsg = JSON.parse(errorMsg);
+            // var tmp = errorMsg;
+            // errorMsg = {};
+            // errorMsg.selector = tmp;
+            console.log(errorMsg);
+            response.msg = "Can\'t find element by selector: " + errorMsg.selector.replace(/[^\w\s]/gi, ' ');
+          }
+            document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! '  + '<a href="#" style="color: #BF360C"" onclick="showMessage(' + '\'' + response.msg.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/[^\w\s]/gi, '')  + '\'' + ')"> Show details </a>' + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" onClick="getStudentsList()" style="float: right; color: #BF360C"> Click to save results </a>' +'</p>';
+            document.getElementById('test-result').value = 'Failed!\nAt row: '+ response.atRow + '\n' + response.msg;
+
+
+            humanAreaEditor.getSession().setAnnotations([{
+              row: response.atRow - 1,
+              column: 1,
+              text: response.msg,
+              type: "error" // also warning and information
+            }]);
+            humanAreaHighlightRange = new Range(response.atRow - 1, 0, response.atRow - 1, 1);
+            humanAreaHighlightMarker = humanAreaEditor.getSession().addMarker(humanAreaHighlightRange, 'ace_highlight-marker', 'fullLine');
         }
     });
 });
@@ -285,14 +329,15 @@ document.getElementById('run').addEventListener('click', function(){
 
 //Create new scenario
 document.getElementById('newScenario').addEventListener('click', function(){
+    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+    humanAreaEditor.getSession().clearAnnotations();
     var humanArea = humanAreaEditor.getValue();
-    var confirmed = humanArea.trim() && !testsMap.has(humanArea) ?
-        confirm('Are you sure? Changes will be discarded.') : true;
-
-    if(confirmed) {
-        reset();
-        $('#saveScenario').css('visibility', 'hidden');
+    var reset = function(){
+      reset();
+      $('#saveScenario').css('visibility', 'hidden');
     }
+    var confirmed = humanArea.trim() && !testsMap.has(humanArea) ?
+        showConfirmDialog('Changes will be discarded.', reset) : true;
 });
 
 document.getElementById('account-save').addEventListener('click', function(){
@@ -340,6 +385,34 @@ document.getElementById('account-save').addEventListener('click', function(){
     }
 });
 
+
+
+function showConfirmDialog(message, confirm, discard){
+  $('#confirm-dialog').modal('toggle');
+  var yesClicked = confirm;
+  var noClicked = discard;
+  document.getElementById('dialog-yes').addEventListener('click', function(){
+    if(typeof yesClicked === 'function')
+      yesClicked();
+    yesClicked = 'empty';
+    $('dialog-yes').off('click');
+    $('#confirm-dialog').modal('hide');
+  });
+  document.getElementById('dialog-no').addEventListener('click', function(){
+    if(typeof noClicked === 'function')
+      noClicked();
+    noClicked = 'empty';
+    $('dialog-no').off('click');
+    $('#confirm-dialog').modal('hide');
+  });
+  $('#dialog-message').html('<p>' + message + '</p>');
+}
+
+function showMessage(message){
+  $('#showMessage').modal('toggle');
+  $('#displayedMessage').html('<p>' + message + '</p>');
+}
+
 //scenario actions
 function getScenarios(){
     $.ajax({
@@ -368,42 +441,44 @@ function startScenario(name) {
     var role = getCookie('role');
     if (role && role === 'admin' || role === 'checker') {
         var humanArea = humanAreaEditor.getValue();
-        var confirmed = humanArea.trim() && !testsMap.has(humanArea) && !(current.name === name) ?
-            confirm('Are you sure? Changes will be discarded.') : true;
-    }
-
-    if(confirmed || role==='student') {
-        reset();
-        $.ajax({
-            type: 'POST',
-            url: '/script',
-            dataType: 'json',
-            data: {
-                name: name
-            },
-            success: function(response){
-                humanAreaEditor.setValue(response[0].scenario);
-                humanAreaEditor.gotoLine(0);
-                document.getElementById('url').value  = response[0].url;
-                if (role && role === 'admin' || role === 'checker') {
-                    current = {
-                        provided: true,
-                        name: response[0].name,
-                        scenario: response[0].scenario
-                    };
-                    $('#test-header').text('Update ' + '[' + response[0].name + ']' + ' test:');
-                    $('#scenario-name').val(response[0].name).prop('disabled', false);
-                    $('#scenario').css('visibility', 'visible');
-                    $('#reset').css('visibility', 'visible');
-                    $('#saveScenario').hide();
-                    $('#discard').hide();
-                    $('#removeScenario').show();
-                }
-            },
-            error: function(response) {
-                console.log(response.responseText);
-            }
-        });
+        var start = function(){
+              reset();
+              $.ajax({
+                  type: 'POST',
+                  url: '/script',
+                  dataType: 'json',
+                  data: {
+                      name: name
+                  },
+                  success: function(response){
+                      humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+                      humanAreaEditor.getSession().clearAnnotations();
+                      humanAreaEditor.setValue(response[0].scenario);
+                      humanAreaEditor.gotoLine(0);
+                      document.getElementById('url').value  = response[0].url;
+                      if (role && role === 'admin' || role === 'checker') {
+                          current = {
+                              provided: true,
+                              name: response[0].name,
+                              scenario: response[0].scenario
+                          };
+                          $('#test-header').text('Update ' + '[' + response[0].name + ']' + ' test:');
+                          $('#scenario-name').val(response[0].name).prop('disabled', false);
+                          $('#scenario').css('visibility', 'visible');
+                          $('#reset').css('visibility', 'visible');
+                          $('#saveScenario').hide();
+                          $('#discard').hide();
+                          $('#removeScenario').show();
+                      }
+                  },
+                  error: function(response) {
+                      console.log(response.responseText);
+                  }
+              });
+        }
+        humanArea.trim() && !testsMap.has(humanArea) && !(current.name === name) ?
+            showConfirmDialog('Changes will be discarded.', start) : start();
+            //confirm('Are you sure? Changes will be discarded.') : true;
     }
 }
 
@@ -412,6 +487,8 @@ document.getElementById('scenario-name').addEventListener('change', function(){
 });
 
 document.getElementById('scenario-save').addEventListener('click', function(){
+    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+    humanAreaEditor.getSession().clearAnnotations();
     var name = current.provided ? current.name : document.getElementById('scenario-name').value.trim();
     var scenario = humanAreaEditor.getValue().trim();
     var url = document.getElementById('url').value.trim();
@@ -454,28 +531,29 @@ document.getElementById('scenario-save').addEventListener('click', function(){
 });
 
 document.getElementById('removeScenario').addEventListener('click', function(){
-    var confirmed = confirm('Are you sure?');
-
-    if (confirmed) {
-        if (current.provided) {
-            $.ajax({
-                type: 'DELETE',
-                url: '/scenario',
-                dataType: 'text',
-                data: {
-                    scenario: current.scenario
-                },
-                success: function(response){
-                    if(response) getScenarios();
-                    reset();
-                    Notify(response, null, null, 'success');
-                },
-                error: function(response) {
-                    Notify(response.responseText, null, null, 'danger');
-                }
-            });
-        }
+    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+    humanAreaEditor.getSession().clearAnnotations();
+    var remove = function(){
+      if (current.provided) {
+          $.ajax({
+              type: 'DELETE',
+              url: '/scenario',
+              dataType: 'text',
+              data: {
+                  scenario: current.scenario
+              },
+              success: function(response){
+                  if(response) getScenarios();
+                  reset();
+                  Notify(response, null, null, 'success');
+              },
+              error: function(response) {
+                  Notify(response.responseText, null, null, 'danger');
+              }
+          });
+      }
     }
+    showConfirmDialog('Remove this scenario?', remove);//confirm('Are you sure?');
 });
 
 //students actions
@@ -542,6 +620,8 @@ function getStudentsList(){
 }
 
 document.getElementById('save-test-results').addEventListener('click', function(){
+    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+    humanAreaEditor.getSession().clearAnnotations();
     var course = document.getElementById('course').value,
         scenario = humanAreaEditor.getValue(),
         result = document.getElementById('test-result').value,
@@ -638,6 +718,8 @@ function restoreScenarios(){
 function reset(){
 
     var value = '';
+    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+    humanAreaEditor.getSession().clearAnnotations();
     aiAreaEditor.setValue(value);
     aiAreaEditor.gotoLine(0);
     humanAreaEditor.setValue(value);
@@ -668,6 +750,8 @@ document.getElementById('discard').addEventListener('click', function(){
     if(discard) {
         humanAreaEditor.setValue(discard);
         humanAreaEditor.gotoLine(0);
+        humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+        humanAreaEditor.getSession().clearAnnotations();
         $('#discard').hide();
         $('#saveScenario').hide();
         $('#reset').css('visibility', 'visible');

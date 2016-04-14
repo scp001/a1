@@ -144,7 +144,7 @@ exports.uploadImage = function(req, res) {
                 +err.message+ ")" );
 	}
     });
-	
+
 };
 
 // use find to reterive all movies
@@ -324,7 +324,7 @@ exports.deleteComment = function(req, res) {
 var mongoose = require('mongoose'); // MongoDB integration
 
 // Connect to database, using credentials specified in your config module
-mongoose.connect('mongodb://localhost/splat', function(err) {
+mongoose.connect(config.database, function(err) {
 	if (err){
 		console.error('Unable connect to database('+err+'), check database is up and running. Exiting.');
 		process.exit(1);

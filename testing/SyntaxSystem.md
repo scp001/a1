@@ -313,7 +313,8 @@ dropdown "fruits" select "lemon"
 ```
 ### **Test API**
 *Send GET, POST, PUT or DELETE request to specified* \<endpoint\> *and check response from it*
-*parameters:*
+
+*Parameters:*
 - *should return - begin of check response block*
 - *status - expected status code in response*
 - *content-type - expected status content-type in response*
@@ -322,6 +323,7 @@ dropdown "fruits" select "lemon"
 *use save ALL_BODY for save all response body*
 *for access to saved response props use a save variable*
 *if in response expected an array, use variable saved[index] and dot notation for access to response props*
+
 ##### usage
 ```
 <requestType> endpoint <endpoint> data <JSON> should return status <status code> content-type <content-type> data <JSON> dataProperty <value> save <property>
