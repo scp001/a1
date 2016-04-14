@@ -223,8 +223,7 @@ document.getElementById('run').addEventListener('click', function(){
         command: aiAreaEditor.getValue()
     });
 
-    socket.on('send status', function(response){
-      console.log(response);
+    socket.on('send status', function(response){      
       humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
       humanAreaEditor.getSession().clearAnnotations();
         if(response.code === 200) {
@@ -237,13 +236,10 @@ document.getElementById('run').addEventListener('click', function(){
           if(!response.atRow)
             response.atRow = 1;
           if(response.msg.indexOf('no such element:') > -1){
-            console.log('webdriver error');
             var message = response.msg.split(' ');
             var errorMsg = "somewhere on this page";
-            console.log(message);
 
             for (var i = 0; i < message.length; i++){
-              console.log(message[i]);
               if(message[i].indexOf("{") > -1)
                 errorMsg = message[i];
               if(errorMsg.indexOf("}") > -1) break;
@@ -251,16 +247,10 @@ document.getElementById('run').addEventListener('click', function(){
                 errorMsg += message[i].replace(/\0\[\]\/\*/g,'');
             }
             errorMsg = JSON.parse(errorMsg);
-            // var tmp = errorMsg;
-            // errorMsg = {};
-            // errorMsg.selector = tmp;
-            console.log(errorMsg);
             response.msg = "Can\'t find element by selector: " + errorMsg.selector.replace(/[^\w\s]/gi, ' ');
           }
             document.getElementById('status-field').innerHTML = '<p class="alert alert-danger"> Failed! '  + '<a href="#" style="color: #BF360C"" onclick="showMessage(' + '\'' + response.msg.replace(/(?:\r\n|\r|\n)/g, ' ').replace(/[^\w\s]/gi, '')  + '\'' + ')"> Show details </a>' + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" onClick="getStudentsList()" style="float: right; color: #BF360C"> Click to save results </a>' +'</p>';
             document.getElementById('test-result').value = 'Failed!\nAt row: '+ response.atRow + '\n' + response.msg;
-
-
             humanAreaEditor.getSession().setAnnotations([{
               row: response.atRow - 1,
               column: 1,

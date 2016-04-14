@@ -411,6 +411,146 @@ get endpoint movies+saved[0]._id should return status 200
 get endpoint movies+saved[1]._id should return status 200
 get endpoint moviesEndpoint+'/'+saved[0]._id should return dataProperty "duration" 130
       */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+
+    {
+        name: 'SplatReg(fails)',
+        url: links.splat(),
+        scenario:  (function (){/*
+title should be "Salat"
+wait 0.5
+click "Sign Up"
+wait 0.5
+fill Username "root"
+wait 0.5
+fill Email "root@gmail.com"
+wait 0.5
+fill Password "Testroot1"
+wait 0.5
+fill "Enter Password Again" "Testroot1"
+wait 0.5
+click element with id "singup-button"
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+        name: 'SplatAddUpdateDeleteMovieCheckRegex(fails)',
+        url: links.splat(),
+        scenario:  (function (){/*
+title should be "Splat"
+wait 0.5
+click "Add Movie"
+wait on response 500
+fill element with id title "The Hateful Eight"
+wait 0.5
+fill element with id released "2015"
+wait 0.5
+released check regex "[15]"
+wait 0.5
+fill element with id director "Quentin Tarantino"
+wait 0.5
+director check regex "[m]"
+wait 0.5
+fill element with id rating "R"
+wait 0.5
+fill element with id starring "Samuel Jackson, Kurt Russell"
+wait 0.5
+starring check regex "[J]"
+wait 0.5
+fill element with id duration "187"
+wait 0.5
+fill element with id genre "crime, drama"
+wait 0.5
+genre check regex "[a-r]"
+wait 0.5
+fill element with id synopsis "Description"
+wait 0.5
+fill element with id trailer "https://youtu.be/nIOmotayDMY"
+click "Save Changes"
+wait on response 500
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "TheHatefulEight"
+wait 0.5
+fill element with id synopsis " summary"
+wait 0.5
+click "Save Changes"
+wait 0.5
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait on response 500
+click element with id "TheHatefulEight"
+wait on response 500
+click "Delete Movie"
+wait on response 500
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+        name: 'TestSplatAPI(fails)',
+        url: links.splat(),
+        scenario:  (function (){/*
+#Settings
+wait between operations for 0.1 s
+#Given
+moviesEndpoint is 'http://localhost:41484/movies'
+movies is 'http://localhost:41484/movies/'
+comments is 'http://localhost:41484/comments'
+CSI is "{'title':'CSI','director':'Jerry Bruckheimer','released':'2010-01-01','duration':148,'synopsis':'not bad','freshTotal':50,'freshVotes':150,'poster':'csi.jpg','dated':'2010-01-01', 'genre':['detective'],'starring':['John Smith, Vasyl Vasylenko, Rachel Tudor']}"
+CSIedited is "{'title':'CSI','director':'Jerry Bruckheimer, Eddy Murphy','released':'2010-01-02','duration':141,'synopsis':'good','freshTotal':4,'freshVotes':15,'poster':'csi.jpg','dated':'2010-01-31', 'genre':['detective'],'starring':['John Smith, Vasyl Vasylenko, Rachel Tudor, Tom and Jerry']}"
+#Test
+wait 0.3
+get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8"
+post endpoint moviesEndpoint data CSI should return status 200 dataProperty "upserted[0].index" 0 save ALL_BODY
+get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
+post endpoint movies+saved._id+'/reviews' data "{'freshness':3,'reviewName':'test','reviewAffil':'testtext12','reviewText':'abcdef','movieId':saved._id}" should return status 200 dataProperty "freshness" 3
+get endpoint movies+saved._id+'/reviews' should return content-type "application/json; charset=utf-8"
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+delete endpoint movies+saved._id should return status 300
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+post endpoint moviesEndpoint data CSI should return status 200 dataProperty "nModified" 0 save ALL_BODY
+get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
+put endpoint movies+saved._id data CSIedited should return status 200 dataProperty "nModified" 1
+post endpoint comments data "{'text':'Great movie. Highly recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved._id}" should return status 200 content-type "application/json; charset=utf-8" save ALL_BODY
+put endpoint comments+'/'+saved[0]._id data "{'text':'I changed my mind. Highly-HIIIIIGHLY recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved[0]._id}" should return status 200 dataProperty "nModified" 1
+delete endpoint comments+'/'+saved[0]._id should return status 200
+click "Splat!"
+title should be "Splat"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
+wait 0.5
+click "Delete Movie"
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
+    },
+    {
+        name: 'SplatAuth(fails)',
+        url: links.splat(),
+        scenario:  (function (){/*
+title should be "Splat"
+wait 0.5
+click "Sign In"
+wait 0.5
+fill element with id "signin-username" "root"
+wait 0.5
+fill element with id "signin-password" "Testroot1"
+wait 0.5
+click element with id "remember"
+wait 0.5
+click element with id "signin-button"
+      */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].trim()
     }
 ];
 
