@@ -39,7 +39,7 @@ var CommandBuilder = {
   },
 
   shouldBe : function(value1, value2){
-    var command = 'if( \'' + value1 + '\' !== ' + '\''+ value2 + '\'' + ' ) '+ CommandBuilder.emitError('Values not match. Expected: ' + value1 + ' Got: '+ value2) +';';
+    var command = 'driver.wait( function(){if(' + value1 + '!==' + value2 + ') {'+ CommandBuilder.emitError('Values not match. Expected: \" + ' + value1 + ' + \" Got: \" + '+ value2 + '+\"')+ ' return false;} return true;}).then(function(){';
     return command;
   },
 
@@ -92,7 +92,7 @@ var CommandBuilder = {
   },
 
   propertyShouldBe : function(element, propertyName, expectedValue){
-    var assertion = 'if(value !== \''+ expectedValue +'\'){'+CommandBuilder.emitError('Unexpected property. Expected: ' + expectedValue)+'}';
+    var assertion = 'if(value !== \''+ expectedValue +'\'){'+CommandBuilder.emitError('Unexpected property '+ propertyName +' on element with id '+ element + '. Expected: ' + expectedValue +' Got \"+value+\"')+'}';
     var command  = CommandBuilder.findElementBy.Id(element) +
     '.getAttribute(\''+propertyName+'\').then(function(value) {if(value){' + assertion + '}else{' + CommandBuilder.cssPropertyShouldBe(element, propertyName, expectedValue) + ';} }).then(function () {';
 
@@ -100,7 +100,7 @@ var CommandBuilder = {
   },
 
   cssPropertyShouldBe : function(element, propertyName, expectedValue){
-    var assertion = 'if(value !== \''+ expectedValue +'\'){'+ CommandBuilder.emitError('Unexpected css property. Expected: ' + expectedValue) +'}';
+    var assertion = 'if(value !== \''+ expectedValue +'\'){'+ CommandBuilder.emitError('Unexpected css property '+ propertyName +' on element with id '+ element + '. Expected: ' + expectedValue + ' Got \"+value+\"') +'}';
     var command  = CommandBuilder.findElementBy.Id(element) +
     '.getCssValue(\''+propertyName+'\').then(function(value) {if(value) ' + assertion + ' })';
 
@@ -129,7 +129,7 @@ var CommandBuilder = {
 //internal objects for forming commands
   elementsChecker : {
     titleShouldBe : function(value){
-      return 'driver.getTitle().then(function(title) { if(title !== ' + '\''+value+'\'' +')' + CommandBuilder.emitError('Titles mismatch! Expected: \''+ value +'\'') + ' }).then(function(){ ';
+      return 'driver.getTitle().then(function(title) { if(title !== ' + '\''+value+'\'' +')' + CommandBuilder.emitError('Titles mismatch! Expected: \''+ value +'\''+ ' Got \"+title+\"') + ' }).then(function(){ ';
     },
 
     pageShouldContains : function(value){
@@ -220,7 +220,7 @@ var CommandBuilder = {
   },
 
   getValueAndCompare : function(keys){
-    return '.getAttribute(\'value\').then(function(value){ if(value !==\''+keys+'\') '+ CommandBuilder.emitError('Attribute mismatch. Expected: ' + keys) +'}).then(null, function(e){return callback(true, e.stack)})';
+    return '.getAttribute(\'value\').then(function(value){ if(value !==\''+keys+'\') '+ CommandBuilder.emitError('Attribute mismatch. Expected: ' + keys+ ' Got \"+value+\"') +'}).then(null, function(e){return callback(true, e.stack)})';
   },
 
   emitError : function(message){
@@ -236,16 +236,16 @@ var CommandBuilder = {
     else inputData.requestBody = '';
     var responseOps = '';
     if(assertOutputData.statusCode){
-      responseOps += 'if(res.response.statusCode !== '+assertOutputData.statusCode+'){'+ CommandBuilder.emitError('Unexpected status code in response. Expected: ' + assertOutputData.statusCode) +'}';
-    }
-    if(assertOutputData.responseJSON){
-      responseOps += 'if(!scope._.isEqual(res.body,'+assertOutputData.responseJSON+')){'+ CommandBuilder.emitError('Unexpected data in response. Expected: ' + assertOutputData.responseJSON) +'}';
-    }
-    if(assertOutputData.dataProperty){
-      responseOps += 'if(res.body.' + assertOutputData.dataProperty.name + ' !== ' + assertOutputData.dataProperty.value + '){'+ CommandBuilder.emitError('Unexpected \''+ assertOutputData.dataProperty.name +'\' property value in response data. Expected: ' + assertOutputData.dataProperty.value) +'}'
+      responseOps += 'if(res.response.statusCode !== '+assertOutputData.statusCode+'){'+ CommandBuilder.emitError('Unexpected status code in response. Expected: ' + assertOutputData.statusCode+ ' Got \"+res.response.statusCode+\"') +'}';
     }
     if(assertOutputData.contentType){
-      responseOps += 'if(res.response.rawHeaders.indexOf(\''+assertOutputData.contentType+'\') < 0){'+ CommandBuilder.emitError('Unexpected content-type in response. Expected: ' + assertOutputData.contentType) +'}';
+      responseOps += 'if(res.response.rawHeaders.indexOf(\''+assertOutputData.contentType+'\') < 0){'+ CommandBuilder.emitError('Unexpected content-type in response. Expected: ' + assertOutputData.contentType+' Got \"+res.response.rawHeaders+\"') +'}';
+    }
+    if(assertOutputData.responseJSON){
+      responseOps += 'if(!scope._.isEqual(res.body,'+assertOutputData.responseJSON+')){'+ CommandBuilder.emitError('Unexpected data in response. Expected: ' + assertOutputData.responseJSON+ ' Got \"+res.body+\"') +'}';
+    }
+    if(assertOutputData.dataProperty){
+      responseOps += 'if(res.body.' + assertOutputData.dataProperty.name + ' !== ' + assertOutputData.dataProperty.value + '){'+ CommandBuilder.emitError('Unexpected \''+ assertOutputData.dataProperty.name +'\' property value in response data. Expected: ' + assertOutputData.dataProperty.value + ' Got \"+res.body.'+assertOutputData.dataProperty.name+'+\"') +'}'
     }
     if(assertOutputData.saveVar){
       var variable = assertOutputData.saveVar;
@@ -292,6 +292,7 @@ var CommandBuilder = {
 
    //search commands by defined keywords
 
+   //detecting #Settings block
    if(words[0] === '#Settings' && !CommandBuilder.isSettingsArea){
      CommandBuilder.isSettingsArea = true;
      CommandBuilder.isGivenArea = false;
@@ -299,7 +300,7 @@ var CommandBuilder = {
 
      found = true;
    }
-
+   //detecting configuration for #Settings
    if(time.indexOf(words[0]) > -1 && CommandBuilder.isSettingsArea){
      if(words[5] === 's') CommandBuilder.waitInterval = parseFloat(words[4])*1000;
      else if(words[5] === 'ms') CommandBuilder.waitInterval = words[4];
@@ -308,7 +309,7 @@ var CommandBuilder = {
 
      found = true;
    }
-
+   //detecting #Given block
    if(words[0] === '#Given'){
      CommandBuilder.isSettingsArea = false;
      CommandBuilder.isGivenArea = true;
@@ -316,13 +317,13 @@ var CommandBuilder = {
 
      found = true;
    }
-
+   //detecting variable definition for #Given
    if(words[1] === 'is' && CommandBuilder.isGivenArea){
      CommandBuilder.given += 'var ' + words[0] + ' = ' + words[2] + ';';
 
      found = true;
    }
-
+   //detecting #Test block
    if(words[0] === "#Test"){
      CommandBuilder.isTestArea = true;
      CommandBuilder.isGivenArea = false;
@@ -330,23 +331,20 @@ var CommandBuilder = {
 
      found = true;
    }
-
+   //detecting test commands
    if(assertion.indexOf(words[2]) > -1){
      if(words[2] === 'property'){
        comand += CommandBuilder.propertyShouldBe(words[0], words[1], words[5]) + CommandBuilder.setIndex(currentRow);
-       //count += 6;
      }
      count += words.length;
      found = true;
    }
    if(assertion.indexOf(words[1]) > -1){
        if (words[1] === 'should' && elements.indexOf(words[0]) === -1){
-         comand += CommandBuilder.shouldBe(words[0], words[2]) + CommandBuilder.setIndex(currentRow);
-         //count += 4;
+         comand += CommandBuilder.shouldBe(words[0], words[3]) + CommandBuilder.setIndex(currentRow);
        }else{
          if(words[1] === 'check'){
            comand += CommandBuilder.checkRegex(words[0],words[3]) + CommandBuilder.setIndex(currentRow);
-           //count += 3;
          }
        }
      count += words.length;
@@ -356,14 +354,11 @@ var CommandBuilder = {
    if(controls.indexOf(words[0]) > -1) {
       if(words[0] === 'move'){
          comand += CommandBuilder.moveMouseTo(words[3]) + CommandBuilder.setIndex(currentRow);
-         //count += 4;
       }
       else if(words[0] === 'focus'){
         comand += CommandBuilder.focusOn(words[2]) + CommandBuilder.setIndex(currentRow);
-        //count += 3;
       }else if(words[0] === 'press'){
           comand += CommandBuilder.pressKey(words[2]) + CommandBuilder.setIndex(currentRow);
-          //count += 3;
       }
       count += words.length;
       found = true;
@@ -372,34 +367,28 @@ var CommandBuilder = {
    if(elements.indexOf(words[0]) > -1) {
        if(words[0] === 'submit'){
          comand += CommandBuilder.findElementBy.Id(word[4]) + CommandBuilder.emitEvent(words[0]) + CommandBuilder.setIndex(currentRow);
-         //count += 5;
        }
        else if(words[0] === 'title') {
          if(words[1] === 'should')
           if(words[2] === 'be'){
            comand+= CommandBuilder.elementsChecker.titleShouldBe(words[3]) + CommandBuilder.setIndex(currentRow);
-           //count+=4;
          }
        }
        else if(words[0] === 'page') {
            if(words[1] === 'should') {
                if(words[2] === 'contains') {
                    comand+= CommandBuilder.elementsChecker.pageShouldContains(words[3]) + CommandBuilder.setIndex(currentRow);
-                   //count+=4;
-               }
+                 }
            }
        }
        else if(words[0] === 'dropdown'){
          comand += CommandBuilder.selectFromDropdown(words[1], words[3]) + CommandBuilder.setIndex(currentRow);
-         //count += 4;
        }
        else if(words[0] === 'radiogroup'){
          comand += CommandBuilder.radiogroupSelect(words[1], words[3]) + CommandBuilder.setIndex(currentRow);
-         //count += 4;
        }
        else {
            comand+= CommandBuilder.elementsChecker.findElementBy.Value(words[0]) + CommandBuilder.setIndex(currentRow);
-           //count+=2;
        }
        count += words.length;
        found = true;
@@ -413,16 +402,19 @@ var CommandBuilder = {
            if (words[2] === 'with'){
                if(words[3] === 'id'){
                    comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "id") + CommandBuilder.setIndex(currentRow);
-                   //count+=5;
                }
                if(words[3] === 'text'){
                  comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "text") + CommandBuilder.setIndex(currentRow);
-                 //count+=5;
+               }
+               if(words[3] === 'name'){
+                 comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "name") + CommandBuilder.setIndex(currentRow);
+               }
+               if(words[3] === 'value'){
+                 comand += CommandBuilder.eventsEmitter.elementEvent(words[0], words[4], "text") + CommandBuilder.setIndex(currentRow);
                }
            }
        } else {
            comand += CommandBuilder.eventsEmitter.elementEvent(words[0],words[1],"text") + CommandBuilder.setIndex(currentRow);
-           //count+=2;
        }
        count += words.length;
        found = true;
@@ -433,12 +425,13 @@ var CommandBuilder = {
            if (words[2] === 'with') {
                if(words[3] === 'id') {
                    comand += CommandBuilder.formsAction.fillWithValue(words[5], words[4],"Id") + CommandBuilder.setIndex(currentRow);
-                   //count += 6;
+               }
+               if(words[3] === 'placeholder') {
+                   comand += CommandBuilder.formsAction.fillWithValue(words[5], words[4],"placeholder") + CommandBuilder.setIndex(currentRow);
                }
            }
        } else {
            comand+= CommandBuilder.formsAction.fillWithValue(words[2],words[1],"placeholder") + CommandBuilder.setIndex(currentRow)
-           //count+=2;
        }
        count += words.length;
        found = true;
@@ -556,7 +549,6 @@ var CommandBuilder = {
 
   //add closing brackets and timeout for all AI commands and return this commands
   finalize : function(command){
-    console.log(command);
       var length = command.split(/\n/).length;
       for(var i = 0; i < length-1; i++) {
           command += ' }, function(err){ scope.callback(true, err, index); driver.sleep('+ CommandBuilder.waitInterval +'); return driver.quit() }) \n ';

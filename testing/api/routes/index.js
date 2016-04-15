@@ -26,7 +26,7 @@ module.exports = function (app, passport) {
         parser.start(req.body.data.trim(), function(err, data){
           res.header("Content-Type", "application/json");
           if (!err) {
-              console.log("parse success");
+              console.log("Human commands converted successfully");
               res.status(200).send(data);
           } else {
               res.status(500).send('500 Internal Server Error');

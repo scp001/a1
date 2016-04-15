@@ -62,6 +62,7 @@ io.on('connection', function(socket){
         }
         else {
             webdriver.test(address, command, function (err, message, currentRow) {
+                console.log('Test completed.')
                 if (!err) {
                     result = {testname: testname, code: 200, msg: 'OK'};
                 } else {

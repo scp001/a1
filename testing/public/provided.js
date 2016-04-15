@@ -20,6 +20,11 @@ var humanAreaHighlightRange = new Range(0, 0, 0, 1)
 var humanAreaHighlightMarker = humanAreaEditor.getSession().addMarker(humanAreaHighlightRange, 'ace_highlight-marker', 'fullLine');
 humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
 humanAreaEditor.getSession().clearAnnotations();
+
+function ClearErrorHighligting(){
+  humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
+  humanAreaEditor.getSession().clearAnnotations();
+}
 // function resizeAll() {
 //   //$('#humanArea').height($(window).height()/3);
 //   //$('#humanArea').width($(window).width()/2.6);
@@ -191,8 +196,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
 
 //"Generate test" click listener
 document.getElementById('parse').addEventListener('click', function(){
-    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-    humanAreaEditor.getSession().clearAnnotations();
+    ClearErrorHighligting();
     var data = humanAreaEditor.getValue();
 
     if(data){
@@ -223,9 +227,8 @@ document.getElementById('run').addEventListener('click', function(){
         command: aiAreaEditor.getValue()
     });
 
-    socket.on('send status', function(response){      
-      humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-      humanAreaEditor.getSession().clearAnnotations();
+    socket.on('send status', function(response){
+        ClearErrorHighligting();
         if(response.code === 200) {
             document.getElementById('status-field').innerHTML = '<p class="alert alert-success"> Success! ' + response.msg + '<a href="#" data-toggle="modal" data-target="#modal-save-test-res" onClick="getStudentsList()" style="float: right; color: #3c763d"> Click to save results </a>' + '</p>';
             document.getElementById('test-result').value = 'Success! \n' + response.msg
@@ -237,8 +240,7 @@ document.getElementById('run').addEventListener('click', function(){
             response.atRow = 1;
           if(response.msg.indexOf('no such element:') > -1){
             var message = response.msg.split(' ');
-            var errorMsg = "somewhere on this page";
-
+            var errorMsg = "unknown error";
             for (var i = 0; i < message.length; i++){
               if(message[i].indexOf("{") > -1)
                 errorMsg = message[i];
@@ -319,8 +321,7 @@ document.getElementById('run').addEventListener('click', function(){
 
 //Create new scenario
 document.getElementById('newScenario').addEventListener('click', function(){
-    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-    humanAreaEditor.getSession().clearAnnotations();
+    ClearErrorHighligting();
     var humanArea = humanAreaEditor.getValue();
     var reset = function(){
       reset();
@@ -441,8 +442,7 @@ function startScenario(name) {
                       name: name
                   },
                   success: function(response){
-                      humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-                      humanAreaEditor.getSession().clearAnnotations();
+                      ClearErrorHighligting();
                       humanAreaEditor.setValue(response[0].scenario);
                       humanAreaEditor.gotoLine(0);
                       document.getElementById('url').value  = response[0].url;
@@ -477,8 +477,7 @@ document.getElementById('scenario-name').addEventListener('change', function(){
 });
 
 document.getElementById('scenario-save').addEventListener('click', function(){
-    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-    humanAreaEditor.getSession().clearAnnotations();
+    ClearErrorHighligting();
     var name = current.provided ? current.name : document.getElementById('scenario-name').value.trim();
     var scenario = humanAreaEditor.getValue().trim();
     var url = document.getElementById('url').value.trim();
@@ -521,8 +520,7 @@ document.getElementById('scenario-save').addEventListener('click', function(){
 });
 
 document.getElementById('removeScenario').addEventListener('click', function(){
-    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-    humanAreaEditor.getSession().clearAnnotations();
+    ClearErrorHighligting();
     var remove = function(){
       if (current.provided) {
           $.ajax({
@@ -552,7 +550,6 @@ function getStudents(filter){
     function render(data){
         var arr = [];
         data.forEach(function(item){
-
             var resp = '<tr>' +
                 '<td>' + item.student.name  + '</td>' +
                 '<td>' + item.student.course + '</td>' +
@@ -610,8 +607,7 @@ function getStudentsList(){
 }
 
 document.getElementById('save-test-results').addEventListener('click', function(){
-    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-    humanAreaEditor.getSession().clearAnnotations();
+    ClearErrorHighligting();
     var course = document.getElementById('course').value,
         scenario = humanAreaEditor.getValue(),
         result = document.getElementById('test-result').value,
@@ -708,8 +704,7 @@ function restoreScenarios(){
 function reset(){
 
     var value = '';
-    humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-    humanAreaEditor.getSession().clearAnnotations();
+    ClearErrorHighligting();
     aiAreaEditor.setValue(value);
     aiAreaEditor.gotoLine(0);
     humanAreaEditor.setValue(value);
@@ -740,8 +735,7 @@ document.getElementById('discard').addEventListener('click', function(){
     if(discard) {
         humanAreaEditor.setValue(discard);
         humanAreaEditor.gotoLine(0);
-        humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
-        humanAreaEditor.getSession().clearAnnotations();
+        ClearErrorHighligting();
         $('#discard').hide();
         $('#saveScenario').hide();
         $('#reset').css('visibility', 'visible');
