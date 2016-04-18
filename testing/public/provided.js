@@ -1,8 +1,9 @@
 'use strict';
 
 /********code highlighting options*******/
-// trigger extension
+
 ace.require("ace/ext/chromevox");
+ace.require("ace/ext/language_tools");
 
 var aiAreaEditor = ace.edit("aiArea");
 aiAreaEditor.session.setMode("ace/mode/javascript");
@@ -16,26 +17,108 @@ humanAreaEditor.setTheme("ace/theme/tomorrow");
 humanAreaEditor.$blockScrolling = Infinity;
 $("#humanArea").on("resize", function() { humanAreaEditor.resize() });
 var Range = require("ace/range").Range;
+
+//init highlight markers
 var humanAreaHighlightRange = new Range(0, 0, 0, 1)
 var humanAreaHighlightMarker = humanAreaEditor.getSession().addMarker(humanAreaHighlightRange, 'ace_highlight-marker', 'fullLine');
 humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
 humanAreaEditor.getSession().clearAnnotations();
-
 function ClearErrorHighligting(){
   humanAreaEditor.getSession().removeMarker(humanAreaHighlightMarker);
   humanAreaEditor.getSession().clearAnnotations();
 }
-// function resizeAll() {
-//   //$('#humanArea').height($(window).height()/3);
-//   //$('#humanArea').width($(window).width()/2.6);
-//
-//   //$('#right-side').height($(window).height()/3);
-//   //$('#right-side').width($(window).width()/5);
-// };
-// //listen for changes
-// $(window).resize(resizeAll);
-// //set initially
-// resizeAll();
+
+//init autocompletion params
+var HumanLanguageWordCompleter = {
+    getCompletions: function(editor, session, pos, prefix, callback) {
+        var commandList = [
+          "fill","wait","check","click","with","click","double","focus","submit","press","select",
+              "endpoint","data","response","status","content-type","should","return","save","content-type","dataProperty"];
+        var commandTemplate = [
+          "click <element>",
+          "click element with <identifier>",
+          "double click on <element>",
+          "fill <element> with <value>",
+          "<value> should be <value>",
+          "wait for <number> [ ms | s | min ]",
+          "move mouse to <element>",
+          "focus on <element>",
+          "submit <element>",
+          "press key <key>",
+          "radiogroup <name> select <value>",
+          "dropdown <name> select <value>",
+          "<element> <property> property should be <value>",
+          "wait on response <number> [ ms | s | min ]",
+          "<element> check regex <regex>",
+          "<requestType> endpoint <endpoint> data <JSON> should return status <status code> content-type <content-type> data <JSON> dataProperty <value> save <property>"
+        ];
+        var syntaxConstructions = [
+          "click element with",
+          "double click on",
+          "should be",
+          "wait for",
+          "move mouse to",
+          "focus on",
+          "submit",
+          "press key",
+          "property should be",
+          "wait on response",
+          "check regex",
+          "should return status"
+        ];
+        var constantList = ["is","id","be","on","with","title","element","key","radiogroup","dropdown","mouse","should","be","regex","response",
+              "having","property","get","post","put","patch","delete","ALL_BODY","saved"];
+        var block = ["#Given", "#Settings","#Test"];
+        var wordList = commandList.concat(constantList, block, commandTemplate, syntaxConstructions);
+        callback(null, wordList.map(function(word) {
+          if(commandTemplate.indexOf(word) > -1){
+            return {
+                caption: word,
+                value: word,
+                meta: "full command"
+            };
+          }
+          if(syntaxConstructions.indexOf(word) > -1){
+            return {
+                caption: word,
+                value: word,
+                meta: "syntax construction"
+            };
+          }
+          if(commandList.indexOf(word) > -1){
+            return {
+                caption: word,
+                value: word,
+                meta: "command fragment"
+            };
+          }
+          if(block.indexOf(word) > -1){
+            return {
+                caption: word,
+                value: word,
+                meta: "block initialization"
+            };
+          }
+          if(constantList.indexOf(word) > -1){
+            return {
+                caption: word,
+                value: word,
+                meta: "constant word"
+            };
+          }
+        }));
+
+    }
+}
+//set autocompleters
+humanAreaEditor.completers = [HumanLanguageWordCompleter];
+humanAreaEditor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+});
+
+
 /****************************************************************/
 /*                display tests results                         */
 /****************************************************************/
@@ -177,10 +260,6 @@ document.getElementById("humanArea").addEventListener("keyup", function(){
       }
   }
 });
-
-// document.getElementById("humanArea").addEventListener("keypress", function(){
-//
-// });
 
 document.addEventListener("DOMContentLoaded", function(e) {
     var role = getCookie('role');

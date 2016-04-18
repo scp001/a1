@@ -136,11 +136,13 @@ email is "[root@mail.com](mailto:root@mail.com)"
 
 ##### usage
 ```
-click on <element>
+click <element>
+click element with <selector> <value>
 ```
 ##### example
 ```
-click on "Sign Up" button
+click "Sign Up"
+click element with text "Click me"
 ```
 #### **Double click on**
 
@@ -148,11 +150,11 @@ click on "Sign Up" button
 
 ##### usage
 ```
-double click on <element>
+double click <element>
 ```
 ##### example
 ```
-double click on "About" link
+double click "About" link
 ```
 #### **Fill with**
 

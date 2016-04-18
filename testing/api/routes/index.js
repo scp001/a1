@@ -107,7 +107,7 @@ module.exports = function (app, passport) {
 
             Scenarios.find({}, function (err, scenarios) {
                 if (!err) {
-                    console.log("get scenarios");
+                    console.log("Get scenarios success");
                     res.send(scenarios)
                 }
                 else {
@@ -134,7 +134,7 @@ module.exports = function (app, passport) {
 
             Scenarios.update({'name' : scenario.name}, scenario, { upsert: true }, function (err) {
                 if (!err) {
-                    console.log("create scenario success. Scenario: ", JSON.stringify(scenario));
+                    console.log("Create scenario success");
                     res.status(200).send('Success! Scenario has been saved in the system. ');
                 } else {
                     res.status(500).send('500 Internal Server Error');
@@ -163,7 +163,7 @@ module.exports = function (app, passport) {
             };
             Scenarios.update({'name': req.body.name}, scenario, function (err) {
                 if (!err) {
-                  console.log("update scenario success. Scenario: ", JSON.stringify(scenario));
+                  console.log("Create scenario success");
                     res.status(200).send('Success! Scenario has been updated. ');
                 } else {
                     res.status(500).send('500 Internal Server Error');
@@ -285,7 +285,7 @@ module.exports = function (app, passport) {
     app.get('/studentslist', function(req, res){
       Users.find({}, function(err, students){
         if(!err){
-          console.log("get students list", JSON.stringify(students));
+          console.log("Get students list success");
           res.send(students);
         }else{
           res.status(500).send('500 Internal Server Error');

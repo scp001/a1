@@ -159,9 +159,15 @@
 									<h4 class="modal-title">Save Test Results</h4>
 								</div>
 								<div class="modal-body">
-									<label for="course" class="sr-only">Course</label>
-									<input type="text" id="course" name="course" class="form-control form-control-custom" placeholder="Course" required="" autofocus="">
-									<select title="student list" class="form-control form-control-custom" id="studentList"></select>
+									<div class="row">
+										<div class="col-lg-6 col-sm-6">
+											<label for="course" class="sr-only">Course</label>
+											<input type="text" id="course" name="course" class="form-control form-control-custom" placeholder="Course" required="" autofocus="">
+										</div>
+										<div class="col-lg-6 col-sm-6">
+											<select title="student list" class="form-control form-control-custom" id="studentList"></select>
+										</div>
+									</div>
 									<label for="comment">Comment</label>
 									<textarea class="form-control" rows="5" id="comment" wrap="hard" style="resize: none"></textarea>
 									<label for="test-result" style="margin-top: 30px">Test Results</label>
@@ -232,6 +238,7 @@
 	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="bower_components/ace/build/src/ace.js"></script>
 	<script src="bower_components/ace/build/src/ext-chromevox.js"></script>
+	<script src="bower_components/ace/build/src/ext-language_tools.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="notify.js"></script>
 	<script src="provided.js"></script>
