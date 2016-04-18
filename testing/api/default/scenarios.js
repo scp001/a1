@@ -505,25 +505,88 @@ CSIedited is "{'title':'CSI','director':'Jerry Bruckheimer, Eddy Murphy','releas
 wait 0.3
 get endpoint moviesEndpoint should return status 200 content-type "application/json; charset=utf-8"
 post endpoint moviesEndpoint data CSI should return status 200 dataProperty "upserted[0].index" 0 save ALL_BODY
+click "Splat!"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
+wait 0.5
+"director" "value" property should be "Jerry Bruckheimer"
+"released" "value" property should be "2010-01-01"
+"duration" "value" property should be "148"
+"genre" "value" property should be "detective"
+"starring" "value" property should be "John Smith, Vasyl Vasylenko, Rachel Tudor"
+"synopsis" "value" property should be "not bad"
 get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
 post endpoint movies+saved._id+'/reviews' data "{'freshness':3,'reviewName':'test','reviewAffil':'testtext12','reviewText':'abcdef','movieId':saved._id}" should return status 200 dataProperty "freshness" 3
+click "Splat!"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
+wait 0.5
+click element with text " 33.3%(150) "
 get endpoint movies+saved._id+'/reviews' should return content-type "application/json; charset=utf-8"
+wait 0.5
+click "Splat!"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
 click "Splat!"
 title should be "Splat"
 wait 0.5
 click "Browse Great Movies"
 wait 0.5
-delete endpoint movies+saved._id should return status 300
+delete endpoint movies+saved._id should return status 200
+wait 0.5
+get endpoint movies+saved._id should return status 404 content-type "text/html; charset=utf-8"
+wait 0.5
 click "Splat!"
 title should be "Splat"
 wait 0.5
 click "Browse Great Movies"
 wait 0.5
 post endpoint moviesEndpoint data CSI should return status 200 dataProperty "nModified" 0 save ALL_BODY
+radiogroup "Browse Movies" select "director"
 get endpoint movies+saved.upserted[0]._id should return status 200 content-type "application/json; charset=utf-8" save _id
+click "Splat!"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
 put endpoint movies+saved._id data CSIedited should return status 200 dataProperty "nModified" 1
+radiogroup "Browse Movies" select "director"
+click "Splat!"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
+wait 0.5
+"director" "value" property should be "Jerry Bruckheimer, Eddy Murphy"
+"starring" "value" property should be "John Smith, Vasyl Vasylenko, Rachel Tudor, Tom and Jerry"
+"released" "value" property should be "2010-01-02"
+"duration" "value" property should be "141"
+"synopsis" "value" property should be "good"
 post endpoint comments data "{'text':'Great movie. Highly recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved._id}" should return status 200 content-type "application/json; charset=utf-8" save ALL_BODY
-put endpoint comments+'/'+saved[0]._id data "{'text':'I changed my mind. Highly-HIIIIIGHLY recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved[0]._id}" should return status 200 dataProperty "nModified" 1
+radiogroup "Browse Movies" select "title"
+click "Splat!"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
+wait 0.5
+click element with text "useruser: Great movie. Highly recommend this!"
+put endpoint comments+'/'+saved[0]._id data "{'text':'I changed my mind. Highly-HIIIIIGHLY recommend this!','username':'useruser','dated':1970-01-01,'movieId':saved[0].movieId}" should return status 200 dataProperty "nModified" 1
+radiogroup "Browse Movies" select "director"
+click "Splat!"
+wait 0.5
+click "Browse Great Movies"
+wait 0.5
+click element with id "CSI"
+wait 0.5
+click element with text "useruser: I changed my mind. Highly-HIIIIIGHLY recommend this!"
+wait 0.5
 delete endpoint comments+'/'+saved[0]._id should return status 200
 click "Splat!"
 title should be "Splat"
